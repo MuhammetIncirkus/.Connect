@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Connect</string>
+    <string name="placeholderText">TextView</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="badge">Badge</string>
+    <string name="attachment_type">Attachment Type</string>
 </resources>
