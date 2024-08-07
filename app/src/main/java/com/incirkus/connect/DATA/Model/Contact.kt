@@ -1,10 +1,14 @@
 package com.incirkus.connect.DATA.Model
 
-data class Contact(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-    val id: Int,
+@Entity(tableName = "contacts_table")
+data class Contact(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     var name: String,
-    var image: String,
+    var image: Int,
     var email: String,
     var phoneNumber: String,
     var password: String,
