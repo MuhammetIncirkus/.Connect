@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Chats" />
-    <item android:title="Search" />
-    <item android:title="Calendar" />
-    <item android:title="Profile" />
+    <item
+        android:id="@+id/chatsFragment"
+        android:title="@string/chats"
+        android:icon="@drawable/baseline_chat_24"
+        />
+    <item
+        android:id="@+id/searchFragment"
+        android:title="@string/search"
+        android:icon="@drawable/baseline_search_24"
+        />
+    <item
+        android:id="@+id/calendarFragment"
+        android:title="@string/calendar"
+        android:icon="@drawable/baseline_calendar_month_24"
+        />
+    <item
+        android:id="@+id/profileFragment"
+        android:title="@string/profile"
+        android:icon="@drawable/baseline_person_24"
+        />
 </menu>
