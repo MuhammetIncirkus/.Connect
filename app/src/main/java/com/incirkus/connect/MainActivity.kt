@@ -1,7 +1,9 @@
 package com.incirkus.connect
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -65,6 +67,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Hier wird der Listener für das Erkennen der Tastatur-Änderungen hinzugefügt
+        val rootView = findViewById<View>(android.R.id.content)
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val r = Rect()
+                rootView.getWindowVisibleDisplayFrame(r)
+                val screenHeight = rootView.rootView.height
+                val keypadHeight = screenHeight - r.bottom
+
+                if (keypadHeight > screenHeight * 0.15) {
+                    // Tastatur ist sichtbar
+                    binding.bottomNavigationView.visibility = View.GONE
+                } else {
+                    // Tastatur ist nicht sichtbar
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        })
 
         //viewModel.preloadItems()
     }
