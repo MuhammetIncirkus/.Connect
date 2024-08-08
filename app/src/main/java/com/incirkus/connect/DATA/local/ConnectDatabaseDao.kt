@@ -1,6 +1,7 @@
 package com.incirkus.connect.DATA.local
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -23,8 +24,11 @@ interface ContactDao {
     @Delete
     suspend fun delete(contact: Contact)
 
-    @Query("SELECT * FROM contacts_table")
-    fun getAllItems(): LiveData<List<Contact>>
+    @Query("SELECT * FROM contacts_table WHERE id != :userID")
+    fun getAllContacts(userID: Long): LiveData<List<Contact>>
+
+    @Query("SELECT * FROM contacts_table WHERE id = :userID")
+    fun getloggedInUser(userID: Long): LiveData<Contact>
 
 }
 
@@ -42,6 +46,9 @@ interface MessageDao {
 
     @Query("SELECT * FROM messages_table")
     fun getAllItems(): LiveData<List<Message>>
+
+    @Query("SELECT * FROM messages_table WHERE senderID = :userID  or  recipientID = :userID " )
+    fun getUsersChatMessageList(userID: Long): LiveData<List<Message>>
 
 }
 
