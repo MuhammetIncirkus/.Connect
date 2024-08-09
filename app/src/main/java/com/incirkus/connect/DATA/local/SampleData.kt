@@ -1215,7 +1215,7 @@ object SampleData {
     //------------------------------------------------
 
     // Max Mustermann (user1) -> Julia Müller (user2)
-    val chatRoom1_2 = ChatRoom(
+  /*  val chatRoom1_2 = ChatRoom(
 
         chatRoomName = "chat_room_1_2",
         lastMessage = "Gut, danke Max.",
@@ -1302,7 +1302,7 @@ object SampleData {
         lastMessage = "Ja, danke Daniel.",
         lastActivityTimestamp = System.currentTimeMillis(),
         participants = listOf()
-    )
+    )*/
 
 
     val userList = listOf(
@@ -1329,7 +1329,7 @@ object SampleData {
         department3,
     )
 
-    val chatRoomList = listOf(
+    /*val chatRoomList = listOf(
         chatRoom1_2,
         chatRoom1_3,
         chatRoom1_4,
@@ -1339,7 +1339,7 @@ object SampleData {
         chatRoom2_5,
         chatRoom3_4,
         chatRoom3_5,
-        chatRoom4_5)
+        chatRoom4_5)*/
 
     /*val messageList = listOf(
         message1_2_1,
