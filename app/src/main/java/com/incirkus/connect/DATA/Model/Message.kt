@@ -2,15 +2,18 @@ package com.incirkus.connect.DATA.Model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
-@Entity(tableName = "messages_table")
+@Entity(tableName = "messages")
 data class Message(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val senderID: Long,
-    val recipientID: Long,
-    val message: String,
-    var isRead: Boolean,
-    var dispatchDate: String,
-    val receiptDate: String,
+    val messageId: Long = 0,
+    val chatRoomId: String,
+    val senderId: String,
+    val messageText: String,
+    val timestamp: Long,
+    var messageStatus: String,
+//    val fileUrl: String,
+//    val fileType: String,
+//    val fileName: String,
 )

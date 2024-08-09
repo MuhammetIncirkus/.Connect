@@ -29,9 +29,8 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.contactList.observe(viewLifecycleOwner){
-            viewModel.getcurrentChatMessageList()
-            var messageList = viewModel.getcurrentChatMessageList()
+        viewModel.userList.observe(viewLifecycleOwner){
+
             val adapter = SearchAdapter(it,viewModel)
             binding.rvSearchFragment.adapter = adapter
         }

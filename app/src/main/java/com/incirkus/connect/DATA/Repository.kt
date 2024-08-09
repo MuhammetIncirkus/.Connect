@@ -8,10 +8,10 @@ import com.incirkus.connect.DATA.local.SampleData
 
 class Repository(private val db: ConnectDatabase) {
 
-    val currentUserID : Long = 1
+    val currentUserID : String = "f086aaa7-8a22-4d67-a1f5-9ca01f309d81"
 
-    val contactList = db.contactDao().getAllContacts(currentUserID)
-    val loggedUser = db.contactDao().getloggedInUser(currentUserID)
+    val userList = db.userDao().getAllContacts(currentUserID)
+//    val loggedUser = db.contactDao().getloggedInUser(currentUserID)
     private var _usersChatsMessageList = MutableLiveData<List<Message>>()
     val usersChatMessageList: LiveData<List<Message>> = _usersChatsMessageList
 
@@ -19,18 +19,33 @@ class Repository(private val db: ConnectDatabase) {
 
 
     suspend fun preload(){
-        val contactList = SampleData.sampleContacts
-        val messageList = SampleData.sampleMessages
-        for (contact in contactList){
-            db.contactDao().insert(contact)
+        val userList = SampleData.userList
+//        val departmentList = SampleData.departmentList
+//        val messageList = SampleData.messageList
+//        val chatRoomList = SampleData.chatRoomList
+
+        for (user in userList){
+            db.userDao().insert(user)
         }
-        for (message in messageList){
-            db.messageDao().insert(message)
-        }
+//        for (message in messageList){
+//            db.messageDao().insert(message)
+//        }
+//        for (department in departmentList){
+//            db.departmentDao().insert(department)
+//        }
+//        for (chatRoom in chatRoomList){
+//            db.chatRoomDao().insert(chatRoom)
+//        }
+//        for (department in departmentList){
+//            db.departmentDao().insert(department)
+//        }
+//        for (department in departmentList){
+//            db.departmentDao().insert(department)
+//        }
     }
 
-    suspend fun getcurrentChatMessageList(){
-        _usersChatsMessageList.value = db.messageDao().getUsersChatMessageList(currentUserID).value
-    }
+//    suspend fun getcurrentChatMessageList(){
+//        _usersChatsMessageList.value = db.messageDao().getUsersChatMessageList(currentUserID).value
+//    }
 
 }

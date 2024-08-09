@@ -15,10 +15,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDataBase(application)
     val repository = Repository(database)
 
-    val contactList = repository.contactList
-    val loggedUser = repository.loggedUser
-    private var _usersChatMessageList = MutableLiveData<List<Message>> (repository.usersChatMessageList.value)
-    val usersChatMessageList: LiveData<List<Message>> = _usersChatMessageList
+    val userList = repository.userList
+//    val loggedUser = repository.loggedUser
+//    private var _usersChatMessageList = MutableLiveData<List<Message>> (repository.usersChatMessageList.value)
+//    val usersChatMessageList: LiveData<List<Message>> = _usersChatMessageList
 
     fun preloadItems(){
         viewModelScope.launch {
@@ -26,28 +26,28 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getcurrentChatMessageList() {
-        viewModelScope.launch {
-            repository.getcurrentChatMessageList()
-        }
+//    fun getcurrentChatMessageList() {
+//        viewModelScope.launch {
+//            repository.getcurrentChatMessageList()
+//        }
+//
+//    }
 
-    }
-
-    fun filterMessageList(userID: Long){
-        var messageList: MutableList<Message> = mutableListOf()
-
-        viewModelScope.launch {
-            if (_usersChatMessageList.value?.isNotEmpty() == true) {
-
-                for (message in _usersChatMessageList.value!!) {
-                    if (message.senderID == userID || message.recipientID == userID) {
-                        messageList.add(message)
-                    }
-                }
-            }
-            _usersChatMessageList.postValue(messageList)
-        }
-    }
+//    fun filterMessageList(userID: Long){
+//        var messageList: MutableList<Message> = mutableListOf()
+//
+//        viewModelScope.launch {
+//            if (_usersChatMessageList.value?.isNotEmpty() == true) {
+//
+//                for (message in _usersChatMessageList.value!!) {
+//                    if (message.senderID == userID || message.recipientID == userID) {
+//                        messageList.add(message)
+//                    }
+//                }
+//            }
+//            _usersChatMessageList.postValue(messageList)
+//        }
+//    }
 
 
 
