@@ -9,7 +9,7 @@ data class ChatRoom(
     @PrimaryKey(autoGenerate = true)
     val chatRoomId: Long = 0,
     val chatRoomName: String,
-    val lastMessage: String,
+    var lastMessage: String,
     var lastActivityTimestamp: Long,
-    val chatParticipantsId: Long,
+    var chatParticipantsId: Long,
     )

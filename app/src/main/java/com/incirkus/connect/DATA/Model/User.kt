@@ -10,6 +10,7 @@ data class User(
     val userId: Long = 0,
     val firstName: String,
     var lastName: String,
+    val fullName: String,
     var image: Int,
     var email: String,
     var phoneNumber: String,

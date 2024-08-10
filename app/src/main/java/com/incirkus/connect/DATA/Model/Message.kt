@@ -8,8 +8,8 @@ import java.util.UUID
 data class Message(
     @PrimaryKey(autoGenerate = true)
     val messageId: Long = 0,
-    val chatRoomId: String,
-    val senderId: String,
+    val chatRoomId: Long,
+    val senderId: Long,
     val messageText: String,
     val timestamp: Long,
     var messageStatus: String,

@@ -32,7 +32,7 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
         //viewModel.filterMessageList(contact.id)
 
         binding.ivProfilePicture.setImageResource(contact.image)
-        binding.tvContactName.text = contact.firstName
+        binding.tvContactName.text = contact.fullName
         binding.tvContactLastMessage.text = ""
         binding.tvContactLastMessageDate.text = ""
         binding.imageView2.isVisible = false

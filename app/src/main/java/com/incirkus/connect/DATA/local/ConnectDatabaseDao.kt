@@ -21,19 +21,22 @@ import com.incirkus.connect.DATA.Model.User
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(contact: User)
+    suspend fun insert(user: User)
 
     @Update
-    suspend fun update(contact: User)
+    suspend fun update(user: User)
 
     @Delete
-    suspend fun delete(contact: User)
+    suspend fun delete(user: User)
 
     @Query("SELECT * FROM users WHERE userId != :userID")
-    fun getAllContacts(userID: String): LiveData<List<User>>
+    fun getAllContacts(userID: Long): LiveData<List<User>>
 
     @Query("SELECT * FROM users WHERE userId = :userID")
-    fun getloggedInUser(userID: String): LiveData<User>
+    fun getloggedInUser(userID: Long): User
+
+    @Query("SELECT * FROM users WHERE userId = :userID")
+    fun getOneUser(userID: Long): LiveData<User>
 
 }
 
@@ -62,7 +65,7 @@ interface MessageDao {
 interface ChatRoomDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(chat: ChatRoom)
+    suspend fun insert(chat: ChatRoom): Long
 
     @Update
     suspend fun update(chat: ChatRoom)
@@ -73,8 +76,11 @@ interface ChatRoomDao {
     @Query("SELECT * FROM chat_rooms")
     fun getAllItems(): LiveData<List<ChatRoom>>
 
-    @Query("SELECT * FROM chat_rooms WHERE chatRoomId = :chatRoomId" )
-    fun getChatRoom(chatRoomId: String): LiveData<List<ChatRoom>>
+    @Query("SELECT * FROM chat_rooms WHERE chatRoomId = :chatRoomId")
+    fun getChatRoomWithID(chatRoomId: Long): ChatRoom
+
+    @Query("SELECT * FROM chat_rooms WHERE chatRoomName = :chatRoomName")
+    fun getChatRoomWithName(chatRoomName: String): ChatRoom
 
 }
 
@@ -133,7 +139,7 @@ interface DepartmentDao {
 interface ChatParticipantsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(chatParticipants: ChatParticipants)
+    suspend fun insert(chatParticipants: ChatParticipants): Long
 
     @Update
     suspend fun update(chatParticipants: ChatParticipants)
@@ -144,21 +150,7 @@ interface ChatParticipantsDao {
     @Query("SELECT * FROM chat_participants")
     fun getAllItems(): LiveData<List<ChatParticipants>>
 
-}
+    @Query("SELECT * FROM chat_participants WHERE chatRoomId = :chatRoomId")
+    fun getChatParticipantsWithChatRoomId(chatRoomId: Long): ChatParticipants
 
-//@Dao
-//interface AttachmentDao {
-//
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insert(attachment: Attachment)
-//
-//    @Update
-//    suspend fun update(attachment: Attachment)
-//
-//    @Delete
-//    suspend fun delete(attachment: Attachment)
-//
-//    @Query("SELECT * FROM attachment_table")
-//    fun getAllItems(): LiveData<List<Attachment>>
-//
-//}
+}
