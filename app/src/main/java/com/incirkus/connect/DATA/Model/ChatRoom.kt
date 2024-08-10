@@ -11,5 +11,5 @@ data class ChatRoom(
     val chatRoomName: String,
     val lastMessage: String,
     var lastActivityTimestamp: Long,
-    val chatParticipantsId: Long,
+    var chatParticipantsId: Long,
     )

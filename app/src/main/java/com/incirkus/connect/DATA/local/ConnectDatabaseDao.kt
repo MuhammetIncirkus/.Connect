@@ -21,19 +21,22 @@ import com.incirkus.connect.DATA.Model.User
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(contact: User)
+    suspend fun insert(user: User)
 
     @Update
-    suspend fun update(contact: User)
+    suspend fun update(user: User)
 
     @Delete
-    suspend fun delete(contact: User)
+    suspend fun delete(user: User)
 
     @Query("SELECT * FROM users WHERE userId != :userID")
-    fun getAllContacts(userID: String): LiveData<List<User>>
+    fun getAllContacts(userID: Long): LiveData<List<User>>
 
     @Query("SELECT * FROM users WHERE userId = :userID")
-    fun getloggedInUser(userID: String): LiveData<User>
+    fun getloggedInUser(userID: Long): LiveData<User>
+
+    @Query("SELECT * FROM users WHERE userId = :userID")
+    fun getOneUser(userID: Long): LiveData<User>
 
 }
 
@@ -73,8 +76,11 @@ interface ChatRoomDao {
     @Query("SELECT * FROM chat_rooms")
     fun getAllItems(): LiveData<List<ChatRoom>>
 
-    @Query("SELECT * FROM chat_rooms WHERE chatRoomId = :chatRoomId" )
-    fun getChatRoom(chatRoomId: String): LiveData<List<ChatRoom>>
+    @Query("SELECT * FROM chat_rooms WHERE chatRoomId = :chatRoomId")
+    fun getChatRoomWithID(chatRoomId: String): LiveData<ChatRoom>
+
+    @Query("SELECT * FROM chat_rooms WHERE chatRoomName = :chatRoomName")
+    fun getChatRoomWithName(chatRoomName: String): LiveData<ChatRoom>
 
 }
 
@@ -143,6 +149,9 @@ interface ChatParticipantsDao {
 
     @Query("SELECT * FROM chat_participants")
     fun getAllItems(): LiveData<List<ChatParticipants>>
+
+    @Query("SELECT * FROM chat_participants WHERE chatRoomId = :chatRoomId")
+    fun getChatParticipantsWithChatRoomId(chatRoomId: Long): LiveData<ChatParticipants>
 
 }
 
