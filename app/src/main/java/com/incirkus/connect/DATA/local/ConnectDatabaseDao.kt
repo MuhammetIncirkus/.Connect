@@ -61,6 +61,7 @@ interface MessageDao {
 }
 
 
+
 @Dao
 interface ChatRoomDao {
 
