@@ -7,13 +7,14 @@ import androidx.room.RoomDatabase
 import com.incirkus.connect.DATA.Model.Attachment
 import com.incirkus.connect.DATA.Model.ChatParticipants
 import com.incirkus.connect.DATA.Model.ChatRoom
+import com.incirkus.connect.DATA.Model.CurrentUserDatatype
 import com.incirkus.connect.DATA.Model.Department
 import com.incirkus.connect.DATA.Model.LeaveRequest
 import com.incirkus.connect.DATA.Model.Holiday
 import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.User
 
-@Database(entities = [User::class, Message::class, Department::class, LeaveRequest::class, Holiday::class, ChatRoom::class, ChatParticipants::class], version = 2)
+@Database(entities = [User::class, Message::class, Department::class, LeaveRequest::class, Holiday::class, ChatRoom::class, ChatParticipants::class, CurrentUserDatatype::class], version = 1)
 abstract class ConnectDatabase :RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -23,6 +24,7 @@ abstract class ConnectDatabase :RoomDatabase() {
     abstract fun holidayDao(): HolidayDao
     abstract fun chatRoomDao(): ChatRoomDao
     abstract fun chatParticipantsDao(): ChatParticipantsDao
+    abstract fun currentUserDao(): CurrentUserDao
 
 
 }

@@ -20,11 +20,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val userList = repository.userList
     val currentChatRoom = repository.currentChatRoom
     val currentChatParticipants = repository.currentChatParticipants
+    val usersChatRoomIdList = repository.usersChatRoomIdList
+    val usersChatRoomList = repository.usersChatRoomList
 
 
     fun preloadItems(){
         viewModelScope.launch {
             repository.preload()
+            //repository.insertCurrentUser()
         }
     }
     fun loadCurrentUser(){
@@ -73,5 +76,20 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             repository.sendMessage(message)
         }
     }
+
+    fun loadUsersChatLists(){
+        viewModelScope.launch {
+            repository.loadUsersChatParticipantsLists()
+        }
+    }
+
+    fun getOneUserById(userID: Long): LiveData<User>{
+        lateinit var user: LiveData<User>
+        viewModelScope.launch {
+            user = repository.getOneUserById(userID)
+        }
+        return user
+    }
+
 
 }

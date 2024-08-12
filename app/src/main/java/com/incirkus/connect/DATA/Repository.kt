@@ -29,9 +29,26 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
     private var _currentChatParticipants = MutableLiveData<ChatParticipants>()
     val currentChatParticipants : LiveData<ChatParticipants> = _currentChatParticipants
 
+    private var _usersChatRoomIdList = MutableLiveData<List<Long>>()
+    val usersChatRoomIdList : LiveData<List<Long>> = _usersChatRoomIdList
+
+    private var _usersChatRoomList = MutableLiveData<List<ChatRoom>>()
+    val usersChatRoomList : LiveData<List<ChatRoom>> = _usersChatRoomList
+
+    suspend fun insertCurrentUser(){
+        withContext(Dispatchers.IO) {
+            if (_currentUser.value != null){
+
+                db.currentUserDao().insertUser(_currentUser.value!!)
+            }
+
+        }
+    }
+
     suspend fun loadCurrentUser(){
         withContext(Dispatchers.IO) {
             _currentUser.postValue(db.userDao().getloggedInUser(currentUserID))
+            insertCurrentUser()
         }
     }
 
@@ -161,7 +178,6 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
             }catch (e:Exception){
                 Log.e("sendMessage", e.message.toString())
             }
-
             updateChatRoomMessage(message)
         }
     }
@@ -176,9 +192,49 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
             }catch (e:Exception){
                 Log.e("sendMessage", e.message.toString())
             }
-
-
         }
+    }
+
+    suspend fun loadUsersChatParticipantsLists(){
+        withContext(Dispatchers.IO) {
+            try {
+                _usersChatRoomIdList.postValue(db.chatParticipantsDao().loadUsersChatLists(currentUserID))
+                Log.e("usersChatList", "wurde geladen")
+            }catch (e:Exception){
+                Log.e("usersChatList", e.message.toString())
+            }
+        }
+        loadChatRoomList()
+    }
+
+    suspend fun loadChatRoomList(){
+        var chatRoomList: MutableList<ChatRoom> = mutableListOf()
+        withContext(Dispatchers.IO) {
+            try {
+                if (!_usersChatRoomIdList.value.isNullOrEmpty()){
+                    for (id in _usersChatRoomIdList.value!!){
+                        chatRoomList.add(db.chatRoomDao().getChatRoomWithID(id))
+                    }
+                }
+                _usersChatRoomList.postValue(chatRoomList)
+                Log.e("chatRoomList", "wurde geladen")
+            }catch (e:Exception){
+                Log.e("chatRoomList", e.message.toString())
+            }
+        }
+    }
+
+    suspend fun getOneUserById(userID: Long): LiveData<User>{
+        lateinit var user : LiveData<User>
+        withContext(Dispatchers.IO) {
+            try {
+                user = db.userDao().getOneUser(userID)
+                Log.e("chatPartner", "wurde geladen")
+            }catch (e:Exception){
+                Log.e("sendMessage", e.message.toString())
+            }
+        }
+        return user
     }
 
 }

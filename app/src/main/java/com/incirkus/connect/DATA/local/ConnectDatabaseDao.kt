@@ -11,6 +11,7 @@ import androidx.room.Update
 import com.incirkus.connect.DATA.Model.Attachment
 import com.incirkus.connect.DATA.Model.ChatParticipants
 import com.incirkus.connect.DATA.Model.ChatRoom
+import com.incirkus.connect.DATA.Model.CurrentUserDatatype
 import com.incirkus.connect.DATA.Model.Department
 import com.incirkus.connect.DATA.Model.Holiday
 import com.incirkus.connect.DATA.Model.LeaveRequest
@@ -154,4 +155,32 @@ interface ChatParticipantsDao {
     @Query("SELECT * FROM chat_participants WHERE chatRoomId = :chatRoomId")
     fun getChatParticipantsWithChatRoomId(chatRoomId: Long): ChatParticipants
 
+    @Query("SELECT chatRoomId FROM chat_participants WHERE user1Id = :currentUserID or user2Id = :currentUserID")
+    fun loadUsersChatLists(currentUserID: Long): List<Long>
+
+}
+
+@Dao
+interface CurrentUserDao{
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(currentUser: CurrentUserDatatype)
+
+    @Update
+    suspend fun update(currentUser: CurrentUserDatatype)
+
+    @Delete
+    suspend fun delete(currentUser: CurrentUserDatatype)
+
+    @Query("SELECT * FROM current_user LIMIT 1")
+    fun getCurrentUserDatatypeCurrentUser(): CurrentUserDatatype
+
+    suspend fun insertUser(user: User){
+        val currentUser: CurrentUserDatatype = CurrentUserDatatype.userToCurrentUser(user)
+        insert(currentUser)
+    }
+
+    suspend fun getCurrentUser(currentUserDatatype: CurrentUserDatatype): User{
+        val currentUser: User = currentUserDatatype.currentUserToUser()
+        return currentUser
+    }
 }
