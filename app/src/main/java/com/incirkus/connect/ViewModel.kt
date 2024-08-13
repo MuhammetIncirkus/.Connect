@@ -17,7 +17,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDataBase(application)
     val repository = Repository(database,this)
 
-    val currentUser: MutableLiveData<User?> = repository.currentUser
+    val currentUser: MutableLiveData<User> = repository.currentUser
     val userList = repository.userList
     val currentChatRoom = repository.currentChatRoom
     val currentChatParticipants = repository.currentChatParticipants
@@ -30,6 +30,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             repository.preload()
             repository.loadCurrentUserFromUserList()
             repository.loadCurrentUser()
+            //repository.loadUserList()
         }
     }
 
@@ -53,11 +54,11 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 //        }
 //    }
 
-//    fun createNewChatroom(currentUser: User, selectedUser: User){
-//        viewModelScope.launch {
-//            repository.createNewChatroom(currentUser,selectedUser)
-//        }
-//    }
+    fun createNewChatroom(currentUser: User, selectedUser: User){
+        viewModelScope.launch {
+            repository.createNewChatroom(currentUser,selectedUser)
+        }
+    }
 
 //    fun createNewChatroom2(chatRoom: ChatRoom){
 //        viewModelScope.launch {
@@ -71,23 +72,23 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 //        }
 //    }
 
-//    fun getChatRoom(chatRoomId:Long){
-//        viewModelScope.launch {
-//            repository.getChatRoom(chatRoomId)
-//        }
-//    }
+    fun getChatRoom(chatRoomId:Long){
+        viewModelScope.launch {
+            repository.getChatRoom(chatRoomId)
+        }
+    }
 
-//    fun getChatParticipants(chatParticipantsId:Long){
-//        viewModelScope.launch {
-//            repository.getChatParticipants(chatParticipantsId)
-//        }
-//    }
+    fun getChatParticipants(chatParticipantsId:Long){
+        viewModelScope.launch {
+            repository.getChatParticipants(chatParticipantsId)
+        }
+    }
 
-//    fun sendMessage(message: Message){
-//        viewModelScope.launch {
-//            repository.sendMessage(message)
-//        }
-//    }
+    fun sendMessage(message: Message){
+        viewModelScope.launch {
+            repository.sendMessage(message)
+        }
+    }
 
 //    fun loadUsersChatLists(){
 //        viewModelScope.launch {

@@ -1,6 +1,7 @@
 package com.incirkus.connect.UI
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -29,10 +31,20 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadUserList()
+
         viewModel.userList.observe(viewLifecycleOwner){
 
             val adapter = SearchAdapter(it,viewModel)
             binding.rvSearchFragment.adapter = adapter
+        }
+    }
+
+    fun loadUserList(){
+        if (viewModel.userList.value?.isEmpty() == true){
+            Log.e("ConnectTag", "userList im viewModel ist Empty")
+        }else{
+            Log.e("ConnectTag", "userList im viewModel ist NICHT Empty")
         }
     }
 

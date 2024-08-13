@@ -7,12 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.incirkus.connect.ADAPTER.SearchAdapter
+import com.incirkus.connect.DATA.Model.ChatParticipants
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentProfileBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class ProfileFragment : Fragment() {
@@ -33,13 +37,15 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val currentUser: User = viewModel.loadCurrentUser()
-//
-//        binding.btnNewChatRoom.setOnClickListener {
-//            viewModel.userList.observe(viewLifecycleOwner){
-//                viewModel.createNewChatroom(currentUser, it.first())
-//            }
-//        }
+        val currentUser = loadCurrentUser()
+        loadUserList()
+
+        binding.btnNewChatRoom.setOnClickListener {
+            viewModel.userList.observe(viewLifecycleOwner){
+                viewModel.createNewChatroom(currentUser,it.first())
+            }
+        }
+
 
 
 
@@ -50,8 +56,8 @@ class ProfileFragment : Fragment() {
 //
 //        viewModel.getChatRoom(id)
 //        viewModel.getChatParticipants(id)
-//
-//
+
+
 //        val currentChatRoom = viewModel.currentChatRoom
 //        val currentChatParticipants = viewModel.currentChatParticipants
 //
@@ -137,4 +143,22 @@ class ProfileFragment : Fragment() {
 //        }
 
     }
+
+
+    fun loadCurrentUser(): User {
+        lateinit var user: User
+        user = viewModel.currentUser.value!!
+        return user
+    }
+
+    fun loadUserList(){
+        if (viewModel.userList.value?.isEmpty() == true){
+            Log.e("ConnectTag", "userList im viewModel ist Empty")
+        }else{
+            Log.e("ConnectTag", "userList im viewModel ist NICHT Empty")
+        }
+    }
+
+
+
 }
