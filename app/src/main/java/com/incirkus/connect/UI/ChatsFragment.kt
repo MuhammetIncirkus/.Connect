@@ -23,7 +23,7 @@ class ChatsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        viewModel.loadCurrentUser()
+        //viewModel.loadCurrentUser()
         binding = FragmentChatsBinding.inflate(layoutInflater)
         return binding.root
     }

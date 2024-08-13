@@ -25,7 +25,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        viewModel.loadCurrentUser()
+
         binding = FragmentProfileBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -33,86 +33,108 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val id: Long = 1L
+//        val currentUser: User = viewModel.loadCurrentUser()
+//
+//        binding.btnNewChatRoom.setOnClickListener {
+//            viewModel.userList.observe(viewLifecycleOwner){
+//                viewModel.createNewChatroom(currentUser, it.first())
+//            }
+//        }
 
-        viewModel.getChatRoom(id)
-        viewModel.getChatParticipants(id)
 
-        val currentChatRoom = viewModel.currentChatRoom
-        val currentChatParticipants = viewModel.currentChatParticipants
 
-        binding.btnNewChatRoom.setOnClickListener {
-            if (viewModel.currentUser.value != null){
-                if (viewModel.userList.value.isNullOrEmpty()){
-                    Log.e("userList", "ist Null or Empty")
-                }else{
 
-            viewModel.currentUser.observe(viewLifecycleOwner){currentUser2->
-                viewModel.userList.observe(viewLifecycleOwner){userList2->
-                    viewModel.createNewChatroom(currentUser2, userList2.first())
-                }
-            }
-                }
-            }else{
-                Log.e("currentUser", "ist Null")
-            }
-        }
 
-        binding.btnInsertUser.setOnClickListener {
 
-            val user: User = User(
-                firstName = "Muhammet",
-                lastName = "Incirkus",
-                fullName = "Mammut Incirbird",
-                image= R.drawable.brad,
-                email= "muhammet@incirkus.com",
-                phoneNumber= "+49 1511 1163781",
-                password= "sagichnicht",
-                departmentId= "privat",
-            )
-            viewModel.newUser(user)
-        }
-
-        binding.btnNewChatRoom2.setOnClickListener {
-
-            val chatRoom: ChatRoom = ChatRoom(
-                chatRoomName = "Das ist ein Test",
-                lastMessage = "Testnachricht",
-                lastActivityTimestamp = System.currentTimeMillis(),
-                chatParticipantsId = 0L
-            )
-            viewModel.createNewChatroom2(chatRoom)
-        }
-
-        binding.btnSendNewMessage.setOnClickListener {
-            val message = currentChatRoom.value?.let { it1 ->
-                currentChatParticipants.value?.let { it2 ->
-                    Message(
-                        chatRoomId = it1.chatRoomId,
-                        senderId = it2.user1Id,
-                        messageText = "Hallo!",
-                        timestamp = System.currentTimeMillis(),
-                        messageStatus = "send"
-                    )
-                }
-            }
-            viewModel.sendMessage(message!!)
-        }
-
-        binding.btnSendNewMessage2.setOnClickListener {
-            val message = currentChatRoom.value?.let { it1 ->
-                currentChatParticipants.value?.let { it2 ->
-                    Message(
-                        chatRoomId = it1.chatRoomId,
-                        senderId = it2.user2Id,
-                        messageText = "Wie geht´s?",
-                        timestamp = System.currentTimeMillis(),
-                        messageStatus = "send"
-                    )
-                }
-            }
-            viewModel.sendMessage(message!!)
-        }
+//        val id: Long = 1L
+//
+//        viewModel.getChatRoom(id)
+//        viewModel.getChatParticipants(id)
+//
+//
+//        val currentChatRoom = viewModel.currentChatRoom
+//        val currentChatParticipants = viewModel.currentChatParticipants
+//
+//        binding.btnNewChatRoom.setOnClickListener {
+//            viewModel.loadCurrentUser2()
+//            if (viewModel.currentUser != null){
+//                if (viewModel.userList.value.isNullOrEmpty()){
+//                    Log.e("ConnectTag", "currentUser ist Null or Empty")
+//                }else{
+//
+//            viewModel.currentUser.observe(viewLifecycleOwner){currentUser2->
+//                viewModel.userList.observe(viewLifecycleOwner){userList2->
+//                    if (currentUser2 != null) {
+//                        viewModel.createNewChatroom(currentUser2, userList2.first())
+//                    }
+//                }
+//            }
+//
+//
+////                    viewModel.userList.observe(viewLifecycleOwner){
+////                        viewModel.createNewChatroom(viewModel.currentUser, it.first())
+////                    }
+//                }
+//            }else{
+//                Log.e("ConnectTag", "currentUser ist Null")
+//            }
+//        }
+//
+//        binding.btnInsertUser.setOnClickListener {
+//
+//            val user: User = User(
+//                firstName = "Muhammet",
+//                lastName = "Incirkus",
+//                fullName = "Mammut Incirbird",
+//                image= R.drawable.brad,
+//                email= "muhammet@incirkus.com",
+//                phoneNumber= "+49 1511 1163781",
+//                password= "sagichnicht",
+//                departmentId= "privat",
+//            )
+//            viewModel.newUser(user)
+//        }
+//
+//        binding.btnNewChatRoom2.setOnClickListener {
+//
+//            val chatRoom: ChatRoom = ChatRoom(
+//                chatRoomName = "Das ist ein Test",
+//                lastMessage = "Testnachricht",
+//                lastActivityTimestamp = System.currentTimeMillis(),
+//                chatParticipantsId = 0L
+//            )
+//            viewModel.createNewChatroom2(chatRoom)
+//        }
+//
+//        binding.btnSendNewMessage.setOnClickListener {
+//            val message = currentChatRoom.value?.let { it1 ->
+//                currentChatParticipants.value?.let { it2 ->
+//                    Message(
+//                        chatRoomId = it1.chatRoomId,
+//                        senderId = it2.user1Id,
+//                        messageText = "Hallo!",
+//                        timestamp = System.currentTimeMillis(),
+//                        messageStatus = "send"
+//                    )
+//                }
+//            }
+//            viewModel.sendMessage(message!!)
+//        }
+//
+//        binding.btnSendNewMessage2.setOnClickListener {
+//            val message = currentChatRoom.value?.let { it1 ->
+//                currentChatParticipants.value?.let { it2 ->
+//                    Message(
+//                        chatRoomId = it1.chatRoomId,
+//                        senderId = it2.user2Id,
+//                        messageText = "Wie geht´s?",
+//                        timestamp = System.currentTimeMillis(),
+//                        messageStatus = "send"
+//                    )
+//                }
+//            }
+//            viewModel.sendMessage(message!!)
+//        }
 
     }
 }

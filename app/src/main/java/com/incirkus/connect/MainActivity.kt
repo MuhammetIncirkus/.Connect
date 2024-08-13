@@ -86,8 +86,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.loadUserList()
-        viewModel.loadCurrentUser()
         viewModel.preloadItems()
     }
 

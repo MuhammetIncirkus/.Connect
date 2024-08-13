@@ -23,28 +23,28 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val binding = holder.binding
-        val chatRoom = chatRoomList[position]
-
-        lateinit var secondUser: LiveData<User>
-        viewModel.getChatParticipants(chatRoom.chatRoomId)
-
-        if (viewModel.currentUser.value!!.userId == viewModel.currentChatParticipants.value!!.user1Id){
-
-            secondUser = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user2Id)
-        }else{
-            secondUser = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user1Id)
-        }
-
-        //viewModel.filterMessageList(contact.id)
-        if (secondUser.isInitialized){
-
-        binding.ivProfilePicture.setImageResource(secondUser.value!!.image)
-        binding.tvContactName.text = secondUser.value!!.fullName
-        binding.tvContactLastMessage.text = chatRoom.lastMessage
-        binding.tvContactLastMessageDate.text = ""
-        binding.imageView2.isVisible = false
-        }
+//        val binding = holder.binding
+//        val chatRoom = chatRoomList[position]
+//
+//        lateinit var secondUser: LiveData<User>
+//        viewModel.getChatParticipants(chatRoom.chatRoomId)
+//
+//        if (viewModel.currentUser.value!!.userId == viewModel.currentChatParticipants.value!!.user1Id){
+//
+//            secondUser = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user2Id)
+//        }else{
+//            secondUser = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user1Id)
+//        }
+//
+//        //viewModel.filterMessageList(contact.id)
+//        if (secondUser.isInitialized){
+//
+//        binding.ivProfilePicture.setImageResource(secondUser.value!!.image)
+//        binding.tvContactName.text = secondUser.value!!.fullName
+//        binding.tvContactLastMessage.text = chatRoom.lastMessage
+//        binding.tvContactLastMessageDate.text = ""
+//        binding.imageView2.isVisible = false
+//        }
 
 
 

@@ -17,8 +17,9 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
 
     private val currentUserID: Long = 1
 
-    private var _currentUser = MutableLiveData<User>()
-    val currentUser: LiveData<User> = _currentUser
+    private var _currentUser = MutableLiveData<User?>()
+    val currentUser: MutableLiveData<User?> = _currentUser
+
 
     private var _userList = MutableLiveData<List<User>>()
     val userList = db.userDao().getAllContacts(currentUserID)
@@ -35,26 +36,51 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
     private var _usersChatRoomList = MutableLiveData<List<ChatRoom>>()
     val usersChatRoomList : LiveData<List<ChatRoom>> = _usersChatRoomList
 
-    suspend fun insertCurrentUser(){
+    suspend fun insertCurrentUser(user: User){
         withContext(Dispatchers.IO) {
-            if (_currentUser.value != null){
-
+                try {
                 db.currentUserDao().insertUser(_currentUser.value!!)
-            }
-
+                Log.e("ConnectTag", "insertCurrentUser wurde gespeichert")
+                }catch (e:Exception){
+                    Log.e("ConnectTag", "insertCurrentUser ${e.message.toString()}")
+                }
         }
+    }
+
+    suspend fun loadCurrentUserFromUserList(): User{
+        lateinit var user: User
+        withContext(Dispatchers.IO) {
+            try {
+                user = db.userDao().getloggedInUser(currentUserID)
+                Log.e("ConnectTag", "loadCurrentUserFromUserlist wurde geladen")
+            }catch (e:Exception){
+                Log.e("ConnectTag", "loadCurrentUserFromUserlist ${e.message.toString()}")
+            }
+        }
+        _currentUser.postValue(user)
+            insertCurrentUser(user)
+        return user
     }
 
     suspend fun loadCurrentUser(){
         withContext(Dispatchers.IO) {
-            _currentUser.postValue(db.userDao().getloggedInUser(currentUserID))
-            insertCurrentUser()
+            try {
+                _currentUser.postValue(db.currentUserDao().getCurrentUserDatatypeCurrentUser().currentUserToUser())
+                Log.e("ConnectTag", "loadCurrentUserFromUserlist wurde geladen")
+            }catch (e:Exception){
+                Log.e("ConnectTag", "loadCurrentUserFromUserlist ${e.message.toString()}")
+            }
         }
     }
 
     suspend fun loadUserList(){
         withContext(Dispatchers.IO) {
-            _userList.postValue(db.userDao().getAllContacts(currentUserID).value)
+            try {
+                _userList.postValue(db.userDao().getAllContacts(currentUserID).value)
+                Log.e("ConnectTag", "loadUserList gefüllt")
+            }catch (e:Exception){
+                Log.e("ConnectTag", "loadUserList ${e.message.toString()}")
+            }
         }
     }
 
@@ -64,97 +90,97 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
             try {
                 for (user in userlist) {
                     db.userDao().insert(user)
-                    Log.e("preload", "geklappt")
+                    Log.e("ConnectTag", "preload geklappt")
                 }
             } catch (e: Exception) {
-                Log.e("preload", e.message.toString())
+                Log.e("ConnectTag", "preload ${e.message.toString()}")
             }
         }
     }
 
-    suspend fun createNewChatroom(currentUser: User, secondUser: User) {
-        withContext(Dispatchers.IO) {
-            val chatRoomName = "${currentUser.firstName.replace(" ","").replace("-","")}${secondUser.firstName.replace(" ","").replace("-","")}"
-            var chatRoomID: Long = 0L
-            var newChatRoom = ChatRoom(
-                chatRoomName = chatRoomName,
-                lastMessage = "Hi",
-                lastActivityTimestamp = System.currentTimeMillis(),
-                chatParticipantsId = 0L
-            )
-            try {
-                chatRoomID = db.chatRoomDao().insert(newChatRoom)
-                Log.e("newChatRoom", "geklappt")
-            } catch (e: Exception) {
-                Log.e("newChatRoom", e.message.toString())
-            }
+//    suspend fun createNewChatroom(currentUser: User, secondUser: User) {
+//        withContext(Dispatchers.IO) {
+//            val chatRoomName = "${currentUser.firstName.replace(" ","").replace("-","")}${secondUser.firstName.replace(" ","").replace("-","")}"
+//            var chatRoomID: Long = 0L
+//            var newChatRoom = ChatRoom(
+//                chatRoomName = chatRoomName,
+//                lastMessage = "Hi",
+//                lastActivityTimestamp = System.currentTimeMillis(),
+//                chatParticipantsId = 0L
+//            )
+//            try {
+//                chatRoomID = db.chatRoomDao().insert(newChatRoom)
+//                Log.e("ConnectTag", "createNewChatroom geklappt")
+//            } catch (e: Exception) {
+//                Log.e("ConnectTag", "createNewChatroom ${e.message.toString()}")
+//            }
+//
+//            createNewChatParticipants(chatRoomID, currentUser, secondUser, newChatRoom)
+//            getChatRoom(chatRoomID)
+//        }
+//    }
 
-            createNewChatParticipants(chatRoomID, currentUser, secondUser, newChatRoom)
-            getChatRoom(chatRoomID)
-        }
-    }
+//    suspend fun createNewChatParticipants(chatRoomID: Long, currentUser: User, secondUser: User, newChatRoom: ChatRoom){
+//        withContext(Dispatchers.IO) {
+//            val newChatParticipants = ChatParticipants(
+//                chatRoomId = chatRoomID,
+//                user1Id = currentUser.userId,
+//                user2Id = secondUser.userId
+//            )
+//            var chatParticipantsId: Long = 0L
+//            try {
+//                chatParticipantsId = db.chatParticipantsDao().insert(newChatParticipants)
+//                Log.e("ConnectTag", "geklappt")
+//            } catch (e: Exception) {
+//                Log.e("ConnectTag", "createNewChatParticipants ${e.message.toString()}")
+//            }
+//            updateChatroom(chatParticipantsId, newChatRoom)
+//            getChatParticipants(chatParticipantsId)
+//        }
+//    }
 
-    suspend fun createNewChatParticipants(chatRoomID: Long, currentUser: User, secondUser: User, newChatRoom: ChatRoom){
-        withContext(Dispatchers.IO) {
-            val newChatParticipants = ChatParticipants(
-                chatRoomId = chatRoomID,
-                user1Id = currentUser.userId,
-                user2Id = secondUser.userId
-            )
-            var chatParticipantsId: Long = 0L
-            try {
-                chatParticipantsId = db.chatParticipantsDao().insert(newChatParticipants)
-                Log.e("newChatParticipants", "geklappt")
-            } catch (e: Exception) {
-                Log.e("newChatParticipants", e.message.toString())
-            }
-            updateChatroom(chatParticipantsId, newChatRoom)
-            getChatParticipants(chatParticipantsId)
-        }
-    }
+//    suspend fun updateChatroom(chatParticipantsId: Long, newChatRoom: ChatRoom){
+//        withContext(Dispatchers.IO) {
+//            newChatRoom.chatParticipantsId = chatParticipantsId
+//            try {
+//                db.chatRoomDao().update(newChatRoom)
+//                Log.e("Connect", "updateChatroom geklappt")
+//            } catch (e: Exception) {
+//                Log.e("Connect", "updateChatroom ${e.message.toString()}")
+//            }
+//        }
+//    }
 
-    suspend fun updateChatroom(chatParticipantsId: Long, newChatRoom: ChatRoom){
-        withContext(Dispatchers.IO) {
-            newChatRoom.chatParticipantsId = chatParticipantsId
-            try {
-                db.chatRoomDao().update(newChatRoom)
-                Log.e("updateChatRoom", "geklappt")
-            } catch (e: Exception) {
-                Log.e("updateChatRoom", e.message.toString())
-            }
-        }
-    }
+//    suspend fun newUser(user:User){
+//        withContext(Dispatchers.IO) {
+//            try {
+//                db.userDao().insert(user)
+//                Log.e("ConnectTag", "newUser geklappt")
+//            } catch (e: Exception) {
+//                Log.e("ConnectTag", "newUser ${e.message.toString()}")
+//            }
+//        }
+//    }
 
-    suspend fun newUser(user:User){
-        withContext(Dispatchers.IO) {
-            try {
-                db.userDao().insert(user)
-                Log.e("newUser", "geklappt")
-            } catch (e: Exception) {
-                Log.e("newUser", e.message.toString())
-            }
-        }
-    }
-
-    suspend fun createNewChatroom2(chatRoom: ChatRoom) {
-        withContext(Dispatchers.IO) {
-            try {
-                db.chatRoomDao().insert(chatRoom)
-                Log.e("newChatRoom", "geklappt")
-            } catch (e: Exception) {
-                Log.e("newChatRoom", e.message.toString())
-            }
-
-        }
-    }
+//    suspend fun createNewChatroom2(chatRoom: ChatRoom) {
+//        withContext(Dispatchers.IO) {
+//            try {
+//                db.chatRoomDao().insert(chatRoom)
+//                Log.e("ConnectTag", "createNewChatroom2 geklappt")
+//            } catch (e: Exception) {
+//                Log.e("ConnectTag", "createNewChatroom2 ${e.message.toString()}")
+//            }
+//
+//        }
+//    }
 
     suspend fun getChatRoom(chatRoomId:Long){
         withContext(Dispatchers.IO) {
             try {
                 _currentChatRoom.postValue(db.chatRoomDao().getChatRoomWithID(chatRoomId))
-                Log.e("ChatRoom", "Laden hat geklappt")
+                Log.e("ConnectTag", "getChatRoom Laden hat geklappt")
             }catch (e:Exception){
-                Log.e("ChatRoom", e.message.toString())
+                Log.e("ConnectTag", "getChatRoom ${e.message.toString()}")
             }
         }
     }
@@ -163,24 +189,24 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
         withContext(Dispatchers.IO) {
             try {
                 _currentChatParticipants.postValue(db.chatParticipantsDao().getChatParticipantsWithChatRoomId(chatParticipantsId))
-                Log.e("ChatParticipants", "Laden hat geklappt")
+                Log.e("ConnectTag", "getChatParticipants Laden hat geklappt")
             }catch (e:Exception){
-                Log.e("ChatParticipants", e.message.toString())
+                Log.e("ConnectTag", "getChatParticipants ${e.message.toString()}")
             }
         }
     }
 
-    suspend fun sendMessage(message: Message){
-        withContext(Dispatchers.IO) {
-            try {
-                db.messageDao().insert(message)
-                Log.e("sendMessage", "Nachricht verschickt")
-            }catch (e:Exception){
-                Log.e("sendMessage", e.message.toString())
-            }
-            updateChatRoomMessage(message)
-        }
-    }
+//    suspend fun sendMessage(message: Message){
+//        withContext(Dispatchers.IO) {
+//            try {
+//                db.messageDao().insert(message)
+//                Log.e("ConnectTag", "sendMessage Nachricht verschickt")
+//            }catch (e:Exception){
+//                Log.e("ConnectTag", "sendMessage ${e.message.toString()}")
+//            }
+//            updateChatRoomMessage(message)
+//        }
+//    }
 
     suspend fun updateChatRoomMessage(message: Message){
         withContext(Dispatchers.IO) {
@@ -188,24 +214,24 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
                 var updatedChatRoom: ChatRoom = _currentChatRoom.value!!
                 updatedChatRoom.lastMessage = message.messageText
                 db.chatRoomDao().update(updatedChatRoom)
-                Log.e("sendMessage", "Nachricht verschickt")
+                Log.e("ConnectTag", "updateChatRoomMessage Nachricht verschickt")
             }catch (e:Exception){
-                Log.e("sendMessage", e.message.toString())
+                Log.e("ConnectTag", "updateChatRoomMessage ${e.message.toString()}")
             }
         }
     }
 
-    suspend fun loadUsersChatParticipantsLists(){
-        withContext(Dispatchers.IO) {
-            try {
-                _usersChatRoomIdList.postValue(db.chatParticipantsDao().loadUsersChatLists(currentUserID))
-                Log.e("usersChatList", "wurde geladen")
-            }catch (e:Exception){
-                Log.e("usersChatList", e.message.toString())
-            }
-        }
-        loadChatRoomList()
-    }
+//    suspend fun loadUsersChatParticipantsLists(){
+//        withContext(Dispatchers.IO) {
+//            try {
+//                _usersChatRoomIdList.postValue(db.chatParticipantsDao().loadUsersChatLists(currentUserID))
+//                Log.e("ConnectTag", "loadUsersChatParticipantsLists wurde geladen")
+//            }catch (e:Exception){
+//                Log.e("ConnectTag", "loadUsersChatParticipantsLists ${e.message.toString()}")
+//            }
+//        }
+//        loadChatRoomList()
+//    }
 
     suspend fun loadChatRoomList(){
         var chatRoomList: MutableList<ChatRoom> = mutableListOf()
@@ -217,24 +243,24 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
                     }
                 }
                 _usersChatRoomList.postValue(chatRoomList)
-                Log.e("chatRoomList", "wurde geladen")
+                Log.e("ConnectTag", "loadChatRoomList wurde geladen")
             }catch (e:Exception){
-                Log.e("chatRoomList", e.message.toString())
+                Log.e("ConnectTag", "loadChatRoomList ${e.message.toString()}")
             }
         }
     }
 
-    suspend fun getOneUserById(userID: Long): LiveData<User>{
-        lateinit var user : LiveData<User>
-        withContext(Dispatchers.IO) {
-            try {
-                user = db.userDao().getOneUser(userID)
-                Log.e("chatPartner", "wurde geladen")
-            }catch (e:Exception){
-                Log.e("sendMessage", e.message.toString())
-            }
-        }
-        return user
-    }
+//    suspend fun getOneUserById(userID: Long): LiveData<User>{
+//        lateinit var user : LiveData<User>
+//        withContext(Dispatchers.IO) {
+//            try {
+//                user = db.userDao().getOneUser(userID)
+//                Log.e("ConnectTag", "getOneUserById wurde geladen")
+//            }catch (e:Exception){
+//                Log.e("ConnectTag", "getOneUserById ${e.message.toString()}")
+//            }
+//        }
+//        return user
+//    }
 
 }

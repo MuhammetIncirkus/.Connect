@@ -16,7 +16,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = getDataBase(application)
     val repository = Repository(database,this)
-    val currentUser = repository.currentUser
+
+    val currentUser: MutableLiveData<User?> = repository.currentUser
     val userList = repository.userList
     val currentChatRoom = repository.currentChatRoom
     val currentChatParticipants = repository.currentChatParticipants
@@ -27,69 +28,80 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun preloadItems(){
         viewModelScope.launch {
             repository.preload()
-            //repository.insertCurrentUser()
-        }
-    }
-    fun loadCurrentUser(){
-        viewModelScope.launch {
+            repository.loadCurrentUserFromUserList()
             repository.loadCurrentUser()
         }
     }
-    fun loadUserList(){
-        viewModelScope.launch {
-            repository.loadUserList()
-        }
-    }
 
-    fun createNewChatroom(currentUser: User, selectedUser: User){
-        viewModelScope.launch {
-            repository.createNewChatroom(currentUser,selectedUser)
-        }
-    }
+//    fun loadCurrentUser(): User{
+//        lateinit var user: User
+//        viewModelScope.launch {
+//            user = repository.loadCurrentUserFromUserlist()
+//        }
+//        return user
+//    }
 
-    fun createNewChatroom2(chatRoom: ChatRoom){
-        viewModelScope.launch {
-            repository.createNewChatroom2(chatRoom)
-        }
-    }
+//    fun loadCurrentUser2(){
+//        viewModelScope.launch {
+//            repository.loadCurrentUser()
+//        }
+//    }
 
-    fun newUser(user:User){
-        viewModelScope.launch {
-            repository.newUser(user)
-        }
-    }
+//    fun loadUserList(){
+//        viewModelScope.launch {
+//            repository.loadUserList()
+//        }
+//    }
 
-    fun getChatRoom(chatRoomId:Long){
-        viewModelScope.launch {
-            repository.getChatRoom(chatRoomId)
-        }
-    }
+//    fun createNewChatroom(currentUser: User, selectedUser: User){
+//        viewModelScope.launch {
+//            repository.createNewChatroom(currentUser,selectedUser)
+//        }
+//    }
 
-    fun getChatParticipants(chatParticipantsId:Long){
-        viewModelScope.launch {
-            repository.getChatParticipants(chatParticipantsId)
-        }
-    }
+//    fun createNewChatroom2(chatRoom: ChatRoom){
+//        viewModelScope.launch {
+//            repository.createNewChatroom2(chatRoom)
+//        }
+//    }
 
-    fun sendMessage(message: Message){
-        viewModelScope.launch {
-            repository.sendMessage(message)
-        }
-    }
+//    fun newUser(user:User){
+//        viewModelScope.launch {
+//            repository.newUser(user)
+//        }
+//    }
 
-    fun loadUsersChatLists(){
-        viewModelScope.launch {
-            repository.loadUsersChatParticipantsLists()
-        }
-    }
+//    fun getChatRoom(chatRoomId:Long){
+//        viewModelScope.launch {
+//            repository.getChatRoom(chatRoomId)
+//        }
+//    }
 
-    fun getOneUserById(userID: Long): LiveData<User>{
-        lateinit var user: LiveData<User>
-        viewModelScope.launch {
-            user = repository.getOneUserById(userID)
-        }
-        return user
-    }
+//    fun getChatParticipants(chatParticipantsId:Long){
+//        viewModelScope.launch {
+//            repository.getChatParticipants(chatParticipantsId)
+//        }
+//    }
+
+//    fun sendMessage(message: Message){
+//        viewModelScope.launch {
+//            repository.sendMessage(message)
+//        }
+//    }
+
+//    fun loadUsersChatLists(){
+//        viewModelScope.launch {
+//            repository.loadUsersChatParticipantsLists()
+//        }
+//    }
+
+//    fun getOneUserById(userID: Long): LiveData<User>{
+//        lateinit var user: LiveData<User>
+//        viewModelScope.launch {
+//            user = repository.getOneUserById(userID)
+//        }
+//        return user
+//    }
 
 
 }
