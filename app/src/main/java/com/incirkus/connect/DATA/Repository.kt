@@ -18,7 +18,7 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
     private val currentUserID: Long = 1
 
     private var _currentUser = MutableLiveData<User>()
-    val currentUser: MutableLiveData<User> = _currentUser
+    val currentUser: LiveData<User> = _currentUser
 
 
     private var _userList = MutableLiveData<List<User>>()
@@ -259,17 +259,17 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
         }
     }
 
-//    suspend fun getOneUserById(userID: Long): LiveData<User>{
-//        lateinit var user : LiveData<User>
-//        withContext(Dispatchers.IO) {
-//            try {
-//                user = db.userDao().getOneUser(userID)
-//                Log.e("ConnectTag", "getOneUserById wurde geladen")
-//            }catch (e:Exception){
-//                Log.e("ConnectTag", "getOneUserById ${e.message.toString()}")
-//            }
-//        }
-//        return user
-//    }
+    suspend fun getOneUserById(userID: Long): LiveData<User>{
+        lateinit var user : LiveData<User>
+        withContext(Dispatchers.IO) {
+            try {
+                user = db.userDao().getOneUser(userID)
+                Log.e("ConnectTag", "getOneUserById wurde geladen")
+            }catch (e:Exception){
+                Log.e("ConnectTag", "getOneUserById ${e.message.toString()}")
+            }
+        }
+        return user
+    }
 
 }

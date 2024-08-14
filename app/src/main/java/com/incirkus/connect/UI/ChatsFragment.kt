@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.incirkus.connect.ADAPTER.ChatAdapter
+import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentChatsBinding
@@ -31,11 +32,13 @@ class ChatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        viewModel.loadUsersChatLists()
-//        viewModel.usersChatRoomList.observe(viewLifecycleOwner){
-//            val adapter = ChatAdapter(it, viewModel)
-//            binding.rvChatsFragment.adapter = adapter
-//        }
+        viewModel.loadUsersChatLists()
+        viewModel.usersChatRoomList.observe(viewLifecycleOwner){
+            val adapter = ChatAdapter(it, viewModel)
+            binding.rvChatsFragment.adapter = adapter
+        }
     }
+
+
 
 }

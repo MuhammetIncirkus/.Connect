@@ -1,6 +1,7 @@
 package com.incirkus.connect
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +18,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDataBase(application)
     val repository = Repository(database,this)
 
-    val currentUser: MutableLiveData<User> = repository.currentUser
+    val currentUser = repository.currentUser
     val userList = repository.userList
     val currentChatRoom = repository.currentChatRoom
     val currentChatParticipants = repository.currentChatParticipants
@@ -86,23 +87,28 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     fun sendMessage(message: Message){
         viewModelScope.launch {
-            repository.sendMessage(message)
+            try {
+
+                repository.sendMessage(message)
+            }catch (e:Exception){
+                Log.e("ConnectTag", "ViewModel.sendMessage: Error sending message: ${e.message}")
+            }
         }
     }
 
-//    fun loadUsersChatLists(){
-//        viewModelScope.launch {
-//            repository.loadUsersChatParticipantsLists()
-//        }
-//    }
+    fun loadUsersChatLists(){
+        viewModelScope.launch {
+            repository.loadUsersChatParticipantsLists()
+        }
+    }
 
-//    fun getOneUserById(userID: Long): LiveData<User>{
-//        lateinit var user: LiveData<User>
-//        viewModelScope.launch {
-//            user = repository.getOneUserById(userID)
-//        }
-//        return user
-//    }
+    fun getOneUserById(userID: Long): LiveData<User>{
+        lateinit var user: LiveData<User>
+        viewModelScope.launch {
+            user = repository.getOneUserById(userID)
+        }
+        return user
+    }
 
 
 }

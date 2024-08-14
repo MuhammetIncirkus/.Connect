@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
 import com.incirkus.connect.ADAPTER.SearchAdapter
 import com.incirkus.connect.DATA.Model.ChatParticipants
 import com.incirkus.connect.DATA.Model.ChatRoom
@@ -27,7 +28,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
 
         binding = FragmentProfileBinding.inflate(layoutInflater)
@@ -40,12 +41,41 @@ class ProfileFragment : Fragment() {
         val currentUser = loadCurrentUser()
         loadUserList()
 
+
+
         binding.btnNewChatRoom.setOnClickListener {
             viewModel.userList.observe(viewLifecycleOwner){
-                viewModel.createNewChatroom(currentUser,it.first())
+                for (user in it){
+
+                    viewModel.createNewChatroom(currentUser,user)
+                }
             }
         }
 
+
+//        binding.btnSendNewMessage.setOnClickListener {
+//            Log.d("ConnectTag", "ProfilFragment: btnSendNewMessage clicked")
+//            checkData()
+//            val chatRoomId = 1L
+//            val currentChatRoom = getChatRoom(chatRoomId)
+//            val chatParticipants = getChatParticipants(viewModel.currentChatRoom.value!!)
+//            checkData()
+//            val message = Message(
+//                chatRoomId = chatParticipants!!.value!!.chatRoomId,
+//                senderId = chatParticipants.value!!.user1Id,
+//                messageText = "Hallo!",
+//                timestamp = System.currentTimeMillis(),
+//                messageStatus = "send"
+//            )
+//
+//
+//            if (message != null) {
+//                Log.d("ConnectTag", "ProfilFragment: Sending message: $message")
+//                viewModel.sendMessage(message)
+//            }else {
+//                Log.d("ConnectTag", "ProfilFragment: Message is null")
+//            }
+//        }
 
 
 
@@ -158,6 +188,30 @@ class ProfileFragment : Fragment() {
             Log.e("ConnectTag", "userList im viewModel ist NICHT Empty")
         }
     }
+
+//    fun getChatRoom(chatRoomId: Long):LiveData<ChatRoom>{
+//        viewModel.getChatRoom(chatRoomId)
+//        return viewModel.currentChatRoom
+//    }
+//
+//    fun getChatParticipants(chatRoom: ChatRoom):LiveData<ChatParticipants>{
+//        viewModel.getChatParticipants(chatRoom.chatParticipantsId)
+//        return viewModel.currentChatParticipants
+//    }
+//
+//    fun checkData(){
+//        if (viewModel.currentChatRoom.equals(null)){
+//            Log.e("ConnectTag", "currentChatRoom ist Null")
+//        }else{
+//            Log.e("ConnectTag", "currentChatRoom ist NICHT Null")
+//        }
+//
+//        if (viewModel.currentChatParticipants.equals(null)){
+//            Log.e("ConnectTag", "currentChatParticipants ist Null")
+//        }else{
+//            Log.e("ConnectTag", "currentChatParticipants ist NICHT Null")
+//        }
+//    }
 
 
 
