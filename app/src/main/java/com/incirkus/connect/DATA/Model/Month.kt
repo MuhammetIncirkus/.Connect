@@ -7,5 +7,5 @@ data class Month(
     val monthLength: Int,
     val firstDayOfMontAsWeekdayString: String,
     val firstDayOfMontAsWeekdayInt: Int,
-
+    val daylist: List<Day>
 )

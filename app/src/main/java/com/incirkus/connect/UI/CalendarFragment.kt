@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentCalendarBinding
@@ -37,11 +38,18 @@ class CalendarFragment : Fragment() {
 
         val currentDate = LocalDate.now()
         val actualMonth = viewModel.actualMonth
+        val startposition = viewModel.monthList.indexOf(actualMonth)
 
+        val viewPager : ViewPager2 = binding.vp2Calendar
         val calendarAdapter = CalendarAdapter(viewModel.monthList, viewModel)
-        binding.rvCalendar.adapter = calendarAdapter
-        //binding.rvCalendar.scrollToPosition(viewModel.monthList.size - 49)
-        binding.rvCalendar.scrollToPosition(viewModel.monthList.indexOf(viewModel.currentMonth.value))
+        viewPager.adapter = calendarAdapter
+        viewPager.setCurrentItem(startposition,false)
+
+
+//        val calendarAdapter = CalendarAdapter(viewModel.monthList, viewModel)
+//        binding.rvCalendar.adapter = calendarAdapter
+//        //binding.rvCalendar.scrollToPosition(viewModel.monthList.size - 49)
+//        binding.rvCalendar.scrollToPosition(viewModel.monthList.indexOf(viewModel.currentMonth.value))
 
         viewModel.currentMonth.observe(viewLifecycleOwner){
 

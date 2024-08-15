@@ -30,7 +30,7 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
         val month = monthList[position]
 
         binding.tvMonthAndYear.text = "${month.monthString} ${month.year}"
-        val daylist = viewModel.createDayList(month)
+
 
         val currentDate = LocalDate.now()
 
@@ -43,7 +43,7 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
         }
 
         binding.rvDays.setHasFixedSize(true)
-        val monthAdapter = MonthAdapter(daylist, viewModel)
+        val monthAdapter = MonthAdapter(month.daylist, viewModel)
         binding.rvDays.adapter = monthAdapter
 
 
