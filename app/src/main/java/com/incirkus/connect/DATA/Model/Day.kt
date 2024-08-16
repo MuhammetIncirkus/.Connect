@@ -5,5 +5,6 @@ data class Day(
     val month: Int,
     val year: Int,
     val weekdayAsString: String,
-    val weekdayAsInt: Int
-    )
+    val weekdayAsInt: Int,
+    val calendarweek: Int
+)

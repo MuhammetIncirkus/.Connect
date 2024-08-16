@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
+import java.time.temporal.IsoFields
 import java.util.Locale
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
@@ -159,7 +160,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 monthString = monthString,
                 monthLength = monthLength,
                 firstDayOfMontAsWeekdayString = firstDayOfMontAsWeekdayString,
-                firstDayOfMontAsWeekdayInt =firstDayOfMontAsWeekdayInt,
+                firstDayOfMontAsWeekdayInt = firstDayOfMontAsWeekdayInt,
                 daylist = daylist
             )
 
@@ -229,6 +230,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             val date = LocalDate.of(year, monthNumber, day)
             val weekdayAsString = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
             val weekdayAsInt = date.dayOfWeek.value
+            val calendarweek = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+
 
 
             val day2 = Day(
@@ -236,7 +239,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 month = monthNumber,
                 year = year,
                 weekdayAsString = weekdayAsString,
-                weekdayAsInt = weekdayAsInt
+                weekdayAsInt = weekdayAsInt,
+                calendarweek = calendarweek
             )
 
             dayList.add(day2)
@@ -251,7 +255,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             month = 0,
             year = 0,
             weekdayAsString = "Placeholder",
-            weekdayAsInt = 0
+            weekdayAsInt = 0,
+            calendarweek = 0
         )
 
         dayList.add(placeholderDay)
