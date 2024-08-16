@@ -6,8 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.incirkus.connect.DATA.Model.APIResponse
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.Day
+import com.incirkus.connect.DATA.Model.Holiday
 import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.Month
 import com.incirkus.connect.DATA.Model.User
@@ -377,5 +379,120 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _currentMonth.postValue(month)
     }
 
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------API----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    var holidayList: MutableList<Holiday> = mutableListOf()
+
+    fun getListForHolidays(){
+
+        viewModelScope.launch {
+            var responseList = repository.getHolidayList()
+            convertResponseToHolidayList(responseList)
+        }
+
+    }
+
+    fun convertResponseToHolidayList(responseList: APIResponse){
+
+
+
+        if (responseList != null){
+
+            for (holiday in responseList.feiertage){
+                val name: String = holiday.fname
+                val date: String = holiday.date
+
+                var year: Int = date.split("-")[0].toInt()
+                var month: Int = date.split("-")[1].toInt()
+                var day: Int = date.split("-")[2].toInt()
+
+
+                var region = ""
+                if (holiday.all_states == "1"){
+                    region = "DE"
+                }else{
+                    if (holiday.bw == "1"){
+                        region = region + "bw,"
+                    }
+                    if (holiday.by == "1"){
+                        region = region + "by,"
+                    }
+                    if (holiday.be == "1"){
+                        region = region + "be,"
+                    }
+                    if (holiday.bb == "1"){
+                        region = region + "bb,"
+                    }
+                    if (holiday.hb == "1"){
+                        region = region + "hb,"
+                    }
+                    if (holiday.hh == "1"){
+                        region = region + "hh,"
+                    }
+                    if (holiday.he == "1"){
+                        region = region + "he,"
+                    }
+                    if (holiday.mv == "1"){
+                        region = region + "mv,"
+                    }
+                    if (holiday.ni == "1"){
+                        region = region + "ni,"
+                    }
+                    if (holiday.nw == "1"){
+                        region = region + "nw,"
+                    }
+                    if (holiday.rp == "1"){
+                        region = region + "rp,"
+                    }
+                    if (holiday.sl == "1"){
+                        region = region + "sl,"
+                    }
+                    if (holiday.sn == "1"){
+                        region = region + "sn,"
+                    }
+                    if (holiday.st == "1"){
+                        region = region + "st,"
+                    }
+                    if (holiday.sh == "1"){
+                        region = region + "sh,"
+                    }
+                    if (holiday.th == "1"){
+                        region = region + "th,"
+                    }
+
+                }
+                val comment: String = holiday.comment
+                var augsburg: Boolean = false
+                var katholisch: Boolean = false
+
+                if (holiday.augsburg != null){
+                    augsburg = true
+                }
+
+                if (holiday.katholisch != null){
+                    katholisch = true
+                }
+
+                val holiday: Holiday = Holiday(
+
+                    holidayName = name,
+                    holidayRegion = region,
+                    holidayDay = day,
+                    holidayMonth = month,
+                    holidayYear = year,
+                    comment= comment,
+                    augsburg = augsburg,
+                    katholisch = katholisch
+                )
+
+                holidayList.add(holiday)
+            }
+
+        }
+
+    }
 
 }

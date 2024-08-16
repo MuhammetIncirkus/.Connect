@@ -47,6 +47,15 @@ class MonthAdapter (private var dayList: List<Day>, private val viewModel: ViewM
         }
 
 
+        val holidayList = viewModel.holidayList
+
+        for (holiday in holidayList){
+            if (day.year == holiday.holidayYear && day.month == holiday.holidayMonth && day.day == holiday.holidayDay){
+
+                binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.red))
+                binding.mcvDay.strokeWidth = 5
+            }
+        }
 
     }
 }

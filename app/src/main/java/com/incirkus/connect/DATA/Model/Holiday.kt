@@ -10,6 +10,10 @@ data class Holiday(
     val holidayId: Long = 0,
     val holidayName: String,
     val holidayRegion: String,
-    val holidayDate: Long
-
+    val holidayDay: Int,
+    val holidayMonth: Int,
+    val holidayYear: Int,
+    val comment: String,
+    val augsburg: Boolean,
+    val katholisch: Boolean,
     )

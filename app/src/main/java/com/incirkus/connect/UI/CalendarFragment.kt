@@ -36,6 +36,8 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        viewModel.getListForHolidays()
+
         val currentDate = LocalDate.now()
         val actualMonth = viewModel.actualMonth
         val startposition = viewModel.monthList.indexOf(actualMonth)

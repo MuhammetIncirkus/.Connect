@@ -3,10 +3,12 @@ package com.incirkus.connect.DATA
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.incirkus.connect.DATA.Model.APIResponse
 import com.incirkus.connect.DATA.Model.ChatParticipants
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.User
+import com.incirkus.connect.DATA.Remote.CalendarApi
 import com.incirkus.connect.DATA.local.ConnectDatabase
 import com.incirkus.connect.DATA.local.SampleData
 import com.incirkus.connect.ViewModel
@@ -49,17 +51,17 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
     }
 
     suspend fun loadCurrentUserFromUserList(){
-        lateinit var user: User
+
         withContext(Dispatchers.IO) {
             try {
-                user = db.userDao().getloggedInUser(currentUserID)
+                var user: User = db.userDao().getloggedInUser(currentUserID)
                 Log.e("ConnectTag", "loadCurrentUserFromUserList wurde geladen")
+                insertCurrentUser(user)
             }catch (e:Exception){
                 Log.e("ConnectTag", "loadCurrentUserFromUserList ${e.message.toString()}")
             }
         }
         //_currentUser.postValue(user)
-            insertCurrentUser(user)
 
     }
 
@@ -270,6 +272,24 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
             }
         }
         return user
+    }
+
+
+
+    //----------------------------------------------------------------------API
+
+
+    suspend fun getHolidayList(): APIResponse {
+        lateinit var holidayList: APIResponse
+        withContext(Dispatchers.IO) {
+            try {
+                holidayList = CalendarApi.retrofitService.getallHolidays()
+
+            } catch (e: Exception) {
+                Log.e("APICALL", e.message.toString())
+            }
+        }
+        return holidayList
     }
 
 }
