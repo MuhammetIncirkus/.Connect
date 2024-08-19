@@ -503,6 +503,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     //--------------------------------------------------------------------------FIREBASE-------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseStore = FirebaseStorage.getInstance()
 
