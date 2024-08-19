@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.incirkus.connect.DATA.Model.APIResponse
 import com.incirkus.connect.DATA.Model.Day
@@ -506,14 +508,18 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseStore = FirebaseStorage.getInstance()
+    private val firedatabase = Firebase.firestore
 
     private var _currentUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
     val currentUser: LiveData<FirebaseUser?> = _currentUser
+    private var _firebaseUserList = MutableLiveData<List<User>>()
+    val firebaseUserList : LiveData<List<User>> = _firebaseUserList
 
     fun login(email: String, password: String){
         firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
             if (it.isSuccessful){
                 _currentUser.value = it.result.user
+                getUserListWithOutCurrentUser(it.result.user)
             }else{
                 //TODO Pop-Up Message das Login fehlgeschlagen
             }
@@ -523,5 +529,26 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun logout(){
         firebaseAuth.signOut()
         _currentUser.value = null
+    }
+
+
+    fun getUserListWithOutCurrentUser(currentUser: FirebaseUser?){
+        val userList = mutableListOf<User>()
+        if (currentUser != null){
+            firedatabase.collection("User").whereNotEqualTo("id", currentUser.uid)
+                .get()
+                .addOnSuccessListener {
+                    Log.d("TAG", it.toString())
+                    for (user in it){
+                        val cloudUser = user.toObject(User::class.java)
+                        userList.add(cloudUser)
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("TAG", "Loading UserList failed")
+                }
+
+            _firebaseUserList.postValue(userList)
+        }
     }
 }

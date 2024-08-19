@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.incirkus.connect.ADAPTER.CalendarWeekAdapter
 import com.incirkus.connect.ADAPTER.SearchAdapter
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
@@ -24,12 +25,26 @@ class SearchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
+        viewModel.getUserListWithOutCurrentUser(viewModel.currentUser.value)
         binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val userList = viewModel.firebaseUserList
+
+
+        userList.observe(viewLifecycleOwner){
+
+            binding.rvSearchFragment.setHasFixedSize(true)
+            val searchAdapter = SearchAdapter(it, viewModel)
+            binding.rvSearchFragment.adapter = searchAdapter
+
+        }
+
+
 
 
     }

@@ -39,6 +39,10 @@ class ProfileFragment : Fragment() {
             viewModel.logout()
             findNavController().navigate(R.id.loginFragment)
         }
+
+
+
+
     }
 
 }
