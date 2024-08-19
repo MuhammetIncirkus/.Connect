@@ -31,22 +31,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadUserList()
 
-        viewModel.userList.observe(viewLifecycleOwner){
-
-            val adapter = SearchAdapter(it,viewModel)
-            binding.rvSearchFragment.adapter = adapter
-        }
     }
-
-    fun loadUserList(){
-        if (viewModel.userList.value?.isEmpty() == true){
-            Log.e("ConnectTag", "userList im viewModel ist Empty")
-        }else{
-            Log.e("ConnectTag", "userList im viewModel ist NICHT Empty")
-        }
-    }
-
 
 }

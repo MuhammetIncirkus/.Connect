@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/chatsFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/chatsFragment"
@@ -40,4 +40,9 @@
         android:name="com.incirkus.connect.UI.AttachmentFragment"
         android:label="fragment_attachment"
         tools:layout="@layout/fragment_attachment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.incirkus.connect.UI.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 </navigation>

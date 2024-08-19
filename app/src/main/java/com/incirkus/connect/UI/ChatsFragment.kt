@@ -23,8 +23,7 @@ class ChatsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        //viewModel.loadCurrentUser()
+
         binding = FragmentChatsBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -32,11 +31,7 @@ class ChatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadUsersChatLists()
-        viewModel.usersChatRoomList.observe(viewLifecycleOwner){
-            val adapter = ChatAdapter(it, viewModel)
-            binding.rvChatsFragment.adapter = adapter
-        }
+
     }
 
 
