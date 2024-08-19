@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.incirkus.connect.ADAPTER.CalendarWeekAdapter
+import com.incirkus.connect.ADAPTER.HolidayAdapter
+import com.incirkus.connect.DATA.Model.Holiday
 import com.incirkus.connect.DATA.Model.Month
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
@@ -58,6 +60,20 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
         binding.rvWeekDays.setHasFixedSize(true)
         val calendarWeekAdapter = CalendarWeekAdapter(weeklist2, viewModel)
         binding.rvWeekDays.adapter = calendarWeekAdapter
+
+        val holidayList = viewModel.holidayList
+
+        var newHolidayList: MutableList<Holiday> = mutableListOf()
+
+        for (holiday in holidayList){
+            if (month.year == holiday.holidayYear && month.monthNumber == holiday.holidayMonth){
+                newHolidayList.add(holiday)
+            }
+        }
+
+        binding.rvHolidaysInfo.setHasFixedSize(true)
+        val holidayAdapter = HolidayAdapter(newHolidayList)
+        binding.rvHolidaysInfo.adapter = holidayAdapter
 
     }
 }

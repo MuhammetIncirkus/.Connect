@@ -41,7 +41,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_days"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,6 +52,18 @@
             app:spanCount="7"
             tools:itemCount="42"
             tools:listitem="@layout/day_list_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_holidays_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_days"
+            tools:listitem="@layout/holiday_list_element" />
 
 
 
