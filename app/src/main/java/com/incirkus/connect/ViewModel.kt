@@ -6,8 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.FirebaseStorage
 import com.incirkus.connect.DATA.Model.APIResponse
-import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.Day
 import com.incirkus.connect.DATA.Model.Holiday
 import com.incirkus.connect.DATA.Model.Message
@@ -28,7 +30,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDataBase(application)
     val repository = Repository(database,this)
 
-    val currentUser = repository.currentUser
+    val currentUserOld = repository.currentUser
     val userList = repository.userList
     val currentChatRoom = repository.currentChatRoom
     val currentChatParticipants = repository.currentChatParticipants
@@ -495,4 +497,30 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
+
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------FIREBASE-------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseStore = FirebaseStorage.getInstance()
+
+    private var _currentUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
+    val currentUser: LiveData<FirebaseUser?> = _currentUser
+
+    fun login(email: String, password: String){
+        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
+            if (it.isSuccessful){
+                _currentUser.value = it.result.user
+            }else{
+                //TODO Pop-Up Message das Login fehlgeschlagen
+            }
+        }
+    }
+
+    fun logout(){
+        firebaseAuth.signOut()
+        _currentUser.value = null
+    }
 }

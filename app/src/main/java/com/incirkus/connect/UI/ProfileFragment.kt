@@ -7,17 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
-import com.incirkus.connect.ADAPTER.SearchAdapter
-import com.incirkus.connect.DATA.Model.ChatParticipants
-import com.incirkus.connect.DATA.Model.ChatRoom
-import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.User
-import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentProfileBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class ProfileFragment : Fragment() {
@@ -177,7 +169,7 @@ class ProfileFragment : Fragment() {
 
     fun loadCurrentUser(): User {
         lateinit var user: User
-        user = viewModel.currentUser.value!!
+        user = viewModel.currentUserOld.value!!
         return user
     }
 

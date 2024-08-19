@@ -1468,7 +1468,7 @@ object SampleData {
             image = R.drawable.emma,
             email = "bob@example.com",
             phoneNumber = "0987654321",
-            password = "password456",
+            password = "password123",
             departmentId = "IT02"
         ),
         User(
@@ -1479,7 +1479,7 @@ object SampleData {
             image = R.drawable.jennifer,
             email = "carol@example.com",
             phoneNumber = "1122334455",
-            password = "password789",
+            password = "password123",
             departmentId = "MK03"
         ),
         User(
@@ -1490,7 +1490,7 @@ object SampleData {
             image = R.drawable.johnny,
             email = "david@example.com",
             phoneNumber = "2233445566",
-            password = "password012",
+            password = "password123",
             departmentId = "SA04"
         ),
         User(
@@ -1501,7 +1501,7 @@ object SampleData {
             image = R.drawable.keanu,
             email = "eve@example.com",
             phoneNumber = "3344556677",
-            password = "password345",
+            password = "password123",
             departmentId = "HR05"
         ),
         User(
@@ -1512,7 +1512,7 @@ object SampleData {
             image = R.drawable.leo,
             email = "frank@example.com",
             phoneNumber = "4455667788",
-            password = "password678",
+            password = "password123",
             departmentId = "IT06"
         ),
         User(
@@ -1523,7 +1523,7 @@ object SampleData {
             image = R.drawable.margot,
             email = "grace@example.com",
             phoneNumber = "5566778899",
-            password = "password901",
+            password = "password123",
             departmentId = "MK07"
         ),
         User(
@@ -1534,7 +1534,7 @@ object SampleData {
             image = R.drawable.reese,
             email = "hank@example.com",
             phoneNumber = "6677889900",
-            password = "password234",
+            password = "password123",
             departmentId = "SA08"
         ),
         User(
@@ -1545,7 +1545,7 @@ object SampleData {
             image = R.drawable.sandra,
             email = "ivy@example.com",
             phoneNumber = "7788990011",
-            password = "password567",
+            password = "password123",
             departmentId = "HR09"
         ),
         User(
@@ -1556,7 +1556,7 @@ object SampleData {
             image = R.drawable.scarlett,
             email = "jack@example.com",
             phoneNumber = "8899001122",
-            password = "password890",
+            password = "password123",
             departmentId = "IT10"
         ),
         User(
@@ -1567,7 +1567,7 @@ object SampleData {
             image = R.drawable.tom,
             email = "karen@example.com",
             phoneNumber = "9900112233",
-            password = "password1234",
+            password = "password123",
             departmentId = "MK11"
         ),
         User(
@@ -1578,7 +1578,7 @@ object SampleData {
             image = R.drawable.will,
             email = "leo@example.com",
             phoneNumber = "0011223344",
-            password = "password5678",
+            password = "password123",
             departmentId = "SA12"
         )
     )
