@@ -71,6 +71,8 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
             }
         }
 
+        newHolidayList = newHolidayList.distinct().toMutableList()
+
         binding.rvHolidaysInfo.setHasFixedSize(true)
         val holidayAdapter = HolidayAdapter(newHolidayList)
         binding.rvHolidaysInfo.adapter = holidayAdapter
