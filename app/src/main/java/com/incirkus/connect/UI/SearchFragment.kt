@@ -25,7 +25,7 @@ class SearchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        viewModel.getUserListWithOutCurrentUser(viewModel.currentUser.value)
+        //viewModel.getUserListWithOutCurrentUser(viewModel.currentUser.value)
         binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -33,10 +33,12 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getUserListFromFirebase()
+
         val userList = viewModel.firebaseUserList
 
 
-        userList.observe(viewLifecycleOwner){
+        viewModel.firebaseUserList.observe(viewLifecycleOwner){
 
             binding.rvSearchFragment.setHasFixedSize(true)
             val searchAdapter = SearchAdapter(it, viewModel)

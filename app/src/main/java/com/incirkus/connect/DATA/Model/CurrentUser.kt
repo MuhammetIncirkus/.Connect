@@ -7,16 +7,15 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "current_user")
 data class CurrentUserDatatype(
-    @PrimaryKey(autoGenerate = true)
-    val userId: Long = 0,
-    val firstName: String,
-    var lastName: String,
-    val fullName: String,
-    var image: Int,
-    var email: String,
-    var phoneNumber: String,
-    var password: String,
-    var departmentId: String,
+    @PrimaryKey
+    val userId: String,
+    val firstName: String?,
+    var lastName: String?,
+    val fullName: String?,
+    var image: String?,
+    var email: String?,
+    var phoneNumber: String?,
+    var department: String?,
 ) {
     // Funktion zur Konvertierung von User zu CurrentUser
     companion object {
@@ -29,8 +28,7 @@ data class CurrentUserDatatype(
                 image = user.image,
                 email = user.email,
                 phoneNumber = user.phoneNumber,
-                password = user.password,
-                departmentId = user.departmentId
+                department = user.department
             )
         }
     }
@@ -45,8 +43,7 @@ data class CurrentUserDatatype(
             image = this.image,
             email = this.email,
             phoneNumber = this.phoneNumber,
-            password = this.password,
-            departmentId = this.departmentId
+            department = this.department
         )
     }
 }

@@ -19,8 +19,10 @@ import com.incirkus.connect.DATA.Model.Month
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Repository
 import com.incirkus.connect.DATA.local.getDataBase
+import androidx.lifecycle.ViewModel
 
 import kotlinx.coroutines.launch
+
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -40,14 +42,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val usersChatRoomList = repository.usersChatRoomList
 
 
-    fun preloadItems(){
-        viewModelScope.launch {
-            repository.preload()
-            repository.loadCurrentUserFromUserList()
-            repository.loadCurrentUser()
-            //repository.loadUserList()
-        }
-    }
+//    fun preloadItems(){
+//        viewModelScope.launch {
+//            repository.preload()
+//            repository.loadCurrentUserFromUserList()
+//            repository.loadCurrentUser()
+//            //repository.loadUserList()
+//        }
+//    }
 
 //    fun loadCurrentUser(): User{
 //        lateinit var user: User
@@ -69,11 +71,11 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 //        }
 //    }
 
-    fun createNewChatroom(currentUser: User, selectedUser: User){
-        viewModelScope.launch {
-            repository.createNewChatroom(currentUser,selectedUser)
-        }
-    }
+//    fun createNewChatroom(currentUser: User, selectedUser: User){
+//        viewModelScope.launch {
+//            repository.createNewChatroom(currentUser,selectedUser)
+//        }
+//    }
 
 //    fun createNewChatroom2(chatRoom: ChatRoom){
 //        viewModelScope.launch {
@@ -87,42 +89,42 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 //        }
 //    }
 
-    fun getChatRoom(chatRoomId:Long){
-        viewModelScope.launch {
-            repository.getChatRoom(chatRoomId)
-        }
-    }
+//    fun getChatRoom(chatRoomId:Long){
+//        viewModelScope.launch {
+//            repository.getChatRoom(chatRoomId)
+//        }
+//    }
+//
+//    fun getChatParticipants(chatParticipantsId:Long){
+//        viewModelScope.launch {
+//            repository.getChatParticipants(chatParticipantsId)
+//        }
+//    }
+//
+//    fun sendMessage(message: Message){
+//        viewModelScope.launch {
+//            try {
+//
+//                repository.sendMessage(message)
+//            }catch (e:Exception){
+//                Log.e("ConnectTag", "ViewModel.sendMessage: Error sending message: ${e.message}")
+//            }
+//        }
+//    }
 
-    fun getChatParticipants(chatParticipantsId:Long){
-        viewModelScope.launch {
-            repository.getChatParticipants(chatParticipantsId)
-        }
-    }
-
-    fun sendMessage(message: Message){
-        viewModelScope.launch {
-            try {
-
-                repository.sendMessage(message)
-            }catch (e:Exception){
-                Log.e("ConnectTag", "ViewModel.sendMessage: Error sending message: ${e.message}")
-            }
-        }
-    }
-
-    fun loadUsersChatLists(){
-        viewModelScope.launch {
-            repository.loadUsersChatParticipantsLists()
-        }
-    }
-
-    fun getOneUserById(userID: Long): LiveData<User>{
-        lateinit var user: LiveData<User>
-        viewModelScope.launch {
-            user = repository.getOneUserById(userID)
-        }
-        return user
-    }
+//    fun loadUsersChatLists(){
+//        viewModelScope.launch {
+//            repository.loadUsersChatParticipantsLists()
+//        }
+//    }
+//
+//    fun getOneUserById(userID: Long): LiveData<User>{
+//        lateinit var user: LiveData<User>
+//        viewModelScope.launch {
+//            user = repository.getOneUserById(userID)
+//        }
+//        return user
+//    }
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------------------------
@@ -506,6 +508,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
+
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseStore = FirebaseStorage.getInstance()
     private val firedatabase = Firebase.firestore
@@ -551,4 +555,21 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             _firebaseUserList.postValue(userList)
         }
     }
+
+
+    fun getUserListFromFirebase(){
+        viewModelScope.launch {
+
+            try {
+                val userList = repository.getFirebaseDataUser()
+                _firebaseUserList.postValue(userList) // Post the value to ensure it's set on the main thread
+            } catch (e: Exception) {
+                _firebaseUserList.postValue(emptyList()) // Leere Liste setzen, falls ein Fehler auftritt
+            }
+        //_firebaseUserList.postValue(repository.getFirebaseDataUser())
+
+        }
+    }
+
+
 }
