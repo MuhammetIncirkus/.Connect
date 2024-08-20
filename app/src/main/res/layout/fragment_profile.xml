@@ -8,11 +8,11 @@
     tools:context=".UI.ProfileFragment" >
 
     <Button
-        android:id="@+id/btn_newChatRoom"
+        android:id="@+id/btn_uploadImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Create New ChatRoom with first Contact"
+        android:text="Upload Profile Picture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
         android:text="Insert, New user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_newChatRoom" />
+        app:layout_constraintTop_toBottomOf="@id/btn_uploadImage" />
 
     <Button
         android:id="@+id/btn_newChatRoom2"

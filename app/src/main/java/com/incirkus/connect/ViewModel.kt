@@ -1,6 +1,7 @@
 package com.incirkus.connect
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -20,14 +21,17 @@ import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Repository
 import com.incirkus.connect.DATA.local.getDataBase
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 
 import kotlinx.coroutines.launch
+import java.io.File
 
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.time.temporal.IsoFields
 import java.util.Locale
+import java.util.UUID
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
 

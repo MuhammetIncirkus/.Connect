@@ -1,11 +1,14 @@
 package com.incirkus.connect.UI
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.incirkus.connect.DATA.Model.User
@@ -18,6 +21,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: ViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +43,7 @@ class ProfileFragment : Fragment() {
             viewModel.logout()
             findNavController().navigate(R.id.loginFragment)
         }
+
 
 
 
