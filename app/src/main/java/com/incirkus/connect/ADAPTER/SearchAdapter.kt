@@ -2,13 +2,16 @@ package com.incirkus.connect.ADAPTER
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Model.Message
+import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.ChatListElementBinding
 import kotlinx.coroutines.launch
@@ -31,7 +34,9 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
 
         //viewModel.filterMessageList(contact.id)
 
-        //binding.ivProfilePicture.setImageResource(contact.image)
+        binding.ivProfilePicture.load(contact.image){
+            placeholder(R.drawable.ic_launcher_foreground)
+        }
         binding.tvContactName.text = contact.fullName
         binding.tvContactLastMessage.text = ""
         binding.tvContactLastMessageDate.text = ""

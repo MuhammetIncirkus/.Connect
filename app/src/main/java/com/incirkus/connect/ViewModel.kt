@@ -21,7 +21,10 @@ import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Repository
 import com.incirkus.connect.DATA.local.getDataBase
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 import kotlinx.coroutines.launch
 import java.io.File
@@ -37,6 +40,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = getDataBase(application)
     val repository = Repository(database,this)
+
+/*
 
     val currentUserOld = repository.currentUser
     val userList = repository.userList
@@ -128,7 +133,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 //            user = repository.getOneUserById(userID)
 //        }
 //        return user
-//    }
+//    }*/
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------------------------
@@ -515,8 +520,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firebaseStore = FirebaseStorage.getInstance()
-    private val firedatabase = Firebase.firestore
+    private val firebaseStorage = FirebaseStorage.getInstance()
+    private val firedatabase = FirebaseFirestore.getInstance()
+    //private val firedatabase = Firebase.firestore
 
     private var _currentUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
     val currentUser: LiveData<FirebaseUser?> = _currentUser
@@ -573,6 +579,66 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         //_firebaseUserList.postValue(repository.getFirebaseDataUser())
 
         }
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------FIREBASE-STORAGE---------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    val storage: FirebaseStorage = Firebase.storage
+
+    // Create a storage reference from our app
+    var storageRef = storage.reference
+
+    val fileName : String = currentUser.value?.uid + "_profilePicture.jpg"
+    var imagesRef: StorageReference? = storageRef.child("profilePictures/$fileName")
+        var spaceRef = storageRef.child(fileName)
+
+//    fun uploadImage(){
+//        // Create a reference to 'images/mountains.jpg'
+//
+//    var file = Uri.fromFile(File("path/to/images/rivers.jpg"))
+//    val riversRef = storageRef.child("images/${file.lastPathSegment}")
+//    var uploadTask = riversRef.putFile(file)
+//
+//        uploadTask.addOnFailureListener {
+//            // Handle unsuccessful uploads
+//        }.addOnSuccessListener { taskSnapshot ->
+//            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+//            // ...
+//        }
+//
+//
+//    }
+
+    fun uploadImage(uri: Uri){
+        val imageRef = firebaseStorage.reference.child("images/${currentUser.value?.uid}/test")
+        val uploadTask = imageRef.putFile(uri)
+
+        uploadTask.addOnCompleteListener{
+            imageRef.downloadUrl.addOnCompleteListener {
+                if(it.isSuccessful){
+                    setImage(it.result)
+                }
+            }
+        }
+    }
+
+    lateinit var profileRef: DocumentReference
+
+    init {
+        if(firebaseAuth.currentUser != null){
+            setUpUserEnv()
+        }
+    }
+
+    private fun setUpUserEnv(){
+        _currentUser.value = firebaseAuth.currentUser
+        profileRef = firedatabase.collection("User").document(firebaseAuth.currentUser?.uid!!)
+    }
+
+    private fun setImage(uri: Uri){
+        profileRef.update("image",uri.toString())
     }
 
 

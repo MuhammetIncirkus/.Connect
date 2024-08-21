@@ -22,6 +22,12 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: ViewModel by activityViewModels()
 
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()){
+        if(it != null){
+            viewModel.uploadImage(it)
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +48,10 @@ class ProfileFragment : Fragment() {
 
             viewModel.logout()
             findNavController().navigate(R.id.loginFragment)
+        }
+
+        binding.btnUploadImage.setOnClickListener {
+            getContent.launch("image/*")
         }
 
 

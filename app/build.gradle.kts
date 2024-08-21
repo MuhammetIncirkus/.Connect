@@ -46,6 +46,7 @@ dependencies {
 
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.appcheck.playintegrity)
     val retrofitVersion = "2.9.0"
     val roomVersion = "2.6.0"
 
@@ -83,7 +84,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
-    implementation ("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
     //Livedata
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
