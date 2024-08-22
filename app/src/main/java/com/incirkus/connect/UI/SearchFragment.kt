@@ -22,21 +22,13 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-
-        //viewModel.getUserListWithOutCurrentUser(viewModel.currentUser.value)
+    ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.getUserListFromFirebase()
-
-        val userList = viewModel.firebaseUserList
-
 
         viewModel.firebaseUserList.observe(viewLifecycleOwner){
 
@@ -46,9 +38,9 @@ class SearchFragment : Fragment() {
 
         }
 
-
-
-
     }
+
+
+
 
 }

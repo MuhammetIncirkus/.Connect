@@ -11,6 +11,7 @@ import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentLoginBinding
 import com.incirkus.connect.databinding.FragmentMessagesBinding
+import java.util.UUID
 
 
 class MessagesFragment : Fragment() {
@@ -31,7 +32,29 @@ class MessagesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.currentUser
+        viewModel.currentChatRoom
+        viewModel.currentChatPartner
 
+
+
+//        viewModel.messageList.observe(viewLifecycleOwner){
+//            Log.d("MessageList", it.toString())
+//            val adapter = ChatDetailAdapter(it)
+//            binding.rvMessages.adapter = adapter
+//            binding.rvMessages.scrollToPosition(viewModel.messageList.value!!.lastIndex)
+//        }
+
+
+        binding.root.setOnClickListener {
+
+            val messageId = UUID.randomUUID().toString()
+            val chatRoomId = viewModel.currentChatRoom.value?.chatRoomId
+            val senderId = viewModel.currentUser.value?.userId
+            val messageText: String = ""
+            val timestamp: Long = System.currentTimeMillis()
+            var messageStatus: String? = "send"
+        }
 
     }
 

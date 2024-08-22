@@ -19,12 +19,13 @@ import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.Month
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Repository
-import com.incirkus.connect.DATA.local.getDataBase
+//import com.incirkus.connect.DATA.local.getDataBase
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.incirkus.connect.DATA.Model.ChatRoom
 
 import kotlinx.coroutines.launch
 import java.io.File
@@ -38,8 +39,9 @@ import java.util.UUID
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val database = getDataBase(application)
-    val repository = Repository(database,this)
+    //private val database = getDataBase(application)
+    val repository = Repository()
+    //val repository = Repository(database,this)
 
 /*
 
@@ -516,70 +518,114 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     //--------------------------------------------------------------------------FIREBASE-------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseStorage = FirebaseStorage.getInstance()
     private val firedatabase = FirebaseFirestore.getInstance()
-    //private val firedatabase = Firebase.firestore
 
-    private var _currentUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
-    val currentUser: LiveData<FirebaseUser?> = _currentUser
-    private var _firebaseUserList = MutableLiveData<List<User>>()
-    val firebaseUserList : LiveData<List<User>> = _firebaseUserList
-
-    fun login(email: String, password: String){
-        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
-            if (it.isSuccessful){
-                _currentUser.value = it.result.user
-                getUserListWithOutCurrentUser(it.result.user)
-            }else{
-                //TODO Pop-Up Message das Login fehlgeschlagen
-            }
-        }
-    }
-
-    fun logout(){
-        firebaseAuth.signOut()
-        _currentUser.value = null
-    }
+    val firebaseUserList: LiveData<List<User>> = repository.firebaseUserList
+    val currentFirebaseUser: LiveData<FirebaseUser?> = repository.currentFirebaseUser
+    val currentUser = repository.currentUser
+    val firebaseChatRoomList = repository.firebaseChatRoomList
+    val currentChatRoom = repository.currentChatRoom
+    var currentChatPartner = User()
 
 
-    fun getUserListWithOutCurrentUser(currentUser: FirebaseUser?){
-        val userList = mutableListOf<User>()
-        if (currentUser != null){
-            firedatabase.collection("User").whereNotEqualTo("id", currentUser.uid)
-                .get()
-                .addOnSuccessListener {
-                    Log.d("TAG", it.toString())
-                    for (user in it){
-                        val cloudUser = user.toObject(User::class.java)
-                        userList.add(cloudUser)
-                    }
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Loading UserList failed")
-                }
+//    private val firebaseAuth = FirebaseAuth.getInstance()
+//    private val firebaseStorage = FirebaseStorage.getInstance()
+//    private val firedatabase = FirebaseFirestore.getInstance()
+//
+//
+//    private var _currentUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
+//    val currentUser: LiveData<FirebaseUser?> = _currentUser
+////    private var _loggedInUser = MutableLiveData<User?>()
+////    val loggedInUser: LiveData<User?> = _loggedInUser
+//
+//    lateinit var loggedInUser: MutableLiveData<User?>
+//    private var _firebaseUserList = MutableLiveData<List<User>>()
+//    val firebaseUserList : LiveData<List<User>> = _firebaseUserList
+//
+//    fun login(email: String, password: String){
+//        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
+//            if (it.isSuccessful){
+//                _currentUser.value = it.result.user
+//                getUserListWithOutCurrentUser(it.result.user)
+//            }else{
+//                //TODO Pop-Up Message das Login fehlgeschlagen
+//            }
+//        }
+//    }
+//
+//    fun logout(){
+//        firebaseAuth.signOut()
+//        _currentUser.value = null
+//    }
+//
+//
+//    fun getUserListWithOutCurrentUser(currentUser: FirebaseUser?){
+//        val userList = mutableListOf<User>()
+//        if (currentUser != null){
+//            firedatabase.collection("User").whereNotEqualTo("id", currentUser.uid)
+//                .get()
+//                .addOnSuccessListener {
+//                    Log.d("TAG", it.toString())
+//                    for (user in it){
+//                        val cloudUser = user.toObject(User::class.java)
+//                        userList.add(cloudUser)
+//                    }
+//                }
+//                .addOnFailureListener {
+//                    Log.d("TAG", "Loading UserList failed")
+//                }
+//
+//            _firebaseUserList.postValue(userList)
+//        }
+//    }
+//
+//
+//    fun getUserListFromFirebase(){
+//        viewModelScope.launch {
+//
+//            try {
+//                val userList = repository.getFirebaseDataUser()
+//                _firebaseUserList.postValue(userList) // Post the value to ensure it's set on the main thread
+//            } catch (e: Exception) {
+//                _firebaseUserList.postValue(emptyList()) // Leere Liste setzen, falls ein Fehler auftritt
+//            }
+//        //_firebaseUserList.postValue(repository.getFirebaseDataUser())
+//
+//        }
+//    }
+//
+//
+//    fun createChatroom(user:User){
+//
+//        //TODO: Abfrage ob dieser Chatroom bereits existiert
+//
+//        val chatRoomId = UUID.randomUUID().toString()
+//        val chatRoomName :String = loggedInUser.value?.firstName!! + user.firstName
+//        val lastMessage: String = ""
+//        var lastActivityTimestamp: Long = 0L
+//        var chatParticipants: MutableList<String> = mutableListOf(loggedInUser.value?.userId!!, user.userId)
+//
+//        val chatroom: ChatRoom = ChatRoom(
+//            chatRoomId = chatRoomId,
+//            chatRoomName = chatRoomName,
+//            lastMessage = lastMessage,
+//            lastActivityTimestamp = lastActivityTimestamp,
+//            chatParticipants = chatParticipants
+//        )
+//
+//        firedatabase.collection("ChatRooms").document(chatRoomId).set(chatroom)
+//    }
 
-            _firebaseUserList.postValue(userList)
-        }
-    }
 
 
-    fun getUserListFromFirebase(){
-        viewModelScope.launch {
 
-            try {
-                val userList = repository.getFirebaseDataUser()
-                _firebaseUserList.postValue(userList) // Post the value to ensure it's set on the main thread
-            } catch (e: Exception) {
-                _firebaseUserList.postValue(emptyList()) // Leere Liste setzen, falls ein Fehler auftritt
-            }
-        //_firebaseUserList.postValue(repository.getFirebaseDataUser())
 
-        }
-    }
+
+
+
+
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------FIREBASE-STORAGE---------------------------------------------------------------------
@@ -590,29 +636,15 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     // Create a storage reference from our app
     var storageRef = storage.reference
 
-    val fileName : String = currentUser.value?.uid + "_profilePicture.jpg"
+    val fileName : String = currentUser.value?.userId + "_profilePicture.jpg"
     var imagesRef: StorageReference? = storageRef.child("profilePictures/$fileName")
-        var spaceRef = storageRef.child(fileName)
+    var spaceRef = storageRef.child(fileName)
 
-//    fun uploadImage(){
-//        // Create a reference to 'images/mountains.jpg'
-//
-//    var file = Uri.fromFile(File("path/to/images/rivers.jpg"))
-//    val riversRef = storageRef.child("images/${file.lastPathSegment}")
-//    var uploadTask = riversRef.putFile(file)
-//
-//        uploadTask.addOnFailureListener {
-//            // Handle unsuccessful uploads
-//        }.addOnSuccessListener { taskSnapshot ->
-//            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-//            // ...
-//        }
-//
-//
-//    }
+
 
     fun uploadImage(uri: Uri){
-        val imageRef = firebaseStorage.reference.child("images/${currentUser.value?.uid}/test")
+        val fileName : String = profileRef.id + "_profilePicture.jpg"
+        val imageRef = firebaseStorage.reference.child("images/${currentUser.value?.userId}/$fileName")
         val uploadTask = imageRef.putFile(uri)
 
         uploadTask.addOnCompleteListener{
@@ -626,20 +658,182 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     lateinit var profileRef: DocumentReference
 
-    init {
-        if(firebaseAuth.currentUser != null){
-            setUpUserEnv()
-        }
-    }
+//    init {
+//        if(firebaseAuth.currentUser != null){
+//            setUpUserEnv()
+//        }
+//    }
 
-    private fun setUpUserEnv(){
-        _currentUser.value = firebaseAuth.currentUser
-        profileRef = firedatabase.collection("User").document(firebaseAuth.currentUser?.uid!!)
-    }
+//    private fun setUpUserEnv(){
+//        _currentUser.value = firebaseAuth.currentUser
+//        profileRef = firedatabase.collection("User").document(firebaseAuth.currentUser?.uid!!)
+//        profileRef.addSnapshotListener { snapShot, error ->
+//            if(error == null && snapShot != null){
+//                loggedInUser.value = snapShot.toObject(User::class.java)
+//            }
+//        }
+//    }
 
     private fun setImage(uri: Uri){
         profileRef.update("image",uri.toString())
     }
 
+
+
+
+
+
+
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------NEW APP--------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    private val firebaseAuth = FirebaseAuth.getInstance()
+//    private val firebaseStorage = FirebaseStorage.getInstance()
+//    private val firedatabase = FirebaseFirestore.getInstance()
+//
+//    val firebaseUserList: LiveData<List<User>> = repository.firebaseUserList
+//    val currentFirebaseUser: LiveData<FirebaseUser?> = repository.currentFirebaseUser
+//    val currentUser = repository.currentUser
+//    val firebaseChatRoomList = repository.firebaseChatRoomList
+//    val currentChatRoom = repository.currentChatRoom
+//    var currentChatPartner = User()
+
+
+    fun login(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+            if (it.isSuccessful) {
+                viewModelScope.launch {
+                    repository.setCurrentFirebaseUser(it.result.user)
+                    repository.getFirebaseDataUser()
+                    repository.getFirebaseDataChatRooms()
+                }
+            } else {
+                //TODO Pop-Up Message das Login fehlgeschlagen
+            }
+        }
+    }
+
+    fun logout() {
+        firebaseAuth.signOut()
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+
+    fun getFirebaseDataUser() {
+        if (currentFirebaseUser != null) {
+            viewModelScope.launch {
+                repository.getFirebaseDataUser()
+            }
+        }
+    }
+
+    fun setCurrentUser() {
+        if (currentFirebaseUser != null) {
+            viewModelScope.launch {
+                repository.setCurrentUser()
+            }
+        }
+    }
+
+    fun getFirebaseDataChatRooms() {
+        if (currentFirebaseUser != null) {
+            viewModelScope.launch {
+                repository.getFirebaseDataChatRooms()
+            }
+        }
+    }
+
+    fun createChatroom(user:User){
+
+        //TODO: Abfrage ob dieser Chatroom bereits existiert
+
+        val chatRoomId = UUID.randomUUID().toString()
+        val chatRoomName :String = currentUser.value?.firstName!! + user.firstName
+        val lastMessage: String = ""
+        var lastActivityTimestamp: Long = 0L
+        var chatParticipants: MutableList<String?> = mutableListOf(currentUser.value?.userId!!, user.userId)
+
+        val chatroom: ChatRoom = ChatRoom(
+            chatRoomId = chatRoomId,
+            chatRoomName = chatRoomName,
+            lastMessage = lastMessage,
+            lastActivityTimestamp = lastActivityTimestamp,
+            chatParticipants = chatParticipants
+        )
+
+        firedatabase.collection("ChatRooms").document(chatRoomId).set(chatroom)
+
+        viewModelScope.launch {
+            repository.getFirebaseDataChatRooms()
+        }
+
+        getCurrentChatRoom(chatRoomId)
+    }
+
+    fun getCurrentChatRoom(chatRoomId: String) {
+        if (currentFirebaseUser != null) {
+            viewModelScope.launch {
+                repository.getCurrentChatRoom(chatRoomId)
+            }
+        }
+    }
+
+    fun setCurrentChatroom(chatRoom: ChatRoom){
+        repository.setCurrentChatroom(chatRoom)
+    }
+
+
+    fun sendMessage(message: Message){
+
+        firedatabase.collection("Messages").document(message.messageId).set(message)
+
+        viewModelScope.launch {
+            //TODO MessageList aktualisieren
+            repository.getFirebaseDataChatRooms()
+        }
+    }
+
+    fun getChatPartnerID(chatRoom: ChatRoom): String?{
+        var chatPartnerID: String? = ""
+
+        for (id in chatRoom.chatParticipants){
+            if (id != currentUser.value?.userId){
+                chatPartnerID = id
+            }
+        }
+        return chatPartnerID
+    }
+
+    fun getChatPartner(id: String): User{
+
+        var chatPartner: User = User()
+
+        for (oneUser in firebaseUserList.value!!){
+            if (oneUser.userId == id)
+                chatPartner = oneUser
+        }
+        currentChatPartner = chatPartner
+        return chatPartner
+    }
 
 }

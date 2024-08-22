@@ -4,16 +4,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import com.incirkus.connect.DATA.Model.APIResponse
 import com.incirkus.connect.DATA.Model.ChatParticipants
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Remote.CalendarApi
-import com.incirkus.connect.DATA.local.ConnectDatabase
+//import com.incirkus.connect.DATA.local.ConnectDatabase
 import com.incirkus.connect.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -22,29 +25,29 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class Repository(private val db: ConnectDatabase, private val viewModel: ViewModel) {
+class Repository() {
 
-    private val currentUserID: Long = 1
-
-    private var _currentUser = MutableLiveData<User>()
-    val currentUser: LiveData<User> = _currentUser
-
-
-    private var _userList = MutableLiveData<List<User>>()
-    //var userList:LiveData<List<User>> = _userList
-    val userList = db.userDao().getAllContacts(currentUserID)
-
-    private var _currentChatRoom = MutableLiveData<ChatRoom>()
-    val currentChatRoom : LiveData<ChatRoom> = _currentChatRoom
-
-    private var _currentChatParticipants = MutableLiveData<ChatParticipants>()
-    val currentChatParticipants : LiveData<ChatParticipants> = _currentChatParticipants
-
-    private var _usersChatRoomIdList = MutableLiveData<List<Long>>()
-    val usersChatRoomIdList : LiveData<List<Long>> = _usersChatRoomIdList
-
-    private var _usersChatRoomList = MutableLiveData<List<ChatRoom>>()
-    val usersChatRoomList : LiveData<List<ChatRoom>> = _usersChatRoomList
+//    private val currentUserID: Long = 1
+//
+////    private var _currentUser = MutableLiveData<User>()
+////    val currentUser: LiveData<User> = _currentUser
+//
+//
+//    private var _userList = MutableLiveData<List<User>>()
+//    //var userList:LiveData<List<User>> = _userList
+//    val userList = db.userDao().getAllContacts(currentUserID)
+//
+////    private var _currentChatRoom = MutableLiveData<ChatRoom>()
+////    val currentChatRoom : LiveData<ChatRoom> = _currentChatRoom
+//
+//    private var _currentChatParticipants = MutableLiveData<ChatParticipants>()
+//    val currentChatParticipants : LiveData<ChatParticipants> = _currentChatParticipants
+//
+//    private var _usersChatRoomIdList = MutableLiveData<List<Long>>()
+//    val usersChatRoomIdList : LiveData<List<Long>> = _usersChatRoomIdList
+//
+//    private var _usersChatRoomList = MutableLiveData<List<ChatRoom>>()
+//    val usersChatRoomList : LiveData<List<ChatRoom>> = _usersChatRoomList
 
 //    suspend fun insertCurrentUser(user: User){
 //        withContext(Dispatchers.IO) {
@@ -306,10 +309,10 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
     //--------------------------------------------------------------------------FIREBASE-------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    private val firebaseDB = FirebaseFirestore.getInstance()
-    private val firebaseDataUser = firebaseDB.collection("User")
-
-    val firebasedb2 = Firebase.firestore
+//    private val firebaseDB = FirebaseFirestore.getInstance()
+//    private val firebaseDataUser = firebaseDB.collection("User")
+//
+//    val firebasedb2 = Firebase.firestore
 
 //    suspend fun getFirebaseDataUser(): MutableList<User>{
 //        var firebaseUserList: MutableList<User>
@@ -356,32 +359,208 @@ class Repository(private val db: ConnectDatabase, private val viewModel: ViewMod
 //
 //    }
 
-    suspend fun getFirebaseDataUser(): MutableList<User> = suspendCancellableCoroutine { continuation ->
+//    suspend fun getFirebaseDataUser(): MutableList<User> = suspendCancellableCoroutine { continuation ->
+//        val firebaseUserList: MutableList<User> = mutableListOf()
+//
+//        firebasedb2.collection("User")
+//            .whereNotEqualTo(FieldPath.documentId(), viewModel.currentUser.value?.uid)
+//            .get()
+//            .addOnSuccessListener { userList ->
+//                for (user in userList) {
+//                    Log.d("Firebase", "${user.id} => ${user.data}")
+//                    val user2 = User(
+//                        userId = user.id,
+//                        firstName = user.getString("firstName"),
+//                        lastName = user.getString("lastName"),
+//                        fullName = user.getString("fullName"),
+//                        image = user.getString("image"),
+//                        email = user.getString("email"),
+//                        phoneNumber = user.getString("phoneNumber"),
+//                        department = user.getString("department"),
+//                    )
+//                    firebaseUserList.add(user2)
+//                }
+//                continuation.resume(firebaseUserList)  // Coroutine wird mit der User-Liste fortgesetzt
+//            }
+//            .addOnFailureListener { exception ->
+//                continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
+//            }
+//    }
+
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------NEW APP--------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseDB = FirebaseFirestore.getInstance()
+    private val firebaseDataUser = firebaseDB.collection("User")
+
+    val firebasedb2 = Firebase.firestore
+
+    //User der gerade eingeloggt ist
+    private var _currentFirebaseUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
+    val currentFirebaseUser: LiveData<FirebaseUser?> = _currentFirebaseUser
+
+    private var _currentUser = MutableLiveData<User?>()
+    val currentUser: LiveData<User?> = _currentUser
+
+    private var _firebaseUserList = MutableLiveData<List<User>>()
+    val firebaseUserList : LiveData<List<User>> = _firebaseUserList
+
+    private var _firebaseChatRoomList = MutableLiveData<List<ChatRoom>>()
+    val firebaseChatRoomList : LiveData<List<ChatRoom>> = _firebaseChatRoomList
+
+    private var _currentChatRoom = MutableLiveData<ChatRoom?>()
+    val currentChatRoom: LiveData<ChatRoom?> = _currentChatRoom
+
+    suspend fun setCurrentFirebaseUser(firebaseUser: FirebaseUser?)= suspendCancellableCoroutine { continuation->
+
+        _currentFirebaseUser.postValue(firebaseUser)
+        continuation.resume(Log.i("Firebase", "Repo: CurrentFirebaseUser: ${_currentFirebaseUser.value.toString()}"))
+
+    }
+
+    suspend fun logout()= suspendCancellableCoroutine { continuation->
+        firebaseAuth.signOut()
+        _currentFirebaseUser.value = null
+        continuation.resume(Log.i("Firebase", "Repo: CurrentFirebaseUser: ${_currentFirebaseUser.value.toString()}"))
+        _currentUser.postValue(User())
+        _firebaseUserList.postValue(listOf())
+        _firebaseChatRoomList.postValue(listOf())
+    }
+
+    suspend fun getFirebaseDataUser() = suspendCancellableCoroutine { continuation ->
         val firebaseUserList: MutableList<User> = mutableListOf()
 
-        firebasedb2.collection("User")
-            .whereNotEqualTo(FieldPath.documentId(), viewModel.currentUser.value?.uid)
-            .get()
-            .addOnSuccessListener { userList ->
-                for (user in userList) {
-                    Log.d("Firebase", "${user.id} => ${user.data}")
-                    val user2 = User(
-                        userId = user.id,
-                        firstName = user.getString("firstName"),
-                        lastName = user.getString("lastName"),
-                        fullName = user.getString("fullName"),
-                        image = user.getString("image"),
-                        email = user.getString("email"),
-                        phoneNumber = user.getString("phoneNumber"),
-                        department = user.getString("department"),
-                    )
-                    firebaseUserList.add(user2)
+        try {
+            firebasedb2.collection("User")
+                .whereNotEqualTo(FieldPath.documentId(), _currentFirebaseUser.value?.uid)
+                .get()
+                .addOnSuccessListener { userList ->
+                    for (user in userList) {
+                        Log.d("Firebase", "${user.id} => ${user.data}")
+                        val user2 = User(
+                            userId = user.id,
+                            firstName = user.getString("firstName"),
+                            lastName = user.getString("lastName"),
+                            fullName = user.getString("fullName"),
+                            image = user.getString("image"),
+                            email = user.getString("email"),
+                            phoneNumber = user.getString("phoneNumber"),
+                            department = user.getString("department"),
+                        )
+                        firebaseUserList.add(user2)
+                    }
+                    continuation.resume(_firebaseUserList.postValue(firebaseUserList))  // Coroutine wird mit der User-Liste fortgesetzt
                 }
-                continuation.resume(firebaseUserList)  // Coroutine wird mit der User-Liste fortgesetzt
-            }
-            .addOnFailureListener { exception ->
-                continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
-            }
+                .addOnFailureListener { exception ->
+                    continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
+                }
+
+            Log.i("Firebase", "Repo: getFirebaseDataUser: ${_firebaseUserList.toString()}")
+
+        }catch (e:Exception){
+            Log.i("Firebase", "Repo: getFirebaseDataUser: ${e.toString()}")
+        }
+
     }
+
+    suspend fun setCurrentUser()= suspendCancellableCoroutine { continuation ->
+
+        try {
+            val currentUserRef = firebasedb2.collection("User").document(_currentFirebaseUser.value?.uid!!)
+            currentUserRef.get().addOnSuccessListener {
+                val user2 = it.toObject<User>()
+                if (user2 != null) {
+                    user2.userId = _currentFirebaseUser.value?.uid!!
+                }
+                continuation.resume(_currentUser.postValue(user2))  // Coroutine wird mit der User-Liste fortgesetzt
+            }
+                .addOnFailureListener { exception ->
+                    continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
+                }
+
+            Log.i("Firebase", "Repo: setCurrentUser: ${_currentUser.toString()}")
+
+        }catch (e:Exception){
+            Log.i("Firebase", "Repo: setCurrentUser: ${e.toString()}")
+        }
+    }
+
+
+    suspend fun getFirebaseDataChatRooms() = suspendCancellableCoroutine { continuation ->
+        val firebaseChatRoomList: MutableList<ChatRoom> = mutableListOf()
+
+        try {
+            _currentFirebaseUser.value?.uid?.let {
+                firebasedb2.collection("ChatRooms")
+                    .whereArrayContains("chatParticipants", it)
+                    .get()
+                    .addOnSuccessListener { ChatRoomList ->
+                        for (chatRoom in ChatRoomList) {
+                            Log.d("Firebase", "${chatRoom.id} => ${chatRoom.data}")
+
+                            val arrayList: ArrayList<String> = chatRoom.get("chatParticipants") as ArrayList<String>
+                            val mutableList: MutableList<String?> = arrayList.toMutableList()
+
+                            val chatRoom2 = ChatRoom(
+                                chatRoomId = chatRoom.id,
+                                chatRoomName = chatRoom.getString("chatRoomName"),
+                                lastMessage= chatRoom.getString("lastMessage"),
+                                lastActivityTimestamp = chatRoom.getLong("lastActivityTimestamp"),
+                                chatParticipants = mutableList
+                            )
+
+
+                            firebaseChatRoomList.add(chatRoom2)
+                        }
+                        continuation.resume(_firebaseChatRoomList.postValue(firebaseChatRoomList))  // Coroutine wird mit der User-Liste fortgesetzt
+                    }
+                    .addOnFailureListener { exception ->
+                        continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
+                    }
+            }
+
+            Log.i("Firebase", "Repo: getFirebaseDataChatRooms: ${_firebaseChatRoomList.toString()}")
+
+        }catch (e:Exception){
+            Log.i("Firebase", "Repo: getFirebaseDataChatRooms: ${e.toString()}")
+        }
+
+    }
+
+    suspend fun getCurrentChatRoom(chatRoomId: String)= suspendCancellableCoroutine { continuation ->
+
+        try {
+            val currentChatRoomRef = firebasedb2.collection("ChatRooms").document(chatRoomId)
+            currentChatRoomRef.get().addOnSuccessListener {
+                val chatRoom = it.toObject<ChatRoom>()
+                if (chatRoom != null) {
+                    chatRoom.chatRoomId = chatRoomId
+                }
+                continuation.resume(_currentChatRoom.postValue(chatRoom))  // Coroutine wird mit der User-Liste fortgesetzt
+            }
+                .addOnFailureListener { exception ->
+                    continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
+                }
+
+            Log.i("Firebase", "Repo: getCurrentChatRoom: ${_currentChatRoom.toString()}")
+
+        }catch (e:Exception){
+            Log.i("Firebase", "Repo: getCurrentChatRoom: ${e.toString()}")
+        }
+    }
+
+    fun setCurrentChatroom(chatRoom: ChatRoom){
+        _currentChatRoom.postValue(chatRoom)
+    }
+
+
 
 }

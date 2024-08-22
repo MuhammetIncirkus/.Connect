@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.User
+import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.ChatListElementBinding
 
@@ -24,7 +26,26 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val binding = holder.binding
-        val calendar = chatRoomList[position]
+        val chatRoom = chatRoomList[position]
+
+        val chatPartnerID = viewModel.getChatPartnerID(chatRoom)
+        var chatPartner: User = User()
+        if (chatPartnerID != null){
+            chatPartner = viewModel.getChatPartner(chatPartnerID)
+        }
+
+        if (chatPartner.userId != ""){
+            binding.tvContactName.text = chatPartner.fullName
+            binding.tvContactLastMessage.text = chatRoom.lastMessage
+            binding.tvContactLastMessageDate.text = ""
+            binding.imageView2.isVisible = false
+        }
+
+
+        binding.root.setOnClickListener {
+            viewModel.setCurrentChatroom(chatRoom)
+            binding.root.findNavController().navigate(R.id.messagesFragment)
+        }
 
 //        val currentUser = viewModel.currentUser
 //        //val currentUser = loadCurrentUser()

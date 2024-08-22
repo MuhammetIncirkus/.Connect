@@ -30,21 +30,22 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val binding = holder.binding
-        val contact = userList[position]
+        val user = userList[position]
 
-        //viewModel.filterMessageList(contact.id)
 
-        binding.ivProfilePicture.load(contact.image){
-            placeholder(R.drawable.ic_launcher_foreground)
-        }
-        binding.tvContactName.text = contact.fullName
+        binding.tvContactName.text = user.fullName
         binding.tvContactLastMessage.text = ""
         binding.tvContactLastMessageDate.text = ""
         binding.imageView2.isVisible = false
 
+        binding.root.setOnClickListener {
 
+            viewModel.createChatroom(user)
 
         }
+
+
+    }
 
 
 
