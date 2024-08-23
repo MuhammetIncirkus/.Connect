@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.R
@@ -35,6 +36,9 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
         }
 
         if (chatPartner.userId != ""){
+            binding.ivProfilePicture.load(chatPartner.image){
+                placeholder(R.drawable.ic_launcher_foreground)
+            }
             binding.tvContactName.text = chatPartner.fullName
             binding.tvContactLastMessage.text = chatRoom.lastMessage
             binding.tvContactLastMessageDate.text = ""
@@ -46,10 +50,6 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
             viewModel.setCurrentChatroom(chatRoom)
             binding.root.findNavController().navigate(R.id.messagesFragment)
         }
-
-//        val currentUser = viewModel.currentUser
-//        //val currentUser = loadCurrentUser()
-//        var chatPartner= viewModel.currentUser.value
 //
 //        if (viewModel.currentChatParticipants.value != null){
 //
@@ -76,14 +76,35 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
 //        if (secondUser.isInitialized){
 //
 //        binding.ivProfilePicture.setImageResource(chatPartner!!.image)
-//        binding.tvContactName.text = chatPartner!!.fullName
-//        binding.tvContactLastMessage.text = chatRoom.lastMessage
-//        binding.tvContactLastMessageDate.text = ""
-//        binding.imageView2.isVisible = false
+
 //        }
 
 
 
     }
+
+
+//    fun getChatPartnerID(chatRoom: ChatRoom): String?{
+//        var chatPartnerID: String? = ""
+//
+//        for (id in chatRoom.chatParticipants){
+//            if (id != viewModel.currentUser.value?.userId){
+//                chatPartnerID = id
+//            }
+//        }
+//        return chatPartnerID
+//    }
+//
+//    fun getChatPartner(id: String): User{
+//
+//        var chatPartner: User = User()
+//
+//        for (oneUser in viewModel.firebaseUserList.value!!){
+//            if (oneUser.userId == id)
+//                chatPartner = oneUser
+//        }
+//
+//        return chatPartner
+//    }
 
 }

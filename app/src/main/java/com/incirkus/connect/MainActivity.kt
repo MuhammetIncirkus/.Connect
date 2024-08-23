@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -51,31 +52,49 @@ class MainActivity : AppCompatActivity() {
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
                     binding.tvHeader.text = getString(R.string.chats)
+                    binding.toolbar.isGone = false
+                    binding.bottomNavigationView.isGone = false
 
                 }
                 R.id.messagesFragment -> {
                     binding.btnBack.isVisible = true
                     binding.mcvProfileImage.isVisible = true
                     binding.tvHeader.text = getString(R.string.messages)
+                    binding.toolbar.isGone = false
+                    binding.bottomNavigationView.isGone = false
                 }
                 R.id.searchFragment -> {
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
                     binding.tvHeader.text = getString(R.string.search)
+                    binding.toolbar.isGone = false
+                    binding.bottomNavigationView.isGone = false
 
                 }
                 R.id.calendarFragment -> {
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
                     binding.tvHeader.text = getString(R.string.calendar)
+                    binding.toolbar.isGone = false
+                    binding.bottomNavigationView.isGone = false
                 }
                 R.id.profileFragment -> {
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
                     binding.tvHeader.text = getString(R.string.profile)
+                    binding.toolbar.isGone = false
+                    binding.bottomNavigationView.isGone = false
+                }
+                R.id.loginFragment -> {
+                    binding.btnBack.isVisible = false
+                    binding.mcvProfileImage.isVisible = false
+                    binding.tvHeader.text = getString(R.string.profile)
+                    binding.toolbar.isGone = true
+                    binding.bottomNavigationView.isGone = true
                 }
                 else -> {
-
+                    binding.toolbar.isGone = false
+                    binding.bottomNavigationView.visibility = View.GONE
                 }
 
             }

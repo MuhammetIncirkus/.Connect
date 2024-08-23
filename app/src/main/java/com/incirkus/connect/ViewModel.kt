@@ -29,9 +29,13 @@ import com.incirkus.connect.DATA.Model.ChatRoom
 
 import kotlinx.coroutines.launch
 import java.io.File
+import java.time.Instant
 
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.time.temporal.IsoFields
 import java.util.Locale
@@ -527,6 +531,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val currentUser = repository.currentUser
     val firebaseChatRoomList = repository.firebaseChatRoomList
     val currentChatRoom = repository.currentChatRoom
+    val firebaseCurrentMessageList = repository.firebaseCurrentMessageList
     var currentChatPartner = User()
 
 
@@ -794,13 +799,19 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         if (currentFirebaseUser != null) {
             viewModelScope.launch {
                 repository.getCurrentChatRoom(chatRoomId)
+                repository.getFirebaseDataCurrentMessageList()
             }
         }
     }
 
     fun setCurrentChatroom(chatRoom: ChatRoom){
-        repository.setCurrentChatroom(chatRoom)
+        viewModelScope.launch {
+            repository.setCurrentChatroom(chatRoom)
+            repository.getFirebaseDataCurrentMessageList()
+        }
     }
+
+
 
 
     fun sendMessage(message: Message){
@@ -810,7 +821,26 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             //TODO MessageList aktualisieren
             repository.getFirebaseDataChatRooms()
+            repository.getFirebaseDataCurrentMessageList()
         }
+    }
+
+    fun updateChatRoom(){
+        val chatRoomRef = currentChatRoom.value?.let {
+            firedatabase.collection("ChatRooms").document(
+                it.chatRoomId)
+        }
+        if (chatRoomRef != null) {
+            chatRoomRef
+                .update("lastMessage", currentChatRoom.value?.lastMessage)
+                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastMessage}") }
+                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateChatRoom: ${e.toString()}") }
+            chatRoomRef
+                .update("lastActivityTimestamp", currentChatRoom.value?.lastActivityTimestamp)
+                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastActivityTimestamp}") }
+                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateChatRoom: ${e.toString()}") }
+        }
+
     }
 
     fun getChatPartnerID(chatRoom: ChatRoom): String?{
@@ -834,6 +864,25 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
         currentChatPartner = chatPartner
         return chatPartner
+    }
+
+    fun convertTimestampToDate(timestamp:Long):String{
+        val instant = Instant.ofEpochMilli(timestamp)
+        val zoneId = ZoneId.systemDefault()
+        val zonedDateTime = ZonedDateTime.ofInstant(instant, zoneId)
+
+        val today = LocalDate.now(zoneId)
+        val messageDate = zonedDateTime.toLocalDate()
+
+        return if (messageDate.isEqual(today)) {
+            // Zeige nur die Uhrzeit an, wenn das Datum heute ist
+            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+            zonedDateTime.format(timeFormatter)
+        } else {
+            // Zeige Datum und Uhrzeit an, wenn das Datum nicht heute ist
+            val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+            zonedDateTime.format(dateTimeFormatter)
+        }
     }
 
 }

@@ -33,6 +33,9 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
         val user = userList[position]
 
 
+        binding.ivProfilePicture.load(user.image){
+            placeholder(R.drawable.ic_launcher_foreground)
+        }
         binding.tvContactName.text = user.fullName
         binding.tvContactLastMessage.text = ""
         binding.tvContactLastMessageDate.text = ""
@@ -50,6 +53,4 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
 
 
 
-    }
-
-
+}

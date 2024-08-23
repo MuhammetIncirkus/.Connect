@@ -6,7 +6,7 @@ import java.util.UUID
 
 data class Message(
     val messageId: String = "",
-    val chatRoomId: String = "",
+    val chatRoomId: String? = "",
     val senderId: String? = "",
     val messageText: String? = "",
     val timestamp: Long? = 0,
