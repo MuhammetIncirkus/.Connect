@@ -51,12 +51,12 @@ class MessagesFragment : Fragment() {
         }
 
 
-        binding.btnSendMessage.setOnClickListener {
+        binding.btnSend.setOnClickListener {
 
             val messageId = UUID.randomUUID().toString()
             val chatRoomId = viewModel.currentChatRoom.value?.chatRoomId
             val senderId = viewModel.currentUser.value?.userId
-            val messageText: String = "Hallo?"
+            val messageText: String = binding.tietMessageText.text.toString()
             val timestamp: Long = System.currentTimeMillis()
             var messageStatus: String? = "send"
 
@@ -73,6 +73,8 @@ class MessagesFragment : Fragment() {
             viewModel.currentChatRoom.value?.lastMessage = messageText
             viewModel.currentChatRoom.value?.lastActivityTimestamp = timestamp
             viewModel.updateChatRoom()
+
+            binding.tietMessageText.text?.clear()
 
 
         }

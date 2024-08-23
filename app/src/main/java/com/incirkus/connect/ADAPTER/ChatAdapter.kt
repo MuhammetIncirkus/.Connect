@@ -41,8 +41,10 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
             }
             binding.tvContactName.text = chatPartner.fullName
             binding.tvContactLastMessage.text = chatRoom.lastMessage
-            binding.tvContactLastMessageDate.text = ""
+            val date = chatRoom.lastActivityTimestamp?.let { viewModel.convertTimestampToDate(it) }
+            binding.tvContactLastMessageDate.text = date
             binding.imageView2.isVisible = false
+
         }
 
 

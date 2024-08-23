@@ -68,7 +68,6 @@
                     android:paddingHorizontal="8dp"
 
                     android:drawableLeft="@drawable/baseline_search_24"
-                    android:drawableRight="@drawable/baseline_cancel_24"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>

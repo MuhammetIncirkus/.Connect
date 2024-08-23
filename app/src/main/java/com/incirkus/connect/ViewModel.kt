@@ -741,6 +741,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         firebaseAuth.signOut()
         viewModelScope.launch {
             repository.logout()
+            repository.clearMessagelist()
         }
     }
 
@@ -883,6 +884,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
             zonedDateTime.format(dateTimeFormatter)
         }
+    }
+
+    fun clearMessagelist(){
+        repository.clearMessagelist()
     }
 
 }

@@ -12,8 +12,10 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.firebase.appcheck.ktx.appCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -46,59 +48,7 @@ class MainActivity : AppCompatActivity() {
         val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)
 
-        navHost.navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.chatsFragment -> {
-                    binding.btnBack.isVisible = false
-                    binding.mcvProfileImage.isVisible = false
-                    binding.tvHeader.text = getString(R.string.chats)
-                    binding.toolbar.isGone = false
-                    binding.bottomNavigationView.isGone = false
 
-                }
-                R.id.messagesFragment -> {
-                    binding.btnBack.isVisible = true
-                    binding.mcvProfileImage.isVisible = true
-                    binding.tvHeader.text = getString(R.string.messages)
-                    binding.toolbar.isGone = false
-                    binding.bottomNavigationView.isGone = false
-                }
-                R.id.searchFragment -> {
-                    binding.btnBack.isVisible = false
-                    binding.mcvProfileImage.isVisible = false
-                    binding.tvHeader.text = getString(R.string.search)
-                    binding.toolbar.isGone = false
-                    binding.bottomNavigationView.isGone = false
-
-                }
-                R.id.calendarFragment -> {
-                    binding.btnBack.isVisible = false
-                    binding.mcvProfileImage.isVisible = false
-                    binding.tvHeader.text = getString(R.string.calendar)
-                    binding.toolbar.isGone = false
-                    binding.bottomNavigationView.isGone = false
-                }
-                R.id.profileFragment -> {
-                    binding.btnBack.isVisible = false
-                    binding.mcvProfileImage.isVisible = false
-                    binding.tvHeader.text = getString(R.string.profile)
-                    binding.toolbar.isGone = false
-                    binding.bottomNavigationView.isGone = false
-                }
-                R.id.loginFragment -> {
-                    binding.btnBack.isVisible = false
-                    binding.mcvProfileImage.isVisible = false
-                    binding.tvHeader.text = getString(R.string.profile)
-                    binding.toolbar.isGone = true
-                    binding.bottomNavigationView.isGone = true
-                }
-                else -> {
-                    binding.toolbar.isGone = false
-                    binding.bottomNavigationView.visibility = View.GONE
-                }
-
-            }
-        }
 
         // Hier wird der Listener für das Erkennen der Tastatur-Änderungen hinzugefügt
         val rootView = findViewById<View>(android.R.id.content)
@@ -109,15 +59,83 @@ class MainActivity : AppCompatActivity() {
                 val screenHeight = rootView.rootView.height
                 val keypadHeight = screenHeight - r.bottom
 
-                if (keypadHeight > screenHeight * 0.15) {
-                    // Tastatur ist sichtbar
-                    binding.bottomNavigationView.visibility = View.GONE
-                } else {
-                    // Tastatur ist nicht sichtbar
-                    binding.bottomNavigationView.visibility = View.VISIBLE
+                // Überprüfen, ob wir uns im LoginFragment befinden
+                val currentDestination = navHost.navController.currentDestination?.id
+                val isInLoginFragment = currentDestination == R.id.loginFragment
+
+                if (!isInLoginFragment) {
+                    if (keypadHeight > screenHeight * 0.15) {
+                        // Tastatur ist sichtbar
+                        binding.bottomNavigationView.visibility = View.GONE
+                    } else {
+                        // Tastatur ist nicht sichtbar
+                        binding.bottomNavigationView.visibility = View.VISIBLE
+                    }
                 }
             }
         })
+
+        navHost.navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.chatsFragment -> {
+                    binding.btnBack.isVisible = false
+                    binding.mcvProfileImage.isVisible = false
+                    binding.tvHeader.text = getString(R.string.chats)
+                    binding.toolbar.isGone = false
+
+
+                }
+                R.id.messagesFragment -> {
+                    binding.btnBack.isVisible = true
+                    binding.mcvProfileImage.isVisible = true
+                    binding.ivProfilePicture.load(viewModel.currentChatPartner.image)
+                    binding.tvHeader.text = getString(R.string.messages)
+                    binding.toolbar.isGone = false
+
+                }
+                R.id.searchFragment -> {
+                    binding.btnBack.isVisible = false
+                    binding.mcvProfileImage.isVisible = false
+                    binding.tvHeader.text = getString(R.string.search)
+                    binding.toolbar.isGone = false
+
+
+                }
+                R.id.calendarFragment -> {
+                    binding.btnBack.isVisible = false
+                    binding.mcvProfileImage.isVisible = false
+                    binding.tvHeader.text = getString(R.string.calendar)
+                    binding.toolbar.isGone = false
+
+                }
+                R.id.profileFragment -> {
+                    binding.btnBack.isVisible = false
+                    binding.mcvProfileImage.isVisible = false
+                    binding.tvHeader.text = getString(R.string.profile)
+                    binding.toolbar.isGone = false
+
+                }
+                R.id.loginFragment -> {
+                    binding.toolbar.isGone = true
+                    binding.bottomNavigationView.isGone = true
+                }
+                else -> {
+
+                }
+
+            }
+        }
+
+        binding.btnBack.setOnClickListener {
+
+            val currentDestination = navHost.navController.currentDestination?.id
+            val isInMessageFragment = currentDestination == R.id.messagesFragment
+
+            if (binding.btnBack.isVisible && isInMessageFragment){
+                navHost.navController.navigate(R.id.chatsFragment)
+                viewModel.clearMessagelist()
+            }
+        }
 
     }
 

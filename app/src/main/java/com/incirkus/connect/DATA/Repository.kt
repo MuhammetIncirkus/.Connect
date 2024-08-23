@@ -621,6 +621,11 @@ class Repository() {
         }
     }
 
+    fun clearMessagelist(){
+        val emptyMessageList:List<Message> = listOf()
+        _firebaseCurrentMessageList.postValue(emptyMessageList)
+    }
+
 
 
 }
