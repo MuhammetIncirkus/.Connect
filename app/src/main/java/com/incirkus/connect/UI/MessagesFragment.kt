@@ -68,12 +68,14 @@ class MessagesFragment : Fragment() {
                     senderId = senderId,
                     messageText = messageText,
                     timestamp = timestamp,
-                    messageStatus = messageStatus
+                    messageStatus = messageStatus,
+
                 )
 
                 viewModel.sendMessage(message)
                 viewModel.currentChatRoom.value?.lastMessage = messageText
                 viewModel.currentChatRoom.value?.lastActivityTimestamp = timestamp
+                viewModel.currentChatRoom.value?.lastMessageSenderId = senderId
                 viewModel.updateChatRoom()
 
                 binding.tietMessageText.text?.clear()

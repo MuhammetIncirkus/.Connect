@@ -534,6 +534,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val firebaseMessageList = repository.firebaseMessageList
     var currentChatPartner = User()
 
+    var _currentChatPartner = MutableLiveData<User>()
+    val currentChatPartner2: LiveData<User> = _currentChatPartner
+
 
 //    private val firebaseAuth = FirebaseAuth.getInstance()
 //    private val firebaseStorage = FirebaseStorage.getInstance()
@@ -808,6 +811,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.setCurrentChatroom(chatRoom)
             //repository.getFirebaseDataCurrentMessageList()
+            val chatPartnerID = getChatPartnerID(chatRoom)
+            if (chatPartnerID != null){
+                getChatPartner(chatPartnerID)
+            }
         }
     }
 
@@ -839,6 +846,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 .update("lastActivityTimestamp", currentChatRoom.value?.lastActivityTimestamp)
                 .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastActivityTimestamp}") }
                 .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateChatRoom: ${e.toString()}") }
+            chatRoomRef
+                .update("lastMessageSenderId", currentChatRoom.value?.lastMessageSenderId)
+                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastMessageSenderId}") }
+                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateChatRoom: ${e.toString()}") }
         }
 
     }
@@ -862,6 +873,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             if (oneUser.userId == id)
                 chatPartner = oneUser
         }
+        _currentChatPartner.value = chatPartner
         currentChatPartner = chatPartner
         return chatPartner
     }

@@ -88,9 +88,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.messagesFragment -> {
                     binding.btnBack.isVisible = true
                     binding.mcvProfileImage.isVisible = true
+                    viewModel.currentChatPartner2.observe(this, Observer { it ->
+                        binding.ivProfilePicture.load(it.image)
+                        binding.tvHeader.text = it.fullName
+                    })
 
-                    binding.ivProfilePicture.load(viewModel.currentChatPartner.image)
-                    binding.tvHeader.text = getString(R.string.messages)
+
                     binding.toolbar.isGone = false
 
                 }
@@ -134,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
             if (binding.btnBack.isVisible && isInMessageFragment){
                 navHost.navController.navigate(R.id.chatsFragment)
-                viewModel.clearMessagelist()
+//                viewModel.clearMessagelist()
             }
         }
 

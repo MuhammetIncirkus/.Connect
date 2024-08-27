@@ -40,7 +40,11 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
                 placeholder(R.drawable.ic_launcher_foreground)
             }
             binding.tvContactName.text = chatPartner.fullName
-            binding.tvContactLastMessage.text = chatRoom.lastMessage
+            if (chatRoom.lastMessageSenderId == viewModel.currentFirebaseUser.value?.uid){
+                binding.tvContactLastMessage.text = "You: ${chatRoom.lastMessage}"
+            }else{
+                binding.tvContactLastMessage.text = "${chatPartner.firstName}: ${chatRoom.lastMessage}"
+            }
             val date = chatRoom.lastActivityTimestamp?.let { viewModel.convertTimestampToDate(it) }
             binding.tvContactLastMessageDate.text = date
             binding.imageView2.isVisible = false

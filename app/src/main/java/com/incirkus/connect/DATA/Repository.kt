@@ -561,7 +561,7 @@ class Repository() {
     }
 
     fun setCurrentChatroom(chatRoom: ChatRoom){
-        _currentChatRoom.postValue(chatRoom)
+        _currentChatRoom.value = chatRoom
     }
 
 //    suspend fun getFirebaseDataCurrentMessageList() = suspendCancellableCoroutine<Unit> { continuation ->
@@ -646,7 +646,7 @@ class Repository() {
                                 senderId = message.getString("senderId"),
                                 messageText = message.getString("messageText"),
                                 timestamp = message.getLong("timestamp"),
-                                messageStatus = message.getString("messageStatus")
+                                messageStatus = message.getString("messageStatus"),
                             )
 
                             firebaseCurrentMessageList.add(message2)
