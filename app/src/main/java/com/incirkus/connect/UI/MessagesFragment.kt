@@ -43,39 +43,42 @@ class MessagesFragment : Fragment() {
 
 
 
-        viewModel.firebaseCurrentMessageList.observe(viewLifecycleOwner){
+        viewModel.firebaseMessageList.observe(viewLifecycleOwner){
             Log.d("MessageList", it.toString())
-            val adapter = MessageAdapter(it,viewModel)
+            val adapter = MessageAdapter(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId },viewModel)
             binding.rvMessageFragment.adapter = adapter
-            binding.rvMessageFragment.scrollToPosition(it.lastIndex)
+            binding.rvMessageFragment.scrollToPosition(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId }.size-1)
         }
 
 
         binding.btnSend.setOnClickListener {
 
-            val messageId = UUID.randomUUID().toString()
-            val chatRoomId = viewModel.currentChatRoom.value?.chatRoomId
-            val senderId = viewModel.currentUser.value?.userId
-            val messageText: String = binding.tietMessageText.text.toString()
-            val timestamp: Long = System.currentTimeMillis()
-            var messageStatus: String? = "send"
+            if (binding.tietMessageText.text.toString() != "") {
 
-            val message = Message(
-                messageId = messageId,
-                chatRoomId = chatRoomId,
-                senderId = senderId,
-                messageText = messageText,
-                timestamp = timestamp,
-                messageStatus = messageStatus
-            )
+                val messageId = UUID.randomUUID().toString()
+                val chatRoomId = viewModel.currentChatRoom.value?.chatRoomId
+                val senderId = viewModel.currentUser.value?.userId
+                val messageText: String = binding.tietMessageText.text.toString()
+                val timestamp: Long = System.currentTimeMillis()
+                var messageStatus: String? = "send"
 
-            viewModel.sendMessage(message)
-            viewModel.currentChatRoom.value?.lastMessage = messageText
-            viewModel.currentChatRoom.value?.lastActivityTimestamp = timestamp
-            viewModel.updateChatRoom()
+                val message = Message(
+                    messageId = messageId,
+                    chatRoomId = chatRoomId,
+                    senderId = senderId,
+                    messageText = messageText,
+                    timestamp = timestamp,
+                    messageStatus = messageStatus
+                )
 
-            binding.tietMessageText.text?.clear()
+                viewModel.sendMessage(message)
+                viewModel.currentChatRoom.value?.lastMessage = messageText
+                viewModel.currentChatRoom.value?.lastActivityTimestamp = timestamp
+                viewModel.updateChatRoom()
 
+                binding.tietMessageText.text?.clear()
+                binding.rvMessageFragment.scrollToPosition(viewModel.firebaseMessageList.value!!.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId }.size-1)
+            }
 
         }
 

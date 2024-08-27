@@ -531,7 +531,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val currentUser = repository.currentUser
     val firebaseChatRoomList = repository.firebaseChatRoomList
     val currentChatRoom = repository.currentChatRoom
-    val firebaseCurrentMessageList = repository.firebaseCurrentMessageList
+    val firebaseMessageList = repository.firebaseMessageList
     var currentChatPartner = User()
 
 
@@ -728,8 +728,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             if (it.isSuccessful) {
                 viewModelScope.launch {
                     repository.setCurrentFirebaseUser(it.result.user)
-                    repository.getFirebaseDataUser()
-                    repository.getFirebaseDataChatRooms()
+                    loadData()
                 }
             } else {
                 //TODO Pop-Up Message das Login fehlgeschlagen
@@ -745,29 +744,29 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getFirebaseDataUser() {
-        if (currentFirebaseUser != null) {
-            viewModelScope.launch {
-                repository.getFirebaseDataUser()
-            }
-        }
-    }
-
-    fun setCurrentUser() {
-        if (currentFirebaseUser != null) {
-            viewModelScope.launch {
-                repository.setCurrentUser()
-            }
-        }
-    }
-
-    fun getFirebaseDataChatRooms() {
-        if (currentFirebaseUser != null) {
-            viewModelScope.launch {
-                repository.getFirebaseDataChatRooms()
-            }
-        }
-    }
+//    fun getFirebaseDataUser() {
+//        if (currentFirebaseUser != null) {
+//            viewModelScope.launch {
+//                repository.getFirebaseDataUser()
+//            }
+//        }
+//    }
+//
+//    fun setCurrentUser() {
+//        if (currentFirebaseUser != null) {
+//            viewModelScope.launch {
+//                repository.setCurrentUser()
+//            }
+//        }
+//    }
+//
+//    fun getFirebaseDataChatRooms() {
+//        if (currentFirebaseUser != null) {
+//            viewModelScope.launch {
+//                repository.getFirebaseDataChatRooms()
+//            }
+//        }
+//    }
 
     fun createChatroom(user:User){
 
@@ -800,7 +799,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         if (currentFirebaseUser != null) {
             viewModelScope.launch {
                 repository.getCurrentChatRoom(chatRoomId)
-                repository.getFirebaseDataCurrentMessageList()
+                //repository.getFirebaseDataCurrentMessageList()
             }
         }
     }
@@ -808,7 +807,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun setCurrentChatroom(chatRoom: ChatRoom){
         viewModelScope.launch {
             repository.setCurrentChatroom(chatRoom)
-            repository.getFirebaseDataCurrentMessageList()
+            //repository.getFirebaseDataCurrentMessageList()
         }
     }
 
@@ -821,8 +820,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             //TODO MessageList aktualisieren
-            repository.getFirebaseDataChatRooms()
-            repository.getFirebaseDataCurrentMessageList()
+//            repository.getFirebaseDataChatRooms()
+//            repository.getFirebaseDataCurrentMessageList()
         }
     }
 
@@ -888,6 +887,15 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     fun clearMessagelist(){
         repository.clearMessagelist()
+    }
+
+    fun loadData() {
+        viewModelScope.launch {
+            repository.getFirebaseDataUser()
+            repository.setCurrentUser()
+            repository.getChatRoomList()
+            repository.getMessageList()
+        }
     }
 
 }

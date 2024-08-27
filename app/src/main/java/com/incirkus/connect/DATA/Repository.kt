@@ -419,8 +419,8 @@ class Repository() {
     private var _currentChatRoom = MutableLiveData<ChatRoom?>()
     val currentChatRoom: LiveData<ChatRoom?> = _currentChatRoom
 
-    private var _firebaseCurrentMessageList = MutableLiveData<List<Message>>()
-    val firebaseCurrentMessageList : LiveData<List<Message>> = _firebaseCurrentMessageList
+    private var _firebaseMessageList = MutableLiveData<List<Message>>()
+    val firebaseMessageList : LiveData<List<Message>> = _firebaseMessageList
 
     suspend fun setCurrentFirebaseUser(firebaseUser: FirebaseUser?)= suspendCancellableCoroutine { continuation->
 
@@ -564,13 +564,69 @@ class Repository() {
         _currentChatRoom.postValue(chatRoom)
     }
 
-    suspend fun getFirebaseDataCurrentMessageList() = suspendCancellableCoroutine<Unit> { continuation ->
+//    suspend fun getFirebaseDataCurrentMessageList() = suspendCancellableCoroutine<Unit> { continuation ->
+//        val firebaseCurrentMessageList: MutableList<Message> = mutableListOf()
+//
+//        try {
+//            _currentChatRoom.value?.chatRoomId.let { chatRoomId ->
+//                val listenerRegistration = firebasedb2.collection("Messages")
+//                    .whereEqualTo("chatRoomId", chatRoomId)
+//                    .addSnapshotListener { messageList, e ->
+//                        if (e != null) {
+//                            Log.i("Firebase", "Repo getRealtimeFirebaseDataCurrentMessageList Listen failed.", e)
+//                            if (!continuation.isCompleted) {
+//                                continuation.resumeWithException(e)
+//                            }
+//                            return@addSnapshotListener
+//                        }
+//
+//                        firebaseCurrentMessageList.clear() // Alte Liste leeren
+//                        for (message in messageList!!) {
+//                            Log.d("Firebase", "Repo: Message: ${message.id} => ${message.data}")
+//
+//                            val message2 = Message(
+//                                messageId = message.id,
+//                                chatRoomId = message.getString("chatRoomId"),
+//                                senderId = message.getString("senderId"),
+//                                messageText = message.getString("messageText"),
+//                                timestamp = message.getLong("timestamp"),
+//                                messageStatus = message.getString("messageStatus")
+//                            )
+//
+//                            firebaseCurrentMessageList.add(message2)
+//                        }
+//                        val firebaseCurrentMessageList2 = firebaseCurrentMessageList.sortedBy { it.timestamp }
+//
+//                        _firebaseCurrentMessageList.postValue(firebaseCurrentMessageList2)
+//
+//                        // Coroutine das erste Mal fortsetzen, falls es noch nicht abgeschlossen ist
+//                        if (!continuation.isCompleted) {
+//                            continuation.resume(Unit)
+//                        }
+//
+//                        Log.i("Firebase", "Repo getRealtimeFirebaseDataCurrentMessageList: ${firebaseCurrentMessageList2.toString()}")
+//                    }
+//
+//                // Falls die Coroutine storniert wird, Listener entfernen
+//                continuation.invokeOnCancellation {
+//                    listenerRegistration.remove()
+//                    Log.i("Firebase", "Repo getRealtimeFirebaseDataCurrentMessageList: Listener wurde entfernt.")
+//                }
+//            }
+//        } catch (e: Exception) {
+//            Log.i("Firebase", "Repo: getRealtimeFirebaseDataCurrentMessageList: ${e.toString()}")
+//            if (!continuation.isCompleted) {
+//                continuation.resumeWithException(e)
+//            }
+//        }
+//    }
+
+    suspend fun getMessageList() = suspendCancellableCoroutine<Unit> { continuation ->
         val firebaseCurrentMessageList: MutableList<Message> = mutableListOf()
 
         try {
             _currentChatRoom.value?.chatRoomId.let { chatRoomId ->
-                val listenerRegistration = firebasedb2.collection("Messages")
-                    .whereEqualTo("chatRoomId", chatRoomId)
+                val listenerRegistration = firebaseDB.collection("Messages")
                     .addSnapshotListener { messageList, e ->
                         if (e != null) {
                             Log.i("Firebase", "Repo getRealtimeFirebaseDataCurrentMessageList Listen failed.", e)
@@ -597,7 +653,7 @@ class Repository() {
                         }
                         val firebaseCurrentMessageList2 = firebaseCurrentMessageList.sortedBy { it.timestamp }
 
-                        _firebaseCurrentMessageList.postValue(firebaseCurrentMessageList2)
+                        _firebaseMessageList.postValue(firebaseCurrentMessageList2)
 
                         // Coroutine das erste Mal fortsetzen, falls es noch nicht abgeschlossen ist
                         if (!continuation.isCompleted) {
@@ -623,8 +679,46 @@ class Repository() {
 
     fun clearMessagelist(){
         val emptyMessageList:List<Message> = listOf()
-        _firebaseCurrentMessageList.postValue(emptyMessageList)
+        _firebaseMessageList.postValue(emptyMessageList)
     }
+
+    suspend fun getChatRoomList() = suspendCancellableCoroutine<Unit> { continuation ->
+        var isResumed = false // Flag, um mehrfaches Fortsetzen zu verhindern
+
+        val listenerRegistration = firebaseDB.collection("ChatRooms")
+            .whereArrayContains("chatParticipants", _currentFirebaseUser.value!!.uid)
+            .addSnapshotListener { chatRoomList, e ->
+                if (e != null) {
+                    Log.i("Firebase", "Repo: getChatRoomListNew: Listen failed: ${e.toString()}")
+                    if (!isResumed) {
+                        continuation.resumeWithException(e) // Fehler an die Coroutine weitergeben
+                        isResumed = true
+                    }
+                    return@addSnapshotListener
+                }
+
+                val chatRoomList2: MutableList<ChatRoom> = mutableListOf()
+                for (chatRoom in chatRoomList!!) {
+                    val chatRoom2 = chatRoom.toObject<ChatRoom>()
+                    Log.i("Firebase", "Repo: getChatRoomListNew: Listen passed: ${chatRoom.data}")
+                    chatRoomList2.add(chatRoom2)
+                }
+                Log.i("Firebase", "Repo: getChatRoomListNew: Listen passed: List: ${chatRoomList2}")
+                _firebaseChatRoomList.value = chatRoomList2
+
+
+                if (!isResumed) {
+                    continuation.resume(Unit)
+                    isResumed = true
+                }
+            }
+
+        // Stelle sicher, dass der Listener abgemeldet wird, wenn die Coroutine abgebrochen wird
+        continuation.invokeOnCancellation {
+            listenerRegistration.remove()
+        }
+    }
+
 
 
 

@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.messagesFragment -> {
                     binding.btnBack.isVisible = true
                     binding.mcvProfileImage.isVisible = true
+
                     binding.ivProfilePicture.load(viewModel.currentChatPartner.image)
                     binding.tvHeader.text = getString(R.string.messages)
                     binding.toolbar.isGone = false

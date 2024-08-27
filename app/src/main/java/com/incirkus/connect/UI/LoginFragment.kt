@@ -52,9 +52,7 @@ class LoginFragment : Fragment() {
             if (it != null){
                 Log.i("Firebase", "LoginFragment: CurrentFirebaseUser: ${it.toString()}")
                 findNavController().navigate(R.id.chatsFragment)
-                viewModel.getFirebaseDataUser()
-                viewModel.setCurrentUser()
-                viewModel.getFirebaseDataChatRooms()
+                viewModel.loadData()
             }
 
         }
