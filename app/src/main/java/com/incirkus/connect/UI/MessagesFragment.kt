@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.incirkus.connect.ADAPTER.MessageAdapter
+import com.incirkus.connect.ADAPTER.ViewPagerAdapter
+import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
@@ -39,50 +41,56 @@ class MessagesFragment : Fragment() {
         viewModel.currentChatRoom
         viewModel.currentChatPartner
 
-
-
-
+        val chatRoomlist: List<ChatRoom> = listOf(viewModel.currentChatRoom.value!!, viewModel.currentChatRoom.value!!)
 
         viewModel.firebaseMessageList.observe(viewLifecycleOwner){
             Log.d("MessageList", it.toString())
-            val adapter = MessageAdapter(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId },viewModel)
-            binding.rvMessageFragment.adapter = adapter
-            binding.rvMessageFragment.scrollToPosition(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId }.size-1)
-        }
-
-
-        binding.btnSend.setOnClickListener {
-
-            if (binding.tietMessageText.text.toString() != "") {
-
-                val messageId = UUID.randomUUID().toString()
-                val chatRoomId = viewModel.currentChatRoom.value?.chatRoomId
-                val senderId = viewModel.currentUser.value?.userId
-                val messageText: String = binding.tietMessageText.text.toString()
-                val timestamp: Long = System.currentTimeMillis()
-                var messageStatus: String? = "send"
-
-                val message = Message(
-                    messageId = messageId,
-                    chatRoomId = chatRoomId,
-                    senderId = senderId,
-                    messageText = messageText,
-                    timestamp = timestamp,
-                    messageStatus = messageStatus,
-
-                )
-
-                viewModel.sendMessage(message)
-                viewModel.currentChatRoom.value?.lastMessage = messageText
-                viewModel.currentChatRoom.value?.lastActivityTimestamp = timestamp
-                viewModel.currentChatRoom.value?.lastMessageSenderId = senderId
-                viewModel.updateChatRoom()
-
-                binding.tietMessageText.text?.clear()
-                binding.rvMessageFragment.scrollToPosition(viewModel.firebaseMessageList.value!!.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId }.size-1)
-            }
+            val adapter = ViewPagerAdapter(chatRoomlist,viewModel, viewLifecycleOwner)
+            binding.viewPager.adapter = adapter
 
         }
+
+
+//        viewModel.firebaseMessageList.observe(viewLifecycleOwner){
+//            Log.d("MessageList", it.toString())
+//            val adapter = MessageAdapter(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId },viewModel)
+//            binding.rvMessageFragment.adapter = adapter
+//            binding.rvMessageFragment.scrollToPosition(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId }.size-1)
+//        }
+
+
+//        binding.btnSend.setOnClickListener {
+//
+//            if (binding.tietMessageText.text.toString() != "") {
+//
+//                val messageId = UUID.randomUUID().toString()
+//                val chatRoomId = viewModel.currentChatRoom.value?.chatRoomId
+//                val senderId = viewModel.currentUser.value?.userId
+//                val messageText: String = binding.tietMessageText.text.toString()
+//                val timestamp: Long = System.currentTimeMillis()
+//                var messageStatus: String? = "send"
+//
+//                val message = Message(
+//                    messageId = messageId,
+//                    chatRoomId = chatRoomId,
+//                    senderId = senderId,
+//                    messageText = messageText,
+//                    timestamp = timestamp,
+//                    messageStatus = messageStatus,
+//
+//                )
+//
+//                viewModel.sendMessage(message)
+//                viewModel.currentChatRoom.value?.lastMessage = messageText
+//                viewModel.currentChatRoom.value?.lastActivityTimestamp = timestamp
+//                viewModel.currentChatRoom.value?.lastMessageSenderId = senderId
+//                viewModel.updateChatRoom()
+//
+//                binding.tietMessageText.text?.clear()
+//                binding.rvMessageFragment.scrollToPosition(viewModel.firebaseMessageList.value!!.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId }.size-1)
+//            }
+//
+//        }
 
     }
 
