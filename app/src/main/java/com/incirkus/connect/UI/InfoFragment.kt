@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import coil.load
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentAttachmentBinding
@@ -30,7 +31,11 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        binding.tietName.setText(viewModel.currentChatPartner.fullName)
+        binding.tietDepartment.setText(viewModel.currentChatPartner.department)
+        binding.tietEmail.setText(viewModel.currentChatPartner.email)
+        binding.tietNumber.setText(viewModel.currentChatPartner.phoneNumber)
+        binding.ivProfilePicture.load(viewModel.currentChatPartner.image)
 
     }
 }

@@ -45,4 +45,9 @@
         android:name="com.incirkus.connect.UI.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/viewPageFragment"
+        android:name="com.incirkus.connect.UI.ViewPageFragment"
+        android:label="fragment_view_page"
+        tools:layout="@layout/fragment_view_page" />
 </navigation>

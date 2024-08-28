@@ -54,7 +54,7 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
 
         binding.root.setOnClickListener {
             viewModel.setCurrentChatroom(chatRoom)
-            binding.root.findNavController().navigate(R.id.messagesFragment)
+            binding.root.findNavController().navigate(R.id.viewPageFragment)
         }
 //
 //        if (viewModel.currentChatParticipants.value != null){
