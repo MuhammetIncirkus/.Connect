@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.incirkus.connect.ADAPTER.ViewPager2Adapter
-import com.incirkus.connect.ADAPTER.ViewPagerAdapter
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentViewPageBinding
@@ -37,17 +36,10 @@ class ViewPageFragment : Fragment() {
         viewModel.currentChatRoom
         viewModel.currentChatPartner
 
-
-
         val chatRoomlist: List<ChatRoom> = listOf(viewModel.currentChatRoom.value!!, viewModel.currentChatRoom.value!!)
 
-        viewModel.firebaseMessageList.observe(viewLifecycleOwner){
-            Log.d("MessageList", it.toString())
             val adapter = ViewPager2Adapter(childFragmentManager,lifecycle)
-            //val adapter = ViewPagerAdapter(chatRoomlist,viewModel, viewLifecycleOwner)
             binding.viewPager.adapter = adapter
-
-
             // TabLayoutMediator wird verwendet, um TabLayout und ViewPager2 zu verbinden
             TabLayoutMediator(binding.tabBar, binding.viewPager) { tab, position ->
                 when(position){
@@ -58,10 +50,9 @@ class ViewPageFragment : Fragment() {
                         tab.text = "Information"
                     }
                 }
-
             }.attach()
 
-        }
+
 
 
 

@@ -25,6 +25,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.incirkus.connect.DATA.Model.Attachment
 import com.incirkus.connect.DATA.Model.ChatRoom
 
 import kotlinx.coroutines.launch
@@ -648,7 +649,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     var imagesRef: StorageReference? = storageRef.child("profilePictures/$fileName")
     var spaceRef = storageRef.child(fileName)
 
-
+    lateinit var attachmentRef: DocumentReference
 
     fun uploadImage(uri: Uri){
         val fileName : String = profileRef.id + "_profilePicture.jpg"
@@ -687,6 +688,44 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
+
+    fun uploadAttachment(uri: Uri, attachment: Attachment){
+        val chatRoomId = attachment.chatRoomId
+        val filename = attachment.attachmentName
+        val storageRef = firebaseStorage.reference.child("Attachment/$chatRoomId/$filename")
+        val uploadTask = storageRef.putFile(uri)
+
+        uploadTask.addOnCompleteListener{
+            storageRef.downloadUrl.addOnCompleteListener {
+                if(it.isSuccessful){
+                    attachment.path = it.result.toString()
+                    sendAttachment(attachment)
+                }
+            }
+        }
+    }
+
+    fun sendAttachment(attachment: Attachment){
+
+        firedatabase.collection("Attachments").document(attachment.attachmentId).set(attachment)
+
+        val message = Message(
+            messageId = attachment.attachmentId,
+            chatRoomId = attachment.chatRoomId,
+            senderId = attachment.senderID,
+            messageText = "Attachment Send: \n${attachment.attachmentName}",
+            timestamp = attachment.timestamp,
+            messageStatus = "send"
+        )
+
+        sendMessage(message)
+
+        currentChatRoom.value!!.lastMessageSenderId = attachment.senderID
+        currentChatRoom.value!!.lastMessage = attachment.attachmentName
+        currentChatRoom.value!!.lastActivityTimestamp = attachment.timestamp
+        updateChatRoom()
+
+    }
 
 
 

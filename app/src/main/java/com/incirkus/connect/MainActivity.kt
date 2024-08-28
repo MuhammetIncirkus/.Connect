@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
 
                 }
-                R.id.messagesFragment -> {
+                R.id.viewPageFragment -> {
                     binding.btnBack.isVisible = true
                     binding.mcvProfileImage.isVisible = true
                     viewModel.currentChatPartner2.observe(this, Observer { it ->

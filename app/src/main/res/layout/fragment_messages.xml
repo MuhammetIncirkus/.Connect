@@ -32,17 +32,31 @@
             android:layout_height="match_parent">
 
 
-            <com.google.android.material.button.MaterialButton
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Send"
-                android:drawableLeft="@drawable/baseline_send_24"
+                android:src="@drawable/baseline_send_24"
                 android:drawableTint="@color/white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                android:visibility="visible"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_attachment_24"
+                android:drawableTint="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:visibility="invisible"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
