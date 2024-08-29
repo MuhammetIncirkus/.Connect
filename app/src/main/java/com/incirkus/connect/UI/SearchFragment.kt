@@ -39,7 +39,7 @@ class SearchFragment : Fragment() {
         viewModel.filteredUserList.observe(viewLifecycleOwner){
 
             binding.rvSearchFragment.setHasFixedSize(true)
-            val searchAdapter = SearchAdapter(it, viewModel)
+            val searchAdapter = SearchAdapter(it.sortedBy { it.department }, viewModel)
             binding.rvSearchFragment.adapter = searchAdapter
 
         }

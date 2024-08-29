@@ -37,7 +37,7 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
             placeholder(R.drawable.ic_launcher_foreground)
         }
         binding.tvContactName.text = user.fullName
-        binding.tvContactLastMessage.text = ""
+        binding.tvContactLastMessage.text = user.department
         binding.tvContactLastMessageDate.text = ""
         binding.imageView2.isVisible = false
 

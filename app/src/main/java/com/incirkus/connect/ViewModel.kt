@@ -971,7 +971,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 _filteredUserList.value = currentList
             } else {
                 _filteredUserList.value = currentList.filter {
-                    it.fullName!!.contains(filterText, ignoreCase = true)  // oder andere Kriterien
+                    it.fullName!!.contains(filterText, true) || it.department!!.contains(filterText,true)  // oder andere Kriterien
                 }
             }
         }

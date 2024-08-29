@@ -54,9 +54,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tiet_searchText"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="55dp"
                     android:paddingHorizontal="8dp"
-
+                    android:hint="Search name or department"
                     android:drawableLeft="@drawable/baseline_search_24"
                     />
 
