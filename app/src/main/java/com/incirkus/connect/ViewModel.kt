@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.incirkus.connect.DATA.Model.Attachment
 import com.incirkus.connect.DATA.Model.ChatRoom
+import com.incirkus.connect.DATA.Model.LeaveRequest
 
 import kotlinx.coroutines.launch
 import java.io.File
@@ -975,6 +976,12 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
+    }
+
+    fun submitLeaveRequest(leaveRequest: LeaveRequest){
+
+        firedatabase.collection("LeaveRequest").document(leaveRequest.requestId).set(leaveRequest)
+
     }
 
 }

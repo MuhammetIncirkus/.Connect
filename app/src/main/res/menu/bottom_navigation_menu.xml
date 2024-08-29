@@ -12,7 +12,7 @@
         android:icon="@drawable/baseline_search_24"
         />
     <item
-        android:id="@+id/calendarFragment"
+        android:id="@+id/viewPageCalendarFragment"
         android:title="@string/calendar"
         android:icon="@drawable/baseline_calendar_month_24"
         />

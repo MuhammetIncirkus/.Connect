@@ -4,13 +4,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.UUID
 
-@Entity(tableName = "leave_requests")
+
 data class LeaveRequest(
-    @PrimaryKey(autoGenerate = true)
-    val requestId: Long = 0,
-    val userId: String,
-    val startDate: Long,
-    val endDate: Long,
-    var status: String,
+
+    val requestId: String = "",
+    var userId: String? = "",
+    var startDate: Long? = 0,
+    var endDate: Long? = 0,
+    var status: String? = "",
 
     )

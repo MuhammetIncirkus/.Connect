@@ -32,11 +32,6 @@ class ViewPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.currentUser
-        viewModel.currentChatRoom
-        viewModel.currentChatPartner
-
-        val chatRoomlist: List<ChatRoom> = listOf(viewModel.currentChatRoom.value!!, viewModel.currentChatRoom.value!!)
 
             val adapter = ViewPager2Adapter(childFragmentManager,lifecycle)
             binding.viewPager.adapter = adapter

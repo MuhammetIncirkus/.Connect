@@ -50,4 +50,14 @@
         android:name="com.incirkus.connect.UI.ViewPageFragment"
         android:label="fragment_view_page"
         tools:layout="@layout/fragment_view_page" />
+    <fragment
+        android:id="@+id/holidayFragment"
+        android:name="com.incirkus.connect.UI.HolidayFragment"
+        android:label="fragment_holiday"
+        tools:layout="@layout/fragment_holiday" />
+    <fragment
+        android:id="@+id/viewPageCalendarFragment"
+        android:name="com.incirkus.connect.UI.ViewPageCalendarFragment"
+        android:label="fragment_view_page_calendar"
+        tools:layout="@layout/fragment_view_page_calendar" />
 </navigation>

@@ -103,9 +103,8 @@ class MainActivity : AppCompatActivity() {
                     binding.tvHeader.text = getString(R.string.search)
                     binding.toolbar.isGone = false
 
-
                 }
-                R.id.calendarFragment -> {
+                R.id.viewPageCalendarFragment -> {
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
                     binding.tvHeader.text = getString(R.string.calendar)
