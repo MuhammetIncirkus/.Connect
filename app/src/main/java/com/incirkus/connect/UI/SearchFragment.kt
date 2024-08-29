@@ -1,6 +1,8 @@
 package com.incirkus.connect.UI
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,13 +32,38 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.firebaseUserList.observe(viewLifecycleOwner){
+        viewModel.userSearchList.observe(viewLifecycleOwner) {
+            viewModel.searchFilter("") // Initiale Liste ohne Filterung
+        }
+
+        viewModel.filteredUserList.observe(viewLifecycleOwner){
 
             binding.rvSearchFragment.setHasFixedSize(true)
             val searchAdapter = SearchAdapter(it, viewModel)
             binding.rvSearchFragment.adapter = searchAdapter
 
         }
+
+
+        binding.tietSearchText.addTextChangedListener(object : TextWatcher {
+
+            // Die beforeTextChanged-Funktion wird aufgerufen, bevor sich der Text ändert
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            // Die onTextChanged-Funktion wird während der Änderung aufgerufen
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchText = s.toString()
+                viewModel.searchFilter(searchText)
+            }
+
+            // Die afterTextChanged-Funktion wird nach der Änderung aufgerufen
+            override fun afterTextChanged(s: Editable?) {
+                val searchText = s.toString()
+                viewModel.searchFilter(searchText)
+            }
+        })
 
     }
 

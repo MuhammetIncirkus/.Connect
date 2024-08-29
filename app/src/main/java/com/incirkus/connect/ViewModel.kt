@@ -538,6 +538,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     var _currentChatPartner = MutableLiveData<User>()
     val currentChatPartner2: LiveData<User> = _currentChatPartner
 
+//    var _userSearchList = (repository.firebaseUserList)
+//    //private var _userSearchList =  MutableLiveData<List<User>>(userList)
+//    val userSearchList: LiveData<List<User>> = _userSearchList
 
 //    private val firebaseAuth = FirebaseAuth.getInstance()
 //    private val firebaseStorage = FirebaseStorage.getInstance()
@@ -946,6 +949,31 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             repository.setCurrentUser()
             repository.getChatRoomList()
             repository.getMessageList()
+        }
+    }
+
+
+
+    var userSearchList: LiveData<List<User>> = repository.firebaseUserList
+    private val _filteredUserList = MutableLiveData<List<User>>()
+    val filteredUserList: LiveData<List<User>> = _filteredUserList
+
+    fun searchFilter(filterText: String){
+        if (!userSearchList.value.isNullOrEmpty()) {
+//            Log.i("Firebase", "ViewModel: searchFilter: ${userSearchList.value}")
+//            var _searchlist = MutableLiveData<List<User>>(userSearchList.value)
+//            val searchlist: LiveData<List<User>> = _searchlist
+//            _searchlist.value = _searchlist.value!!.filter { it.fullName!!.contains(filterText,true)  }
+//            userSearchList = searchlist
+//        }
+            val currentList = userSearchList.value ?: return
+            if (filterText.isEmpty()) {
+                _filteredUserList.value = currentList
+            } else {
+                _filteredUserList.value = currentList.filter {
+                    it.fullName!!.contains(filterText, ignoreCase = true)  // oder andere Kriterien
+                }
+            }
         }
     }
 
