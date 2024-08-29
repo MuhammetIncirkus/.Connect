@@ -806,7 +806,7 @@ class Repository() {
 
                         val attachment2 = Attachment(
                             attachmentId = attachment.id,
-                            senderID = attachment.getString("senderId"),
+                            senderID = attachment.getString("senderID"),
                             attachmentName = attachment.getString("attachmentName"),
                             attachmentType = attachment.getString("attachmentType"),
                             chatRoomId = attachment.getString("chatRoomId"),

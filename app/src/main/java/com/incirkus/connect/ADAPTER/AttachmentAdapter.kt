@@ -1,12 +1,15 @@
 package com.incirkus.connect.ADAPTER
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.incirkus.connect.DATA.Model.Attachment
+import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.AttachmentListElementBinding
 
-class AttachmentAdapter (private var attachmentList: List<Attachment>) : RecyclerView.Adapter<AttachmentAdapter.ItemViewHolder>() {
+class AttachmentAdapter (private var attachmentList: List<Attachment>,private val viewModel: ViewModel) : RecyclerView.Adapter<AttachmentAdapter.ItemViewHolder>() {
     inner class ItemViewHolder(val binding: AttachmentListElementBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -24,8 +27,18 @@ class AttachmentAdapter (private var attachmentList: List<Attachment>) : Recycle
         val attachment = attachmentList[position]
 
         binding.tvAttachmentName.text = attachment.attachmentName
-        binding.tvAttachmentType.text = attachment.attachmentType
-        binding.tvAttachmentDate.text = attachment.timestamp.toString()
+
+            Log.d("Firebase", "AttachmentAdapter: CurrentUser: ${viewModel.currentUser.value!!.userId.toString()}")
+            Log.d("Firebase", "AttachmentAdapter: attachment.senderID: ${attachment.senderID.toString()}")
+        if (attachment.senderID == viewModel.currentUser.value!!.userId){
+            binding.tvAttachmentType.text = "You Send"
+        }else{
+            binding.tvAttachmentType.text = "${viewModel.currentChatPartner.firstName} Send"
+        }
+        val date = attachment.timestamp?.let { viewModel.convertTimestampToDate(it) }
+        binding.tvAttachmentDate.text = date
+        binding.ivAttachmentTypeImage.isVisible = false
+
 
     }
 }

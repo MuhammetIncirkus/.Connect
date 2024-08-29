@@ -31,9 +31,10 @@ class AttachmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.firebaseAttachmentList.observe(viewLifecycleOwner){
+        viewModel.firebaseAttachmentList.observe(viewLifecycleOwner){ it ->
             binding.rvAttachments.setHasFixedSize(true)
-            val attachmentAdapter = AttachmentAdapter(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId && it.senderID != viewModel.currentFirebaseUser.value!!.uid}) //TODO: ChatAdapter gegen LeaveRequestAdapter austauschen
+
+            val attachmentAdapter = AttachmentAdapter(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId},viewModel)
             binding.rvAttachments.adapter = attachmentAdapter
         }
 
