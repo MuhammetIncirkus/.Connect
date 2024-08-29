@@ -28,8 +28,7 @@ class AttachmentAdapter (private var attachmentList: List<Attachment>,private va
 
         binding.tvAttachmentName.text = attachment.attachmentName
 
-            Log.d("Firebase", "AttachmentAdapter: CurrentUser: ${viewModel.currentUser.value!!.userId.toString()}")
-            Log.d("Firebase", "AttachmentAdapter: attachment.senderID: ${attachment.senderID.toString()}")
+
         if (attachment.senderID == viewModel.currentUser.value!!.userId){
             binding.tvAttachmentType.text = "You Send"
         }else{
