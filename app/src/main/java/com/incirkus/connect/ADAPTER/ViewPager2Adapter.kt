@@ -6,13 +6,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.incirkus.connect.DATA.Model.ChatRoom
+import com.incirkus.connect.UI.AttachmentFragment
 import com.incirkus.connect.UI.InfoFragment
 import com.incirkus.connect.UI.MessagesFragment
 import com.incirkus.connect.ViewModel
 
 class ViewPager2Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager,lifecycle) {
     override fun getItemCount(): Int {
-        return 2
+        return 3
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -22,6 +23,9 @@ class ViewPager2Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle):
             }
             1 ->{
                 InfoFragment()
+            }
+            2 ->{
+                AttachmentFragment()
             }
             else ->{
                 MessagesFragment()

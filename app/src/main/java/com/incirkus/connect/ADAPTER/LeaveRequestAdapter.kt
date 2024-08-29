@@ -29,11 +29,14 @@ class LeaveRequestAdapter (private var leaveRequestList: List<LeaveRequest>, pri
         val binding = holder.binding
         val leaveRequest = leaveRequestList[position]
 
-        val startDate =  viewModel.convertTimestampToDate(leaveRequest.startDate)
-        val endDate = viewModel.convertTimestampToDate(leaveRequest.endDate)
+        val startDate =  viewModel.convertTimestampToDates(leaveRequest.startDate!!)
+        val endDate = viewModel.convertTimestampToDates(leaveRequest.endDate!! )
 
-        binding.tvContactName.text = "$startDate $endDate"
+        binding.tvContactName.text = "$startDate - $endDate"
         binding.tvContactLastMessage.text = leaveRequest.status
+        binding.tvContactLastMessageDate.text = ""
+        binding.imageView2.isVisible = false
+        binding.ivProfilePicture.isVisible = false
 
     }
 }

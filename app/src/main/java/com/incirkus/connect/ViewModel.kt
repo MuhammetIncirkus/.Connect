@@ -535,6 +535,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val currentChatRoom = repository.currentChatRoom
     val firebaseMessageList = repository.firebaseMessageList
     var currentChatPartner = User()
+    val firebaseLeaveRequestList = repository.firebaseLeaveRequestList
+    val firebaseAttachmentList = repository.firebaseAttachmentList
 
     var _currentChatPartner = MutableLiveData<User>()
     val currentChatPartner2: LiveData<User> = _currentChatPartner
@@ -940,6 +942,15 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun convertTimestampToDates(timestamp:Long):String{
+        val instant = Instant.ofEpochMilli(timestamp)
+        val zoneId = ZoneId.systemDefault()
+        val zonedDateTime = ZonedDateTime.ofInstant(instant, zoneId)
+
+        val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        return zonedDateTime.format(dateTimeFormatter)
+    }
+
     fun clearMessagelist(){
         repository.clearMessagelist()
     }
@@ -950,6 +961,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             repository.setCurrentUser()
             repository.getChatRoomList()
             repository.getMessageList()
+            repository.getFirebaseDataLeaveRequests()
+            repository.getFirebaseAttachments()
         }
     }
 

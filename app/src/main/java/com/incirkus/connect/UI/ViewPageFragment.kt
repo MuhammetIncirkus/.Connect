@@ -44,6 +44,9 @@ class ViewPageFragment : Fragment() {
                     1->{
                         tab.text = "Information"
                     }
+                    2->{
+                        tab.text = "Attachments"
+                    }
                 }
             }.attach()
 
