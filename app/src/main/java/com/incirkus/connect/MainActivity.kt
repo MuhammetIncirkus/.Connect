@@ -132,10 +132,10 @@ class MainActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
 
             val currentDestination = navHost.navController.currentDestination?.id
-            val isInMessageFragment = currentDestination == R.id.messagesFragment
+            val isInMessageFragment = currentDestination == R.id.viewPageFragment
 
             if (binding.btnBack.isVisible && isInMessageFragment){
-                navHost.navController.navigate(R.id.chatsFragment)
+                navHost.navController.navigateUp()
 //                viewModel.clearMessagelist()
             }
         }
