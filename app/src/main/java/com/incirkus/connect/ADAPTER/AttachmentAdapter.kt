@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.incirkus.connect.DATA.Model.Attachment
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.AttachmentListElementBinding
@@ -36,7 +37,7 @@ class AttachmentAdapter (private var attachmentList: List<Attachment>,private va
         }
         val date = attachment.timestamp?.let { viewModel.convertTimestampToDate(it) }
         binding.tvAttachmentDate.text = date
-        binding.ivAttachmentTypeImage.isVisible = false
+        binding.ivAttachmentTypeImage.load(attachment.path)
 
 
     }
