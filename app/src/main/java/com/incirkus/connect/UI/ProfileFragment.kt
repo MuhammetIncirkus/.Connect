@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
@@ -42,7 +43,16 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.currentUser.observe(viewLifecycleOwner){
 
+            if (it != null) {
+                binding.ivProfilePicture.load(it.image)
+                binding.tietName.setText(it.fullName)
+                binding.tietDepartment.setText(it.department)
+                binding.tietEmail.setText(it.email)
+                binding.tietNumber.setText(it.phoneNumber)
+            }
+        }
 
         binding.btnLogout.setOnClickListener {
 
@@ -50,7 +60,7 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.loginFragment)
         }
 
-        binding.btnUploadImage.setOnClickListener {
+        binding.btnChangeProfilePicture.setOnClickListener {
             getContent.launch("image/*")
         }
 

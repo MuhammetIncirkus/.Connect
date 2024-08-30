@@ -476,24 +476,38 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     var spaceRef = storageRef.child(fileName)
 
     lateinit var attachmentRef: DocumentReference
+    lateinit var profileRef: DocumentReference
 
     fun uploadImage(uri: Uri){
-        val fileName : String = profileRef.id + "_profilePicture.jpg"
+        val fileName : String = currentUser.value?.userId + "_profilePicture.jpg"
         val imageRef = firebaseStorage.reference.child("images/${currentUser.value?.userId}/$fileName")
         val uploadTask = imageRef.putFile(uri)
 
         uploadTask.addOnCompleteListener{
             imageRef.downloadUrl.addOnCompleteListener {
                 if(it.isSuccessful){
-                    setImage(it.result)
+                    currentUser.value?.image = it.result.toString()
+                    updateCurrentUser()
                 }
             }
         }
     }
 
-    lateinit var profileRef: DocumentReference
 
+    fun updateCurrentUser(){
+        val currentUserRef = currentUser.value?.let {
+            firedatabase.collection("User").document(
+                it.userId)
+        }
+        if (currentUserRef != null) {
+            currentUserRef
+                .update("image", currentUser.value?.image)
+                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateCurrentUser: ${currentUser.value?.image}") }
+                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateCurrentUser: ${e.toString()}") }
 
+        }
+
+    }
 
     private fun setImage(uri: Uri){
         profileRef.update("image",uri.toString())
