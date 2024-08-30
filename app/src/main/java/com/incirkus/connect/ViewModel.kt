@@ -21,6 +21,8 @@ import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Repository
 //import com.incirkus.connect.DATA.local.getDataBase
 import androidx.lifecycle.ViewModel
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
@@ -49,99 +51,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val repository = Repository()
     //val repository = Repository(database,this)
 
-/*
 
-    val currentUserOld = repository.currentUser
-    val userList = repository.userList
-    val currentChatRoom = repository.currentChatRoom
-    val currentChatParticipants = repository.currentChatParticipants
-    val usersChatRoomIdList = repository.usersChatRoomIdList
-    val usersChatRoomList = repository.usersChatRoomList
-
-
-//    fun preloadItems(){
-//        viewModelScope.launch {
-//            repository.preload()
-//            repository.loadCurrentUserFromUserList()
-//            repository.loadCurrentUser()
-//            //repository.loadUserList()
-//        }
-//    }
-
-//    fun loadCurrentUser(): User{
-//        lateinit var user: User
-//        viewModelScope.launch {
-//            user = repository.loadCurrentUserFromUserlist()
-//        }
-//        return user
-//    }
-
-//    fun loadCurrentUser2(){
-//        viewModelScope.launch {
-//            repository.loadCurrentUser()
-//        }
-//    }
-
-//    fun loadUserList(){
-//        viewModelScope.launch {
-//            repository.loadUserList()
-//        }
-//    }
-
-//    fun createNewChatroom(currentUser: User, selectedUser: User){
-//        viewModelScope.launch {
-//            repository.createNewChatroom(currentUser,selectedUser)
-//        }
-//    }
-
-//    fun createNewChatroom2(chatRoom: ChatRoom){
-//        viewModelScope.launch {
-//            repository.createNewChatroom2(chatRoom)
-//        }
-//    }
-
-//    fun newUser(user:User){
-//        viewModelScope.launch {
-//            repository.newUser(user)
-//        }
-//    }
-
-//    fun getChatRoom(chatRoomId:Long){
-//        viewModelScope.launch {
-//            repository.getChatRoom(chatRoomId)
-//        }
-//    }
-//
-//    fun getChatParticipants(chatParticipantsId:Long){
-//        viewModelScope.launch {
-//            repository.getChatParticipants(chatParticipantsId)
-//        }
-//    }
-//
-//    fun sendMessage(message: Message){
-//        viewModelScope.launch {
-//            try {
-//
-//                repository.sendMessage(message)
-//            }catch (e:Exception){
-//                Log.e("ConnectTag", "ViewModel.sendMessage: Error sending message: ${e.message}")
-//            }
-//        }
-//    }
-
-//    fun loadUsersChatLists(){
-//        viewModelScope.launch {
-//            repository.loadUsersChatParticipantsLists()
-//        }
-//    }
-//
-//    fun getOneUserById(userID: Long): LiveData<User>{
-//        lateinit var user: LiveData<User>
-//        viewModelScope.launch {
-//            user = repository.getOneUserById(userID)
-//        }
-//        return user
-//    }*/
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------------------------
@@ -541,101 +451,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     var _currentChatPartner = MutableLiveData<User>()
     val currentChatPartner2: LiveData<User> = _currentChatPartner
 
-//    var _userSearchList = (repository.firebaseUserList)
-//    //private var _userSearchList =  MutableLiveData<List<User>>(userList)
-//    val userSearchList: LiveData<List<User>> = _userSearchList
-
-//    private val firebaseAuth = FirebaseAuth.getInstance()
-//    private val firebaseStorage = FirebaseStorage.getInstance()
-//    private val firedatabase = FirebaseFirestore.getInstance()
-//
-//
-//    private var _currentUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
-//    val currentUser: LiveData<FirebaseUser?> = _currentUser
-////    private var _loggedInUser = MutableLiveData<User?>()
-////    val loggedInUser: LiveData<User?> = _loggedInUser
-//
-//    lateinit var loggedInUser: MutableLiveData<User?>
-//    private var _firebaseUserList = MutableLiveData<List<User>>()
-//    val firebaseUserList : LiveData<List<User>> = _firebaseUserList
-//
-//    fun login(email: String, password: String){
-//        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
-//            if (it.isSuccessful){
-//                _currentUser.value = it.result.user
-//                getUserListWithOutCurrentUser(it.result.user)
-//            }else{
-//                //TODO Pop-Up Message das Login fehlgeschlagen
-//            }
-//        }
-//    }
-//
-//    fun logout(){
-//        firebaseAuth.signOut()
-//        _currentUser.value = null
-//    }
-//
-//
-//    fun getUserListWithOutCurrentUser(currentUser: FirebaseUser?){
-//        val userList = mutableListOf<User>()
-//        if (currentUser != null){
-//            firedatabase.collection("User").whereNotEqualTo("id", currentUser.uid)
-//                .get()
-//                .addOnSuccessListener {
-//                    Log.d("TAG", it.toString())
-//                    for (user in it){
-//                        val cloudUser = user.toObject(User::class.java)
-//                        userList.add(cloudUser)
-//                    }
-//                }
-//                .addOnFailureListener {
-//                    Log.d("TAG", "Loading UserList failed")
-//                }
-//
-//            _firebaseUserList.postValue(userList)
-//        }
-//    }
-//
-//
-//    fun getUserListFromFirebase(){
-//        viewModelScope.launch {
-//
-//            try {
-//                val userList = repository.getFirebaseDataUser()
-//                _firebaseUserList.postValue(userList) // Post the value to ensure it's set on the main thread
-//            } catch (e: Exception) {
-//                _firebaseUserList.postValue(emptyList()) // Leere Liste setzen, falls ein Fehler auftritt
-//            }
-//        //_firebaseUserList.postValue(repository.getFirebaseDataUser())
-//
-//        }
-//    }
-//
-//
-//    fun createChatroom(user:User){
-//
-//        //TODO: Abfrage ob dieser Chatroom bereits existiert
-//
-//        val chatRoomId = UUID.randomUUID().toString()
-//        val chatRoomName :String = loggedInUser.value?.firstName!! + user.firstName
-//        val lastMessage: String = ""
-//        var lastActivityTimestamp: Long = 0L
-//        var chatParticipants: MutableList<String> = mutableListOf(loggedInUser.value?.userId!!, user.userId)
-//
-//        val chatroom: ChatRoom = ChatRoom(
-//            chatRoomId = chatRoomId,
-//            chatRoomName = chatRoomName,
-//            lastMessage = lastMessage,
-//            lastActivityTimestamp = lastActivityTimestamp,
-//            chatParticipants = chatParticipants
-//        )
-//
-//        firedatabase.collection("ChatRooms").document(chatRoomId).set(chatroom)
-//    }
-
-
-
-
 
 
 
@@ -673,21 +488,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     lateinit var profileRef: DocumentReference
 
-//    init {
-//        if(firebaseAuth.currentUser != null){
-//            setUpUserEnv()
-//        }
-//    }
 
-//    private fun setUpUserEnv(){
-//        _currentUser.value = firebaseAuth.currentUser
-//        profileRef = firedatabase.collection("User").document(firebaseAuth.currentUser?.uid!!)
-//        profileRef.addSnapshotListener { snapShot, error ->
-//            if(error == null && snapShot != null){
-//                loggedInUser.value = snapShot.toObject(User::class.java)
-//            }
-//        }
-//    }
 
     private fun setImage(uri: Uri){
         profileRef.update("image",uri.toString())
@@ -749,28 +550,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-//    private val firebaseAuth = FirebaseAuth.getInstance()
-//    private val firebaseStorage = FirebaseStorage.getInstance()
-//    private val firedatabase = FirebaseFirestore.getInstance()
-//
-//    val firebaseUserList: LiveData<List<User>> = repository.firebaseUserList
-//    val currentFirebaseUser: LiveData<FirebaseUser?> = repository.currentFirebaseUser
-//    val currentUser = repository.currentUser
-//    val firebaseChatRoomList = repository.firebaseChatRoomList
-//    val currentChatRoom = repository.currentChatRoom
-//    var currentChatPartner = User()
-
-
     fun login(email: String, password: String) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
@@ -792,33 +571,24 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-//    fun getFirebaseDataUser() {
-//        if (currentFirebaseUser != null) {
-//            viewModelScope.launch {
-//                repository.getFirebaseDataUser()
-//            }
-//        }
-//    }
-//
-//    fun setCurrentUser() {
-//        if (currentFirebaseUser != null) {
-//            viewModelScope.launch {
-//                repository.setCurrentUser()
-//            }
-//        }
-//    }
-//
-//    fun getFirebaseDataChatRooms() {
-//        if (currentFirebaseUser != null) {
-//            viewModelScope.launch {
-//                repository.getFirebaseDataChatRooms()
-//            }
-//        }
-//    }
 
-    fun createChatroom(user:User){
+    fun createChatroom(user:User):Boolean{
 
+        var checkIfChatRoomExists: Boolean = false
+        if (!firebaseChatRoomList.value.isNullOrEmpty()){
+
+            for (chatRoom in firebaseChatRoomList.value!!){
+                if (chatRoom.chatParticipants.containsAll(listOf(currentUser.value?.userId!!, user.userId))){
+                    checkIfChatRoomExists = true
+                    getCurrentChatRoom(chatRoom.chatRoomId)
+                    setCurrentChatroom(chatRoom)
+                    getChatPartner(user.userId)
+                }
+            }
+        }
         //TODO: Abfrage ob dieser Chatroom bereits existiert
+
+        if (!checkIfChatRoomExists){
 
         val chatRoomId = UUID.randomUUID().toString()
         val chatRoomName :String = currentUser.value?.firstName!! + user.firstName
@@ -841,6 +611,11 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         getCurrentChatRoom(chatRoomId)
+
+            setCurrentChatroom(chatroom)
+            getChatPartner(user.userId)
+        }
+        return checkIfChatRoomExists
     }
 
     fun getCurrentChatRoom(chatRoomId: String) {

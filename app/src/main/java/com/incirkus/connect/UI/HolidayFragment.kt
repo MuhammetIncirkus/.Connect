@@ -53,13 +53,13 @@ class HolidayFragment : Fragment() {
         val datePicker = builder.build()
         datePicker.addOnPositiveButtonClickListener { it ->
             // Retrieving the selected start and end dates
-            var startDate = it.first
-            var endDate = it.second
+            val startDate = it.first
+            val endDate = it.second
 
 
             val requestId = UUID.randomUUID().toString()
             val userId = viewModel.currentUser.value?.userId
-            var status: String? = "open"
+            val status: String? = "open"
 
             val leaveRequest = LeaveRequest(
                 requestId = requestId,

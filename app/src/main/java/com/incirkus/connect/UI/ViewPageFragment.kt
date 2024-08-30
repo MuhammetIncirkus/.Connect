@@ -24,7 +24,7 @@ class ViewPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentViewPageBinding.inflate(layoutInflater)
+        binding = FragmentViewPageBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -33,8 +33,12 @@ class ViewPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-            val adapter = ViewPager2Adapter(childFragmentManager,lifecycle)
-            binding.viewPager.adapter = adapter
+        val adapter = ViewPager2Adapter(childFragmentManager,lifecycle)
+        binding.viewPager.adapter = adapter
+
+        val startPosition = arguments?.getInt("start_position") ?: 0
+        binding.viewPager.setCurrentItem(startPosition, false)
+
             // TabLayoutMediator wird verwendet, um TabLayout und ViewPager2 zu verbinden
             TabLayoutMediator(binding.tabBar, binding.viewPager) { tab, position ->
                 when(position){

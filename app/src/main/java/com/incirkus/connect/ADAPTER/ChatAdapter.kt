@@ -1,5 +1,6 @@
 package com.incirkus.connect.ADAPTER
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -54,63 +55,10 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
 
         binding.root.setOnClickListener {
             viewModel.setCurrentChatroom(chatRoom)
+
             binding.root.findNavController().navigate(R.id.viewPageFragment)
         }
-//
-//        if (viewModel.currentChatParticipants.value != null){
-//
-//        if (currentUser.value!!.userId == viewModel.currentChatParticipants.value!!.user1Id){
-//            chatPartner = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user2Id).value!!
-//        }else  {
-//            chatPartner = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user1Id).value!!
-//        }
-//        }
-
-
-
-//        lateinit var secondUser: LiveData<User>
-//        viewModel.getChatParticipants(chatRoom.chatRoomId)
-//
-//        if (viewModel.currentUser.value!!.userId == viewModel.currentChatParticipants.value!!.user1Id){
-//
-//            secondUser = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user2Id)
-//        }else{
-//            secondUser = viewModel.getOneUserById(viewModel.currentChatParticipants.value!!.user1Id)
-//        }
-//
-//        //viewModel.filterMessageList(contact.id)
-//        if (secondUser.isInitialized){
-//
-//        binding.ivProfilePicture.setImageResource(chatPartner!!.image)
-
-//        }
-
-
 
     }
-
-
-//    fun getChatPartnerID(chatRoom: ChatRoom): String?{
-//        var chatPartnerID: String? = ""
-//
-//        for (id in chatRoom.chatParticipants){
-//            if (id != viewModel.currentUser.value?.userId){
-//                chatPartnerID = id
-//            }
-//        }
-//        return chatPartnerID
-//    }
-//
-//    fun getChatPartner(id: String): User{
-//
-//        var chatPartner: User = User()
-//
-//        for (oneUser in viewModel.firebaseUserList.value!!){
-//            if (oneUser.userId == id)
-//                chatPartner = oneUser
-//        }
-//
-//        return chatPartner
-//    }
 
 }

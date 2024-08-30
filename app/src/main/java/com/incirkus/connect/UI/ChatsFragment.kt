@@ -32,19 +32,6 @@ class ChatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.btnLogout.setOnClickListener {
-//
-//            viewModel.logout()
-//            findNavController().navigate(R.id.loginFragment)
-//        }
-
-//        if (viewModel.firebaseChatRoomList != emptyList<ChatRoom>()){
-//            binding.tvLoggedUserInfo.text = viewModel.currentFirebaseUser.value?.uid
-//            binding.tvLoggedUserInfo.isGone = false
-//        }else{
-//            binding.tvLoggedUserInfo.isGone = true
-//        }
-
         viewModel.firebaseChatRoomList.observe(viewLifecycleOwner){
 
             binding.rvChatsFragment.setHasFixedSize(true)
@@ -53,11 +40,6 @@ class ChatsFragment : Fragment() {
 
         }
 
-
-
-
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.incirkus.connect.ADAPTER
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
@@ -7,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.incirkus.connect.DATA.Model.User
@@ -43,7 +45,16 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
 
         binding.root.setOnClickListener {
 
-            viewModel.createChatroom(user)
+            val chatRoomExists =viewModel.createChatroom(user)
+
+            if (chatRoomExists){
+                val bundle = Bundle().apply {
+                    putInt("start_position", 1) // 1 entspricht dem zweiten Fragment (Index beginnt bei 0)
+                }
+                binding.root.findNavController().navigate(R.id.viewPageFragment,bundle)
+            }else{
+                binding.root.findNavController().navigate(R.id.viewPageFragment)
+            }
 
         }
 
