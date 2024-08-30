@@ -65,11 +65,14 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
 
         var newHolidayList: MutableList<Holiday> = mutableListOf()
 
-        for (holiday in holidayList){
-            if (month.year == holiday.holidayYear && month.monthNumber == holiday.holidayMonth){
-                newHolidayList.add(holiday)
+        if (holidayList != null) {
+            for (holiday in holidayList){
+                if (month.year == holiday.holidayYear && month.monthNumber == holiday.holidayMonth){
+                    newHolidayList.add(holiday)
+                }
             }
         }
+
 
         newHolidayList = newHolidayList.distinct().toMutableList()
 

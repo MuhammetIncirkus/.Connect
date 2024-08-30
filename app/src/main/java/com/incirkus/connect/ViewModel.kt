@@ -317,13 +317,17 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 //----------------------------------------------------------------------------API----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    var holidayList: MutableList<Holiday> = mutableListOf()
+    val firebaseHolidayList = repository.firebaseHolidayList
+    val holidayList: MutableList<Holiday> = repository.holidayList
 
     fun getListForHolidays(){
+
+        if (holidayList.isEmpty()){
 
         viewModelScope.launch {
             var responseList = repository.getHolidayList()
             convertResponseToHolidayList(responseList)
+        }
         }
 
     }
@@ -411,6 +415,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
                 val holiday: Holiday = Holiday(
 
+                    holidayId= UUID.randomUUID().toString(),
                     holidayName = name,
                     holidayRegion = region,
                     holidayDay = day,
@@ -420,7 +425,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                     augsburg = augsburg,
                     katholisch = katholisch
                 )
-
+                firedatabase.collection("Holidays").document(holiday.holidayId).set(holiday)
                 holidayList.add(holiday)
             }
 
@@ -738,6 +743,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             repository.getMessageList()
             repository.getFirebaseDataLeaveRequests()
             repository.getFirebaseAttachments()
+            repository.getFirebaseHolidaylist()
         }
     }
 

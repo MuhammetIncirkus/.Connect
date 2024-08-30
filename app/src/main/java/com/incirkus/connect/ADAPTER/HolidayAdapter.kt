@@ -33,12 +33,12 @@ class HolidayAdapter (private var holidayList: List<Holiday>) : RecyclerView.Ada
         }else{
             binding.tvHolidayDescription.isGone = true
         }
-        if (holiday.augsburg){
+        if (holiday.augsburg == true){
             binding.cbAugsburg.isActivated = true
         }else{
             binding.cbAugsburg.isGone = true
         }
-        if (holiday.katholisch){
+        if (holiday.katholisch == true){
             binding.cbAugsburg.isActivated = true
         }else{
             binding.cbKatholisch.isGone = true
