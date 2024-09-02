@@ -2,6 +2,7 @@ package com.incirkus.customcalendar.adapter
 
 
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -37,12 +38,28 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
 
         val currentDate = LocalDate.now()
 
+        var actualMonth: Boolean = false
+
+        Log.d("Firebase", "Calendar Adapter: currentDate.year: ${currentDate.year} month.year: ${month.year}")
+        Log.d("Firebase", "Calendar Adapter: currentDate.month.value: ${currentDate.month.value} month.year: ${month.monthNumber}")
+
+        if (month.year == currentDate.year){
+            if (month.monthNumber == currentDate.month.value){
+                actualMonth = true
+            }
+        }
+
         val context = binding.tvMonthAndYear.context
-        if (month.year == currentDate.year && month.monthNumber == currentDate.month.value){
+        if (actualMonth){
             binding.tvMonthAndYear.setTextColor(ContextCompat.getColor(context, R.color.green))
             binding.tvMonthAndYear.setTypeface(binding.tvMonthAndYear.getTypeface(), Typeface.BOLD)
             binding.tvMonthAndYear.textSize = 20F
             binding.tvMonthAndYear.setShadowLayer(1.5f, 2f, 2f, R.color.black)
+        }else{
+            binding.tvMonthAndYear.setTextColor(ContextCompat.getColor(context, R.color.black))
+            binding.tvMonthAndYear.setTypeface(binding.tvMonthAndYear.getTypeface(), Typeface.ITALIC)
+            binding.tvMonthAndYear.textSize = 14F
+            binding.tvMonthAndYear.setShadowLayer(0f, 0f, 0f, R.color.black)
         }
 
         binding.rvDays.setHasFixedSize(true)
