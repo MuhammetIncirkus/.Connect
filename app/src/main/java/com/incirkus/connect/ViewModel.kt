@@ -875,11 +875,12 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             .addOnCompleteListener {reauthentication->
                 Log.d("Firebase", "User re-authenticated.")
                 if (reauthentication.isSuccessful){
-
+                    Log.d("Firebase", "User re-authenticated.")
                 it.updatePassword(passwordNew)
                     .addOnCompleteListener { passwordUpdate ->
+                        Log.d("Firebase", "Test: ${passwordNew}")
                         if (passwordUpdate.isSuccessful) {
-                            Log.d("Firebase", "User password updated.")
+                            Log.d("Firebase", "User password updated.${passwordNew}")
                         }
                     }
                 }

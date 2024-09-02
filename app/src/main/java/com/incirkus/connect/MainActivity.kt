@@ -23,6 +23,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.appcheck.appCheck
 import com.google.firebase.initialize
 import com.incirkus.connect.databinding.ActivityMainBinding
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,12 +82,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.chatsFragment -> {
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
-                    binding.tvHeader.text = getString(R.string.chats)
+                    binding.tvHeader2.visibility = View.VISIBLE
+                    binding.tvHeader.visibility = View.INVISIBLE
+                    binding.tvHeader2.text = getString(R.string.chats)
                     binding.toolbar.isGone = false
 
 
                 }
                 R.id.viewPageFragment -> {
+                    binding.tvHeader2.visibility = View.GONE
+                    binding.tvHeader.visibility = View.VISIBLE
                     binding.btnBack.isVisible = true
                     binding.mcvProfileImage.isVisible = true
                     viewModel.currentChatPartner2.observe(this, Observer { it ->
@@ -98,6 +104,8 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 R.id.searchFragment -> {
+                    binding.tvHeader2.visibility = View.GONE
+                    binding.tvHeader.visibility = View.VISIBLE
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
                     binding.tvHeader.text = getString(R.string.search)
@@ -105,13 +113,20 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 R.id.viewPageCalendarFragment -> {
+                    val today = LocalDate.now()
+                    val formatter = DateTimeFormatter.ofPattern("d. MMMM yyyy")
+                    val formattedDate = today.format(formatter)
+                    binding.tvHeader2.visibility = View.VISIBLE
+                    binding.tvHeader.visibility = View.GONE
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
-                    binding.tvHeader.text = getString(R.string.calendar)
+                    binding.tvHeader2.text = formattedDate
                     binding.toolbar.isGone = false
 
                 }
                 R.id.profileFragment -> {
+                    binding.tvHeader2.visibility = View.GONE
+                    binding.tvHeader.visibility = View.VISIBLE
                     binding.btnBack.isVisible = false
                     binding.mcvProfileImage.isVisible = false
                     binding.tvHeader.text = getString(R.string.profile)
@@ -119,6 +134,8 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 R.id.loginFragment -> {
+                    binding.tvHeader2.visibility = View.GONE
+                    binding.tvHeader.visibility = View.VISIBLE
                     binding.toolbar.isGone = true
                     binding.bottomNavigationView.isGone = true
                 }

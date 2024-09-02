@@ -34,7 +34,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_weekDays"
-            android:layout_width="45dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -41,7 +41,7 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
         binding.tvContactName.text = user.fullName
         binding.tvContactLastMessage.text = user.department
         binding.tvContactLastMessageDate.text = ""
-        binding.imageView2.isVisible = false
+
 
         binding.root.setOnClickListener {
 

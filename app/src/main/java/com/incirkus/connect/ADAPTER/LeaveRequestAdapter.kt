@@ -35,7 +35,7 @@ class LeaveRequestAdapter (private var leaveRequestList: List<LeaveRequest>, pri
         binding.tvContactName.text = "$startDate - $endDate"
         binding.tvContactLastMessage.text = leaveRequest.status
         binding.tvContactLastMessageDate.text = ""
-        binding.imageView2.isVisible = false
+
         binding.ivProfilePicture.isVisible = false
 
     }

@@ -49,15 +49,6 @@ class CalendarFragment : Fragment() {
         recyclerView.scrollToPosition(startposition)
 
 
-        viewModel.currentMonth.observe(viewLifecycleOwner){
-
-
-            binding.tvSelectedDay.text = viewModel.currentMonth.value!!.monthString + " " + viewModel.currentMonth.value!!.year
-
-
-        }
-
-
     }
 
 

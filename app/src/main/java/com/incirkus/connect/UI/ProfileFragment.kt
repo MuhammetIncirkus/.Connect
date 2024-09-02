@@ -90,7 +90,7 @@ class ProfileFragment : Fragment() {
 
         binding.btnChangePassword.setOnClickListener {
             //viewModel.forgotPassword("mammut55@gmail.com")
-            viewModel.changePassword("muhammet@incirkus.com","123456","1234")
+            viewModel.changePassword("muhammet@incirkus.com","1234abcd","123456")
         }
 
 
