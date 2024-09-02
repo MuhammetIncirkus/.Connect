@@ -26,6 +26,8 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
@@ -327,15 +329,53 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val holidayList: MutableList<Holiday> = repository.holidayList
 
     fun getListForHolidays(){
-
         if (holidayList.isEmpty()){
-
         viewModelScope.launch {
             var responseList = repository.getHolidayList()
             convertResponseToHolidayList(responseList)
         }
         }
+    }
 
+    fun getListForHolidaysManual(){
+            viewModelScope.launch {
+                var responseList = repository.getHolidayList()
+                deleteHolidayList(responseList)
+                //convertResponseToHolidayList(responseList)
+            }
+    }
+
+    fun getHolidayListForSomeStates(states: String){
+
+            viewModelScope.launch {
+                var responseList = repository.getHolidayListForSomeStates(states)
+                deleteHolidayList(responseList)
+                //convertResponseToHolidayList(responseList)
+            }
+
+    }
+
+    fun deleteHolidayList(responseList: APIResponse){
+        val holidayListRef = firedatabase.collection("User").document(currentUser.value!!.userId).collection("HolidayList")
+
+// Abrufen aller Dokumente in der HolidayList-Unterkollektion
+        holidayListRef.get().addOnSuccessListener { querySnapshot ->
+            val deleteTasks = mutableListOf<Task<Void>>()
+            // Für jedes Dokument in der HolidayList-Unterkollektion
+            if (!querySnapshot.isEmpty){
+                for (document in querySnapshot) {
+                    // Lösche das Dokument
+                    holidayListRef.document(document.id).delete()
+                }
+            }
+            Tasks.whenAll(deleteTasks).addOnSuccessListener {
+                convertResponseToHolidayList(responseList)
+            }
+
+        }.addOnFailureListener { exception ->
+            // Fehlerbehandlung
+            Log.e("Firestore", "Error deleting documents: ", exception)
+        }
     }
 
     fun convertResponseToHolidayList(responseList: APIResponse){
@@ -431,7 +471,15 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                     augsburg = augsburg,
                     katholisch = katholisch
                 )
-                firedatabase.collection("Holidays").document(holiday.holidayId).set(holiday)
+
+
+
+
+                firedatabase.collection("User")
+                    .document(currentUser.value!!.userId)
+                    .collection("HolidayList")
+                    .document(holiday.holidayId)
+                    .set(holiday)
                 holidayList.add(holiday)
             }
 

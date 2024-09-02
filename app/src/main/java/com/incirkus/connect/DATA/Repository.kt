@@ -3,6 +3,7 @@ package com.incirkus.connect.DATA
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -22,6 +23,7 @@ import com.incirkus.connect.DATA.Remote.CalendarApi
 //import com.incirkus.connect.DATA.local.ConnectDatabase
 import com.incirkus.connect.ViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -45,6 +47,19 @@ class Repository() {
         withContext(Dispatchers.IO) {
             try {
                 holidayList = CalendarApi.retrofitService.getallHolidays()
+                Log.e("APICALL", "List loaded")
+            } catch (e: Exception) {
+                Log.e("APICALL", e.message.toString())
+            }
+        }
+        return holidayList
+    }
+
+    suspend fun getHolidayListForSomeStates(states: String): APIResponse {
+        lateinit var holidayList: APIResponse
+        withContext(Dispatchers.IO) {
+            try {
+                holidayList = CalendarApi.retrofitService.getStates("2024,2025,2026",states)
                 Log.e("APICALL", "List loaded")
             } catch (e: Exception) {
                 Log.e("APICALL", e.message.toString())
@@ -468,7 +483,7 @@ class Repository() {
 
         try {
 
-            val listenerRegistration = firebaseDB.collection("Holidays")
+            val listenerRegistration = firebaseDB.collection("User/${_currentFirebaseUser.value!!.uid}/HolidayList")
                 .addSnapshotListener { holidayList2, e ->
                     if (e != null) {
                         Log.i("Firebase", "Repo getFirebaseHolidaylist Listen failed.", e)
@@ -478,7 +493,8 @@ class Repository() {
                         return@addSnapshotListener
                     }
 
-                    firebaseHolidayList2.clear() // Alte Liste leeren
+                    firebaseHolidayList2.clear()
+                    holidayList.clear()// Alte Liste leeren
                     for (holiday in holidayList2!!) {
                         Log.d("Firebase", "Repo: Holiday: ${holiday.id} => ${holiday.data}")
 
@@ -501,6 +517,10 @@ class Repository() {
 
                     _firebaseHolidayList.postValue(firebaseHolidayList2)
 
+                    if (holidayList.isEmpty()){
+//                        viewmodel.getListForHolidaysManual()
+                    }
+
                     // Coroutine das erste Mal fortsetzen, falls es noch nicht abgeschlossen ist
                     if (!continuation.isCompleted) {
                         continuation.resume(Unit)
@@ -522,6 +542,9 @@ class Repository() {
             }
         }
     }
+
+
+
 
 
 }

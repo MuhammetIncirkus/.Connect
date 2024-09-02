@@ -5,4 +5,5 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="green">#58B913</color>
     <color name="red">#F44336</color>
+    <color name="strokeGrey">#8F8994</color>
 </resources>

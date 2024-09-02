@@ -151,7 +151,7 @@
             app:layout_constraintEnd_toStartOf="@id/btn_changePassword"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_number" />
+            app:layout_constraintTop_toBottomOf="@+id/mcv_apiSettings" />
 
         <TextView
             android:id="@+id/tv_logout"
@@ -166,6 +166,411 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/tv_changePassword"
             app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcv_apiSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/til_number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="16dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/strokeGrey"
+            app:cardCornerRadius="3dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_holiday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Feiertage"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/mcv_holidayCheckBoxes"/>
+
+                <ImageButton
+                    android:id="@+id/btn_apiChanges"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_holiday"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/baseline_arrow_drop_down_24"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_holidayCheckBoxes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_holiday"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:strokeWidth="0dp"
+                    app:cardCornerRadius="0dp"
+                    android:layout_marginHorizontal="16dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_germanywide"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <View
+                            android:id="@+id/divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_germanywide"
+                            android:layout_marginHorizontal="40dp"/>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_germanywide"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_germanywide"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_germanywide"
+                            app:layout_constraintStart_toEndOf="@+id/cb_germanywide"
+                            android:text="Bundesweit" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_BW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_germanywide"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_BW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_BW"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_BW"
+                            app:layout_constraintStart_toEndOf="@+id/cb_BW"
+
+                            android:text="Baden-\nWürttemberg" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_BY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_germanywide"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_BY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_BY"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_BY"
+                            app:layout_constraintStart_toEndOf="@+id/cb_BY"
+                            android:text="Bayern" />
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_BE"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_BW"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_BE"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_BE"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_BE"
+                            app:layout_constraintStart_toEndOf="@+id/cb_BE"
+                            android:text="Berlin" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_BB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_BW"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_BB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_BB"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_BB"
+                            app:layout_constraintStart_toEndOf="@+id/cb_BB"
+                            android:text="Brandenburg" />
+
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_HB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_BE"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_HB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_HB"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_HB"
+                            app:layout_constraintStart_toEndOf="@+id/cb_HB"
+                            android:text="Bremen" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_HH"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_BE"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_HH"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_HH"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_HH"
+                            app:layout_constraintStart_toEndOf="@+id/cb_HH"
+                            android:text="Hamburg" />
+
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_HE"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_HB"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_HE"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_HE"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_HE"
+                            app:layout_constraintStart_toEndOf="@+id/cb_HE"
+                            android:text="Hessen" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_MV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_HB"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_MV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_MV"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_MV"
+                            app:layout_constraintStart_toEndOf="@+id/cb_MV"
+                            android:text="Mecklenburg-\nVorpommern"
+                            />
+
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_NI"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_HE"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_NI"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_NI"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_NI"
+                            app:layout_constraintStart_toEndOf="@+id/cb_NI"
+                            android:text="Niedersachsen" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_NW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_HE"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_NW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_NW"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_NW"
+                            app:layout_constraintStart_toEndOf="@+id/cb_NW"
+                            android:text="Nordrhein-\nWestfalen" />
+
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_RP"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_NI"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_RP"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_RP"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_RP"
+                            app:layout_constraintStart_toEndOf="@+id/cb_RP"
+                            android:text="Rheinland-\nPfalz" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_SL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_NI"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_SL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_SL"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_SL"
+                            app:layout_constraintStart_toEndOf="@+id/cb_SL"
+                            android:text="Saarland" />
+
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_SN"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_RP"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_SN"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_SN"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_SN"
+                            app:layout_constraintStart_toEndOf="@+id/cb_SN"
+                            android:text="Sachsen" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_ST"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_RP"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_ST"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_ST"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_ST"
+                            app:layout_constraintStart_toEndOf="@+id/cb_ST"
+                            android:text="Sachsen-\nAnhalt" />
+
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_SH"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_SN"
+                            app:layout_constraintStart_toStartOf="parent">
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_SH"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_SH"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_SH"
+                            app:layout_constraintStart_toEndOf="@+id/cb_SH"
+                            android:text="Schleswig-\nHolstein" />
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_TH"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_SN"
+                            app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
+                            android:layout_marginStart="55dp">
+
+                        </com.google.android.material.checkbox.MaterialCheckBox>
+
+                        <CheckedTextView
+                            android:id="@+id/cbtv_TH"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/cb_TH"
+                            app:layout_constraintBottom_toBottomOf="@+id/cb_TH"
+                            app:layout_constraintStart_toEndOf="@+id/cb_TH"
+                            android:text="Thüringen" />
+
+
+                        <Button
+                            android:id="@+id/btn_saveApiChanges"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cb_TH"
+                            android:layout_marginVertical="16dp"
+                            android:text="Save"/>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

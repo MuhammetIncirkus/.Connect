@@ -10,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 const val BASE_URL = "https://get.api-feiertage.de"
@@ -37,6 +38,12 @@ interface ApiService {
     @GET("?")
     suspend fun getallHolidays(
         ): APIResponse
+
+    @GET("?")
+    suspend fun getStates(
+        @Query("years") years: String = "2024,2025,2026",
+        @Query("states") states: String = "nw",
+    ): APIResponse
 
 }
 
