@@ -1,10 +1,13 @@
 package com.incirkus.connect.UI
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import coil.load
 import com.incirkus.connect.R
@@ -36,6 +39,14 @@ class InfoFragment : Fragment() {
         binding.tietEmail.setText(viewModel.currentChatPartner.email)
         binding.tietNumber.setText(viewModel.currentChatPartner.phoneNumber)
         binding.ivProfilePicture.load(viewModel.currentChatPartner.image)
+
+
+        binding.btnCall.setOnClickListener {
+            val phoneNumber = viewModel.currentChatPartner.phoneNumber!!
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:$phoneNumber")
+            ContextCompat.startActivity(it.context, intent, null)
+        }
 
     }
 }
