@@ -1,8 +1,10 @@
 package com.incirkus.connect
 
 import android.app.Application
+import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,6 +25,9 @@ import com.incirkus.connect.DATA.Repository
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
@@ -44,6 +49,7 @@ import java.time.format.TextStyle
 import java.time.temporal.IsoFields
 import java.util.Locale
 import java.util.UUID
+
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -789,6 +795,49 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun submitLeaveRequest(leaveRequest: LeaveRequest){
 
         firedatabase.collection("LeaveRequest").document(leaveRequest.requestId).set(leaveRequest)
+
+    }
+
+
+    fun forgotPassword(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
+            if (it.isSuccessful) {
+
+
+
+            } else {
+                //TODO Pop-Up Message das Login fehlgeschlagen
+            }
+        }
+    }
+
+    fun changePassword(email: String, passwordOld: String, passwordNew: String) {
+
+        val user = Firebase.auth.currentUser!!
+
+// Get auth credentials from the user for re-authentication. The example below shows
+// email and password credentials but there are multiple possible providers,
+// such as GoogleAuthProvider or FacebookAuthProvider.
+        user.let {
+
+        val credential = EmailAuthProvider.getCredential(email, passwordOld)
+
+// Prompt the user to re-provide their sign-in credentials
+        it.reauthenticate(credential)
+            .addOnCompleteListener {reauthentication->
+                Log.d("Firebase", "User re-authenticated.")
+                if (reauthentication.isSuccessful){
+
+                it.updatePassword(passwordNew)
+                    .addOnCompleteListener { passwordUpdate ->
+                        if (passwordUpdate.isSuccessful) {
+                            Log.d("Firebase", "User password updated.")
+                        }
+                    }
+                }
+            }
+        }
+
 
     }
 

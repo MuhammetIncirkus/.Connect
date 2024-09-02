@@ -64,6 +64,13 @@ class ProfileFragment : Fragment() {
             getContent.launch("image/*")
         }
 
+        binding.btnChangePassword.setOnClickListener {
+            //viewModel.forgotPassword("mammut55@gmail.com")
+            viewModel.changePassword("muhammet@incirkus.com","123456","1234")
+        }
+
+
+
 
 
 

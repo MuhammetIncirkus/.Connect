@@ -60,4 +60,9 @@
         android:name="com.incirkus.connect.UI.ViewPageCalendarFragment"
         android:label="fragment_view_page_calendar"
         tools:layout="@layout/fragment_view_page_calendar" />
+    <fragment
+        android:id="@+id/passwordForgottenFragment"
+        android:name="com.incirkus.connect.UI.PasswordForgottenFragment"
+        android:label="fragment_password_forgotten"
+        tools:layout="@layout/fragment_password_forgotten" />
 </navigation>
