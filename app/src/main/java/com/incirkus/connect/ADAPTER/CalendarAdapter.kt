@@ -51,7 +51,7 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
 
         val context = binding.tvMonthAndYear.context
         if (actualMonth){
-            binding.tvMonthAndYear.setTextColor(ContextCompat.getColor(context, R.color.green))
+            binding.tvMonthAndYear.setTextColor(ContextCompat.getColor(context, R.color.primary))
             binding.tvMonthAndYear.setTypeface(binding.tvMonthAndYear.getTypeface(), Typeface.BOLD)
             binding.tvMonthAndYear.textSize = 20F
             binding.tvMonthAndYear.setShadowLayer(1.5f, 2f, 2f, R.color.black)

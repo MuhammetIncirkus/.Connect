@@ -21,7 +21,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:background="@color/secondary4"
+                >
 
 
                 <TextView
@@ -30,7 +32,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="KW" />
+                    android:text="KW"
+                    android:textColor="@color/primary"/>
 
                 <TextView
                     android:id="@+id/tv_monday"
@@ -38,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     android:text="Mo" />
 
                 <TextView
@@ -46,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     android:text="Di" />
 
                 <TextView
@@ -54,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     android:text="Mi" />
 
                 <TextView
@@ -62,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     android:text="Do" />
 
                 <TextView
@@ -70,6 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     android:text="Fr" />
 
                 <TextView
@@ -78,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     android:text="Sa" />
 
                 <TextView
@@ -86,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="@color/primary"
                     android:text="So" />
 
             </LinearLayout>

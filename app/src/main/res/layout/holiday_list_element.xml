@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:strokeColor="@color/black"
-    app:strokeWidth="0.5dp"
+    app:strokeColor="@color/tertiary"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="2dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    android:backgroundTint="@color/primary"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,6 +22,7 @@
             android:text="Date"
             android:textSize="20sp"
             android:lines="1"
+            android:textColor="@color/secondary"
             app:layout_constraintTop_toTopOf="@+id/tv_holidayName"
             app:layout_constraintBottom_toBottomOf="@+id/tv_Region"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,6 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Name"
             android:textSize="20sp"
+            android:textColor="@color/secondary"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
             app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
@@ -49,6 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Region"
+            android:textColor="@color/secondary"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="4dp"
             app:layout_constraintTop_toBottomOf="@id/tv_holidayName"
@@ -61,7 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Description"
-
+            android:textColor="@color/secondary"
             app:layout_constraintTop_toBottomOf="@id/tv_Region"
             app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
             app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
@@ -79,7 +83,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/baseline_arrow_drop_down_24"
-            app:tint="@color/primary"
+            app:tint="@color/tertiary"
             android:backgroundTint="@color/transparent"/>
 
 
