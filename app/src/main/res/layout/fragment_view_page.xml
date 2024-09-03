@@ -14,7 +14,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        >
+        android:backgroundTint="@color/primary"
+        app:tabSelectedTextColor="@color/tertiary"
+        app:tabIndicatorColor="@color/tertiary"
+        app:tabTextColor="@color/secondary"
+        app:tabIconTint="@color/secondary"
+
+    >
 
     </com.google.android.material.tabs.TabLayout>
 

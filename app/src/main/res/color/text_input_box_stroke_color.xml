@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Farbe im aktivierten Zustand -->
+    <item android:color="@color/tertiary" android:state_focused="true" />
+    <!-- Farbe im deaktivierten Zustand -->
+    <item android:color="@color/tertiary" android:state_hovered="true" />
+    <!-- Farbe im inaktiven Zustand -->
+    <item android:color="@color/tertiary" />
+</selector>

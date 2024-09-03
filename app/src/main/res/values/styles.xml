@@ -17,4 +17,9 @@
         <item name="cornerSizeBottomLeft">15dp</item>
     </style>
 
+    <style name="CustomTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="colorControlNormal">@color/tertiary</item> <!-- Farbe im inaktiven Zustand -->
+        <item name="boxStrokeColor">@color/tertiary</item> <!-- Farbe im aktiven Zustand -->
+    </style>
+
 </resources>

@@ -12,19 +12,17 @@
         android:layout_height="match_parent">
 
 
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_profilePicture"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:foregroundGravity="fill"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        tools:srcCompat="@tools:sample/avatars"
-        />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_profilePicture"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:foregroundGravity="fill"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.05"
+            tools:srcCompat="@tools:sample/avatars" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_name"
@@ -35,7 +33,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        android:hint="Name">
+        android:hint="Name"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:hintTextColor="@color/tertiary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_name"
@@ -55,7 +55,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="Department">
+        android:hint="Department"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:hintTextColor="@color/tertiary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_department"
@@ -75,7 +77,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="E-Mail">
+        android:hint="E-Mail"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:hintTextColor="@color/tertiary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_email"
@@ -95,7 +99,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="Phone Number">
+        android:hint="Phone Number"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:hintTextColor="@color/tertiary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_number"
@@ -117,7 +123,8 @@
         app:layout_constraintTop_toTopOf="@+id/tv_logout"
         app:layout_constraintBottom_toBottomOf="@id/tv_logout"
         app:layout_constraintEnd_toEndOf="@+id/til_number"
-        />
+        app:tint="@color/primary"
+        android:backgroundTint="@color/secondary"/>
 
         <ImageButton
             android:id="@+id/btn_changePassword"
@@ -128,7 +135,8 @@
             app:layout_constraintTop_toTopOf="@+id/tv_changePassword"
             app:layout_constraintBottom_toBottomOf="@id/tv_changePassword"
             app:layout_constraintEnd_toEndOf="@+id/til_number"
-            />
+            app:tint="@color/primary"
+            android:backgroundTint="@color/secondary"/>
 
         <ImageButton
             android:id="@+id/btn_changeProfilePicture"
@@ -138,7 +146,8 @@
             android:src="@drawable/baseline_edit_24"
             app:layout_constraintTop_toTopOf="@+id/iv_profilePicture"
             app:layout_constraintStart_toEndOf="@+id/iv_profilePicture"
-            />
+            app:tint="@color/primary"
+            android:backgroundTint="@color/secondary"/>
 
         <TextView
             android:id="@+id/tv_changePassword"
@@ -182,7 +191,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="16dp"
             app:strokeWidth="1dp"
-            app:strokeColor="@color/strokeGrey"
+            app:strokeColor="@color/tertiary"
             app:cardCornerRadius="3dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -209,7 +218,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_holiday"
                     android:layout_marginEnd="16dp"
-                    android:src="@drawable/baseline_arrow_drop_down_24"/>
+                    android:src="@drawable/baseline_arrow_drop_down_24"
+                    app:tint="@color/primary"
+                    android:backgroundTint="@color/transparent"/>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mcv_holidayCheckBoxes"
@@ -564,7 +575,9 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/cb_TH"
                             android:layout_marginVertical="16dp"
-                            android:text="Save"/>
+                            android:text="Save"
+                            android:textColor="@color/primary"
+                            android:backgroundTint="@color/secondary"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

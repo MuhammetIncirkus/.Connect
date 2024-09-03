@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
                     binding.tvHeader2.text = getString(R.string.chats)
                     binding.toolbar.isGone = false
 
-
                 }
                 R.id.viewPageFragment -> {
                     binding.tvHeader2.visibility = View.GONE
