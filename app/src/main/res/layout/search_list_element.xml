@@ -8,7 +8,8 @@
         app:cardCornerRadius="0dp"
         android:layout_marginHorizontal="16dp"
         app:strokeColor="@android:color/transparent"
-        app:strokeWidth="0dp">
+        app:strokeWidth="0dp"
+    android:backgroundTint="@color/secondary4">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -56,8 +57,8 @@
                     android:layout_height="match_parent"
                     android:contentDescription="Call Button"
                     android:src="@drawable/baseline_phone_enabled_24"
-                    android:backgroundTint="@color/transparent"
-                    app:tint="@color/strokeGrey"/>
+                    android:background="@color/secondary4"
+                    app:tint="@color/primary"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -70,6 +71,7 @@
                 android:text="@string/placeholderText"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:textColor="@color/primary"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toStartOf="@id/mcv_callbtn"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -82,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="15sp"
+                android:textColor="@color/primary"
                 app:layout_constraintTop_toBottomOf="@+id/tv_contactName"
                 app:layout_constraintStart_toStartOf="@id/tv_contactName"
                 app:layout_constraintEnd_toStartOf="@id/mcv_callbtn"

@@ -24,8 +24,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="30dp"
-        app:tint="@color/primary"
-        android:backgroundTint="@color/secondary"/>
+        app:tint="@color/secondary"
+        android:backgroundTint="@color/primary"/>
 
 
 

@@ -9,7 +9,8 @@
     android:layout_marginVertical="4dp"
     app:strokeColor="@color/black"
     app:strokeWidth="0.5dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    android:backgroundTint="@color/secondary5">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,6 +27,7 @@
             android:text="@string/placeholderText"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:textColor="@color/primary"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -38,6 +40,7 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholderText"
             android:textSize="15sp"
+            android:textColor="@color/primary"
             app:layout_constraintTop_toBottomOf="@+id/tv_contactName"
             app:layout_constraintStart_toStartOf="@id/tv_contactName"
             app:layout_constraintEnd_toEndOf="parent"

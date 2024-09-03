@@ -19,7 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="0dp"
-        app:strokeWidth="0dp">
+        app:strokeWidth="0dp"
+        android:backgroundTint="@color/secondary4">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -87,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="10sp"
-                android:textColor="@color/tertiary"
+                android:textColor="@color/primary"
                 app:layout_constraintEnd_toEndOf="@id/mcv_textBubble"
                 app:layout_constraintTop_toBottomOf="@id/mcv_textBubble"
                 tools:ignore="SmallSp" />

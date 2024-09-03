@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/secondary4">
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,6 +22,7 @@
         app:itemTextColor="@color/bottom_nav_item_color"
         app:itemIconTint="@color/bottom_nav_item_color"
         app:itemTextAppearanceActive="@color/tertiary"
+        app:itemActiveIndicatorStyle="@style/Widget.Design.BottomNavigationView"
 
         />
 

@@ -8,7 +8,8 @@
     android:layout_marginVertical="4dp"
     android:layout_marginHorizontal="10dp"
     app:cardElevation="5dp"
-    app:strokeColor="@color/tertiary">
+    app:strokeColor="@color/tertiary"
+    android:backgroundTint="@color/secondary5">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -46,6 +47,7 @@
             android:text="@string/placeholderText"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:textColor="@color/primary"
             app:layout_constraintEnd_toStartOf="@id/tv_attachmentDate"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/mcv_attachmentImage"
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholderText"
             android:textSize="12sp"
+            android:textColor="@color/primary"
             app:layout_constraintBottom_toBottomOf="@id/mcv_attachmentImage"
             app:layout_constraintStart_toStartOf="@id/tv_attachmentName"
             app:layout_constraintEnd_toStartOf="@id/tv_attachmentDate"
@@ -69,6 +72,7 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholderText"
             android:textSize="10sp"
+            android:textColor="@color/primary"
             app:layout_constraintBottom_toBottomOf="@id/mcv_attachmentImage"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"

@@ -16,7 +16,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:hint="E-Mail"
-        android:layout_marginHorizontal="16dp">
+        android:layout_marginHorizontal="16dp"
+        app:boxBackgroundColor="@color/secondary5"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:hintTextColor="@color/tertiary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tv_email"
@@ -34,7 +37,10 @@
         app:layout_constraintTop_toBottomOf="@id/til_email"
         android:layout_marginTop="16dp"
         android:hint="Password"
-        android:layout_marginHorizontal="16dp">
+        android:layout_marginHorizontal="16dp"
+        app:boxBackgroundColor="@color/secondary5"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:hintTextColor="@color/tertiary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tv_password"
@@ -53,8 +59,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:textColor="@color/primary"
-        android:backgroundTint="@color/secondary"/>
+        android:textColor="@color/secondary"
+        android:backgroundTint="@color/primary"/>
 
     <TextView
         android:id="@+id/tv_passwordForgotton"

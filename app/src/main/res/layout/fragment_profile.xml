@@ -35,7 +35,8 @@
         android:layout_marginTop="20dp"
         android:hint="Name"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary">
+        app:hintTextColor="@color/tertiary"
+        app:boxBackgroundColor="@color/secondary5">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_name"
@@ -57,7 +58,8 @@
         android:layout_marginTop="16dp"
         android:hint="Department"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary">
+        app:hintTextColor="@color/tertiary"
+        app:boxBackgroundColor="@color/secondary5">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_department"
@@ -79,7 +81,8 @@
         android:layout_marginTop="16dp"
         android:hint="E-Mail"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary">
+        app:hintTextColor="@color/tertiary"
+        app:boxBackgroundColor="@color/secondary5">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_email"
@@ -101,7 +104,8 @@
         android:layout_marginTop="16dp"
         android:hint="Phone Number"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary">
+        app:hintTextColor="@color/tertiary"
+        app:boxBackgroundColor="@color/secondary5">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_number"
@@ -109,7 +113,8 @@
             android:layout_height="match_parent"
             android:clickable="false"
             android:editable="false"
-            tools:ignore="Deprecated" />
+            tools:ignore="Deprecated"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -123,8 +128,8 @@
         app:layout_constraintTop_toTopOf="@+id/tv_logout"
         app:layout_constraintBottom_toBottomOf="@id/tv_logout"
         app:layout_constraintEnd_toEndOf="@+id/til_number"
-        app:tint="@color/primary"
-        android:backgroundTint="@color/secondary"/>
+        app:tint="@color/secondary"
+        android:backgroundTint="@color/primary"/>
 
         <ImageButton
             android:id="@+id/btn_changePassword"
@@ -135,8 +140,8 @@
             app:layout_constraintTop_toTopOf="@+id/tv_changePassword"
             app:layout_constraintBottom_toBottomOf="@id/tv_changePassword"
             app:layout_constraintEnd_toEndOf="@+id/til_number"
-            app:tint="@color/primary"
-            android:backgroundTint="@color/secondary"/>
+            app:tint="@color/secondary"
+            android:backgroundTint="@color/primary"/>
 
         <ImageButton
             android:id="@+id/btn_changeProfilePicture"
@@ -146,8 +151,8 @@
             android:src="@drawable/baseline_edit_24"
             app:layout_constraintTop_toTopOf="@+id/iv_profilePicture"
             app:layout_constraintStart_toEndOf="@+id/iv_profilePicture"
-            app:tint="@color/primary"
-            android:backgroundTint="@color/secondary"/>
+            app:tint="@color/secondary"
+            android:backgroundTint="@color/primary"/>
 
         <TextView
             android:id="@+id/tv_changePassword"
@@ -192,7 +197,8 @@
             android:layout_marginTop="16dp"
             app:strokeWidth="1dp"
             app:strokeColor="@color/tertiary"
-            app:cardCornerRadius="3dp">
+            app:cardCornerRadius="3dp"
+            android:backgroundTint="@color/secondary5">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -207,6 +213,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:textSize="17sp"
+                    android:textColor="@color/primary"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/mcv_holidayCheckBoxes"/>
@@ -232,7 +239,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:strokeWidth="0dp"
                     app:cardCornerRadius="0dp"
-                    android:layout_marginHorizontal="16dp">
+                    android:layout_marginHorizontal="16dp"
+                    android:backgroundTint="@color/secondary5">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -258,6 +266,7 @@
                             android:id="@+id/cbtv_germanywide"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_germanywide"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_germanywide"
                             app:layout_constraintStart_toEndOf="@+id/cb_germanywide"
@@ -275,6 +284,7 @@
                             android:id="@+id/cbtv_BW"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_BW"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BW"
                             app:layout_constraintStart_toEndOf="@+id/cb_BW"
@@ -285,6 +295,7 @@
                             android:id="@+id/cb_BY"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toBottomOf="@+id/cb_germanywide"
                             app:layout_constraintStart_toEndOf="@id/cbtv_germanywide"
                             android:layout_marginStart="55dp">
@@ -295,6 +306,7 @@
                             android:id="@+id/cbtv_BY"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_BY"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BY"
                             app:layout_constraintStart_toEndOf="@+id/cb_BY"
@@ -313,6 +325,7 @@
                             android:id="@+id/cbtv_BE"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_BE"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BE"
                             app:layout_constraintStart_toEndOf="@+id/cb_BE"
@@ -332,6 +345,7 @@
                             android:id="@+id/cbtv_BB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_BB"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BB"
                             app:layout_constraintStart_toEndOf="@+id/cb_BB"
@@ -351,6 +365,7 @@
                             android:id="@+id/cbtv_HB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_HB"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_HB"
                             app:layout_constraintStart_toEndOf="@+id/cb_HB"
@@ -370,6 +385,7 @@
                             android:id="@+id/cbtv_HH"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_HH"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_HH"
                             app:layout_constraintStart_toEndOf="@+id/cb_HH"
@@ -389,6 +405,7 @@
                             android:id="@+id/cbtv_HE"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_HE"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_HE"
                             app:layout_constraintStart_toEndOf="@+id/cb_HE"
@@ -408,6 +425,7 @@
                             android:id="@+id/cbtv_MV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_MV"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_MV"
                             app:layout_constraintStart_toEndOf="@+id/cb_MV"
@@ -428,6 +446,7 @@
                             android:id="@+id/cbtv_NI"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_NI"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_NI"
                             app:layout_constraintStart_toEndOf="@+id/cb_NI"
@@ -447,6 +466,7 @@
                             android:id="@+id/cbtv_NW"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_NW"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_NW"
                             app:layout_constraintStart_toEndOf="@+id/cb_NW"
@@ -458,6 +478,7 @@
                             android:id="@+id/cb_RP"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toBottomOf="@+id/cb_NI"
                             app:layout_constraintStart_toStartOf="parent">
                         </com.google.android.material.checkbox.MaterialCheckBox>
@@ -466,6 +487,7 @@
                             android:id="@+id/cbtv_RP"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_RP"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_RP"
                             app:layout_constraintStart_toEndOf="@+id/cb_RP"
@@ -485,6 +507,7 @@
                             android:id="@+id/cbtv_SL"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_SL"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_SL"
                             app:layout_constraintStart_toEndOf="@+id/cb_SL"
@@ -504,6 +527,7 @@
                             android:id="@+id/cbtv_SN"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_SN"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_SN"
                             app:layout_constraintStart_toEndOf="@+id/cb_SN"
@@ -523,6 +547,7 @@
                             android:id="@+id/cbtv_ST"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_ST"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_ST"
                             app:layout_constraintStart_toEndOf="@+id/cb_ST"
@@ -542,6 +567,7 @@
                             android:id="@+id/cbtv_SH"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_SH"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_SH"
                             app:layout_constraintStart_toEndOf="@+id/cb_SH"
@@ -561,6 +587,7 @@
                             android:id="@+id/cbtv_TH"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/primary"
                             app:layout_constraintTop_toTopOf="@+id/cb_TH"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_TH"
                             app:layout_constraintStart_toEndOf="@+id/cb_TH"
@@ -576,8 +603,8 @@
                             app:layout_constraintTop_toBottomOf="@+id/cb_TH"
                             android:layout_marginVertical="16dp"
                             android:text="Save"
-                            android:textColor="@color/primary"
-                            android:backgroundTint="@color/secondary"/>
+                            android:textColor="@color/secondary"
+                            android:backgroundTint="@color/primary"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
