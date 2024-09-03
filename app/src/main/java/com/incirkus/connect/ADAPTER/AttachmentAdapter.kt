@@ -4,9 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.incirkus.connect.DATA.Model.Attachment
+import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.AttachmentListElementBinding
 
@@ -37,7 +40,17 @@ class AttachmentAdapter (private var attachmentList: List<Attachment>,private va
         }
         val date = attachment.timestamp?.let { viewModel.convertTimestampToDate(it) }
         binding.tvAttachmentDate.text = date
-        binding.ivAttachmentTypeImage.load(attachment.path)
+
+
+        if (attachment.attachmentName!!.contains("document")){
+            binding.ivAttachmentTypeImage.load("https://firebasestorage.googleapis.com/v0/b/connect-5cd46.appspot.com/o/Test%2FNo-Image-Placeholder.svg.png?alt=media&token=b2150d39-c00a-4a07-b0d9-4f73fc0f36cc"){
+                transformations(RoundedCornersTransformation(topLeft = 14f, bottomRight = 14f, topRight = 14f, bottomLeft = 14f))
+            }
+        }else{
+            binding.ivAttachmentTypeImage.load(attachment.path){
+                transformations(RoundedCornersTransformation(topLeft = 14f, bottomRight = 14f, topRight = 14f, bottomLeft = 14f))
+            }
+        }
 
 
     }

@@ -12,12 +12,13 @@ import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.ChatListElementBinding
+import com.incirkus.connect.databinding.LeaveRequestListElementBinding
 
 class LeaveRequestAdapter (private var leaveRequestList: List<LeaveRequest>, private val viewModel: ViewModel) : RecyclerView.Adapter<LeaveRequestAdapter.ItemViewHolder>() {
-    inner class ItemViewHolder(val binding: ChatListElementBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ItemViewHolder(val binding: LeaveRequestListElementBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = ChatListElementBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = LeaveRequestListElementBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ItemViewHolder(binding)
     }
 
@@ -33,10 +34,7 @@ class LeaveRequestAdapter (private var leaveRequestList: List<LeaveRequest>, pri
         val endDate = viewModel.convertTimestampToDates(leaveRequest.endDate!! )
 
         binding.tvContactName.text = "$startDate - $endDate"
-        binding.tvContactLastMessage.text = leaveRequest.status
-        binding.tvContactLastMessageDate.text = ""
-
-        binding.ivProfilePicture.isVisible = false
+        binding.tvContactLastMessage.text = "Status: ${leaveRequest.status}"
 
     }
 }
