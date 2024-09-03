@@ -1,10 +1,13 @@
 package com.incirkus.connect.ADAPTER
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.incirkus.connect.DATA.Model.Holiday
+import com.incirkus.connect.R
 import com.incirkus.connect.databinding.HolidayListElementBinding
 
 
@@ -27,22 +30,42 @@ class HolidayAdapter (private var holidayList: List<Holiday>) : RecyclerView.Ada
 
         binding.tvHolidayDate.text = "${holiday.holidayDay}.${holiday.holidayMonth}. "
         binding.tvHolidayName.text = holiday.holidayName
-        binding.tvRegion.text = holiday.holidayRegion
+        binding.tvRegion.text = holiday.holidayRegion.toString()
+            .replace("DE","Bundesweit")
+            .replace("bw"," BW")
+            .replace("by"," BY")
+            .replace("be"," BE")
+            .replace("bb"," BB")
+            .replace("hb"," HB")
+            .replace("hh"," HH")
+            .replace("he"," HE")
+            .replace("mv"," MV")
+            .replace("ni"," NI")
+            .replace("nw"," NW")
+            .replace("rp"," RP")
+            .replace("sl"," SL")
+            .replace("sn"," SN")
+            .replace("st"," ST")
+            .replace("sh"," SH")
+            .replace("th"," TH")
+
+
+        binding.tvHolidayDescription.visibility = View.GONE
+        binding.btnHolidayDescription.visibility = View.INVISIBLE
+
         if (holiday.comment != ""){
-            binding.tvHolidayDescription.text = holiday.comment
-        }else{
-            binding.tvHolidayDescription.isGone = true
-        }
-        if (holiday.augsburg == true){
-            binding.cbAugsburg.isActivated = true
-        }else{
-            binding.cbAugsburg.isGone = true
-        }
-        if (holiday.katholisch == true){
-            binding.cbAugsburg.isActivated = true
-        }else{
-            binding.cbKatholisch.isGone = true
+            binding.btnHolidayDescription.visibility = View.VISIBLE
         }
 
+        binding.btnHolidayDescription.setOnClickListener {
+            if (binding.tvHolidayDescription.visibility == View.GONE) {
+                binding.btnHolidayDescription.setImageResource(R.drawable.baseline_arrow_drop_up_24)
+                binding.tvHolidayDescription.text = holiday.comment
+                binding.tvHolidayDescription.visibility = View.VISIBLE
+            } else {
+                binding.btnHolidayDescription.setImageResource(R.drawable.baseline_arrow_drop_down_24)
+                binding.tvHolidayDescription.visibility = View.GONE
+            }
+        }
     }
 }

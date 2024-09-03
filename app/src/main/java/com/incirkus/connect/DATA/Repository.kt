@@ -506,7 +506,7 @@ class Repository() {
                             holidayDay = holiday.getLong("holidayDay")?.toInt(),
                             holidayMonth = holiday.getLong("holidayMonth")?.toInt(),
                             holidayYear = holiday.getLong("holidayYear")?.toInt(),
-                            comment= holiday.getString("attachmentName"),
+                            comment= holiday.getString("comment"),
                             augsburg = holiday.getBoolean("augsburg"),
                             katholisch = holiday.getBoolean("katholisch")
                         )

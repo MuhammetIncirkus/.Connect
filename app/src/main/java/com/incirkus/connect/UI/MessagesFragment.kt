@@ -29,27 +29,7 @@ class MessagesFragment : Fragment() {
     private lateinit var binding: FragmentMessagesBinding
     private val viewModel: ViewModel by activityViewModels()
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()){
-        if(it != null){
 
-            val attachmentName: String = it.lastPathSegment.toString()
-            val attachmentType: String = attachmentName.substringAfterLast(".")
-            val senderID: String = viewModel.currentFirebaseUser.value!!.uid
-            val chatRoomId: String = viewModel.currentChatRoom.value!!.chatRoomId
-            val attachmentId: String = UUID.randomUUID().toString()
-            val timestamp: Long = System.currentTimeMillis()
-
-            val attachment: Attachment = Attachment(
-                attachmentId = attachmentId,
-                senderID = senderID,
-                attachmentName = attachmentName,
-                attachmentType = attachmentType,
-                chatRoomId = chatRoomId,
-                timestamp = timestamp
-            )
-            viewModel.uploadAttachment(it, attachment)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -111,12 +91,7 @@ class MessagesFragment : Fragment() {
 
         }
 
-        binding.btnSelect.setOnClickListener{
-            if (binding.btnSelect.isVisible){
-                getContent.launch("*/*")
 
-            }
-        }
 
         binding.tietMessageText.addTextChangedListener(object : TextWatcher {
 
@@ -133,13 +108,7 @@ class MessagesFragment : Fragment() {
             // Die afterTextChanged-Funktion wird nach der Änderung aufgerufen
             override fun afterTextChanged(s: Editable?) {
                 val searchText = s.toString()
-                if (searchText.isNullOrEmpty()){
-                    binding.btnSelect.isVisible = true
-                    binding.btnSend.isVisible = false
-                }else{
-                    binding.btnSelect.isVisible = false
-                    binding.btnSend.isVisible = true
-                }
+
             }
         })
 

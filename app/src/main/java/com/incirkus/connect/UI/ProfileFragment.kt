@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
@@ -70,7 +71,9 @@ class ProfileFragment : Fragment() {
         viewModel.currentUser.observe(viewLifecycleOwner){
 
             if (it != null) {
-                binding.ivProfilePicture.load(it.image)
+                binding.ivProfilePicture.load(it.image){
+                    transformations(RoundedCornersTransformation(topLeft = 120f, bottomRight = 120f, topRight = 50f, bottomLeft = 50f))
+                }
                 binding.tietName.setText(it.fullName)
                 binding.tietDepartment.setText(it.department)
                 binding.tietEmail.setText(it.email)

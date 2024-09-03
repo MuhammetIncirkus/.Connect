@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import coil.load
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentAttachmentBinding
@@ -38,8 +40,9 @@ class InfoFragment : Fragment() {
         binding.tietDepartment.setText(viewModel.currentChatPartner.department)
         binding.tietEmail.setText(viewModel.currentChatPartner.email)
         binding.tietNumber.setText(viewModel.currentChatPartner.phoneNumber)
-        binding.ivProfilePicture.load(viewModel.currentChatPartner.image)
-
+        binding.ivProfilePicture.load(viewModel.currentChatPartner.image){
+            transformations(RoundedCornersTransformation(topLeft = 50f, bottomRight = 50f, topRight = 120f, bottomLeft = 120f))
+        }
 
         binding.btnCall.setOnClickListener {
             val phoneNumber = viewModel.currentChatPartner.phoneNumber!!

@@ -32,7 +32,8 @@
                 android:layout_height="30dp"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintBottom_toBottomOf="@id/mcv_textBubble"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:cardElevation="5dp">
 
 
                 <ImageView
@@ -51,7 +52,8 @@
                 android:maxWidth="250dp"
                 app:layout_constraintStart_toEndOf="@id/mcv_profileImage"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/IncomingMessageBubble">
+                app:shapeAppearance="@style/IncomingMessageBubble"
+                app:cardElevation="2dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

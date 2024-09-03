@@ -24,7 +24,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginVertical="5dp"
                 android:layout_marginStart="2dp"
-                >
+                app:cardElevation="5dp">
 
 
                 <ImageView
@@ -55,8 +55,9 @@
                     android:layout_height="match_parent"
                     android:contentDescription="Call Button"
                     android:src="@drawable/baseline_phone_enabled_24"
-                    android:scaleType="centerCrop"
-                    android:backgroundTint="@color/transparent"/>
+                    android:backgroundTint="@color/transparent"
+                    app:tint="@color/strokeGrey"/>
+
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
