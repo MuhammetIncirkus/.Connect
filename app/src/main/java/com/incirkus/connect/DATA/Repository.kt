@@ -13,7 +13,6 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.incirkus.connect.DATA.Model.APIResponse
 import com.incirkus.connect.DATA.Model.Attachment
-import com.incirkus.connect.DATA.Model.ChatParticipants
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.Holiday
 import com.incirkus.connect.DATA.Model.LeaveRequest

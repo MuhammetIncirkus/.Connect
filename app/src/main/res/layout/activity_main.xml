@@ -53,7 +53,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:backgroundTint="@color/transparent"
-                app:tint="@color/tertiary" />
+                app:tint="@color/secondary" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/mcv_profileImage"
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="30sp"
-                android:textColor="@color/tertiary"
+                android:textColor="@color/secondary"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxWidth="230dp"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="30sp"
-                android:textColor="@color/tertiary"
+                android:textColor="@color/secondary"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:gravity="center"
