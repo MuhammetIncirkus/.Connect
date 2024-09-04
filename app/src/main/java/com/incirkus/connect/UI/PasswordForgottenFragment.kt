@@ -44,5 +44,9 @@ class PasswordForgottenFragment : Fragment() {
                 //TODO Popup bitte Passwort eingeben
             }
         }
+
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.loginFragment)
+        }
     }
 }

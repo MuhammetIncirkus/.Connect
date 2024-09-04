@@ -34,14 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ViewModel
 
-    private fun init() {
-        // [START appcheck_initialize]
-        Firebase.initialize(context = this)
-        Firebase.appCheck.installAppCheckProviderFactory(
-            PlayIntegrityAppCheckProviderFactory.getInstance(),
-        )
-        // [END appcheck_initialize]
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +60,9 @@ class MainActivity : AppCompatActivity() {
 
                 // Überprüfen, ob wir uns im LoginFragment befinden
                 val currentDestination = navHost.navController.currentDestination?.id
-                val isInLoginFragment = currentDestination == R.id.loginFragment
+                val isInLoginFragment = currentDestination == R.id.loginFragment || currentDestination == R.id.passwordForgottenFragment
+
+
 
                 if (!isInLoginFragment) {
                     if (keypadHeight > screenHeight * 0.15) {
@@ -137,6 +132,12 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 R.id.loginFragment -> {
+                    binding.tvHeader2.visibility = View.GONE
+                    binding.tvHeader.visibility = View.VISIBLE
+                    binding.toolbar.isGone = true
+                    binding.bottomNavigationView.isGone = true
+                }
+                R.id.passwordForgottenFragment -> {
                     binding.tvHeader2.visibility = View.GONE
                     binding.tvHeader.visibility = View.VISIBLE
                     binding.toolbar.isGone = true

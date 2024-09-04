@@ -11,21 +11,22 @@
         android:id="@+id/til_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:hint="E-Mail"
         android:layout_marginHorizontal="16dp"
+        android:hint="E-Mail"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/new_tertiary">
+        app:hintTextColor="@color/new_tertiary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

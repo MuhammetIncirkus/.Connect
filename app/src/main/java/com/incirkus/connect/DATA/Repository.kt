@@ -32,165 +32,226 @@ import kotlin.coroutines.resumeWithException
 
 class Repository() {
 
+    //Used Variables:
+    //Initialising Firebase
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseDB = FirebaseFirestore.getInstance()
+    private val firebasedb2 = Firebase.firestore
+
+    //Firebase User who is currently logged in as LiveData
+    private var _currentFirebaseUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
+    val currentFirebaseUser: LiveData<FirebaseUser?> = _currentFirebaseUser
+    //User who is currently logged in as LiveData
+    private var _currentUser = MutableLiveData<User?>()
+    val currentUser: LiveData<User?> = _currentUser
+    //UserList with all colleagues without currentUser
+    private var _firebaseUserList = MutableLiveData<List<User>>()
+    val firebaseUserList : LiveData<List<User>> = _firebaseUserList
+    //List of all chatRooms in which the currentUser is involved
+    private var _firebaseChatRoomList = MutableLiveData<List<ChatRoom>>()
+    val firebaseChatRoomList : LiveData<List<ChatRoom>> = _firebaseChatRoomList
+    //the actual chatRoom
+    private var _currentChatRoom = MutableLiveData<ChatRoom?>()
+    val currentChatRoom: LiveData<ChatRoom?> = _currentChatRoom
+    //List of all sending messages from all Users
+    private var _firebaseMessageList = MutableLiveData<List<Message>>()
+    val firebaseMessageList : LiveData<List<Message>> = _firebaseMessageList
+    //List of all holidayRequests from currentUser
+    private var _firebaseLeaveRequestList = MutableLiveData<List<LeaveRequest>>()
+    val firebaseLeaveRequestList : LiveData<List<LeaveRequest>> = _firebaseLeaveRequestList
+    //List of all sending attachments from all Users
+    private var _firebaseAttachmentList = MutableLiveData<List<Attachment>>()
+    val firebaseAttachmentList : LiveData<List<Attachment>> = _firebaseAttachmentList
+    // List of all public Holidays coming from api as LiveData
+    private var _firebaseHolidayList = MutableLiveData<List<Holiday>>()
+    val firebaseHolidayList : LiveData<List<Holiday>> = _firebaseHolidayList
+    // List of all public Holidays coming from api
+    var holidayList: MutableList<Holiday> = mutableListOf()
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------  API----------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Retrieves a list of holidays from a remote API asynchronously.
+     * The function executes the network request on an IO dispatcher to avoid blocking the main thread. If the request is successful, the list of holidays is returned.
+     * If an error occurs, the function logs the error and returns an uninitialized or empty response.
+     *
+     *  ---
+     *
+     * Ruft asynchron eine Liste von Feiertagen von einer externen API ab.
+     * Die Funktion führt die Netzwerkanfrage auf einem IO-Dispatcher aus, um eine Blockierung des Haupt-Threads zu vermeiden. Bei erfolgreicher Anfrage wird die Liste
+     * der Feiertage zurückgegeben. Im Falle eines Fehlers wird der Fehler protokolliert und eine nicht initialisierte oder leere Antwort zurückgegeben.
+     *
+     * @return APIResponse: The list of holidays retrieved from the API. In case of a failure, an empty or uninitialized response may be returned.
+     *                      Die Liste der von der API abgerufenen Feiertage. Im Falle eines Fehlers kann eine leere oder nicht initialisierte Antwort zurückgegeben werden.
+     *
+     */
+    suspend fun getHolidayList(): APIResponse {
+        lateinit var holidayList: APIResponse
+        withContext(Dispatchers.IO) {
+            try {
+                holidayList = CalendarApi.retrofitService.getallHolidays()
+                Log.e("CONNECT", "Repository: getHolidayList: List loaded")
+            } catch (e: Exception) {
+                Log.e("CONNECT", "Repository: getHolidayList: ${e.message.toString()}")
+            }
+        }
+        return holidayList
+    }
 
 
-
+    /**
+     * Retrieves a list of holidays for specified states from a remote API asynchronously.
+     * The function executes the network request on an IO dispatcher to avoid blocking the main thread.
+     * If the request is successful, the list of holidays is returned. If an error occurs, the function
+     * logs the error and returns an uninitialized or empty response.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Feiertagen für bestimmte Bundesländer von einer externen API ab.
+     * Die Funktion führt die Netzwerkanfrage auf einem IO-Dispatcher aus, um eine Blockierung des Haupt-Threads zu vermeiden.
+     * Bei erfolgreicher Anfrage wird die Liste der Feiertage zurückgegeben. Im Falle eines Fehlers wird der Fehler protokolliert
+     * und eine nicht initialisierte oder leere Antwort zurückgegeben.
+     *
+     * @param states: String - A comma-separated list of state codes for which the holidays should be retrieved.
+     *                 Eine durch Kommas getrennte Liste von Bundeslandcodes, für die die Feiertage abgerufen werden sollen.
+     *
+     * @return APIResponse: The list of holidays retrieved from the API. In case of a failure, an empty or uninitialized response may be returned.
+     *                      Die Liste der von der API abgerufenen Feiertage. Im Falle eines Fehlers kann eine leere oder nicht initialisierte Antwort zurückgegeben werden.
+     */
+    suspend fun getHolidayListForSomeStates(states: String): APIResponse {
+        lateinit var holidayList: APIResponse
+        withContext(Dispatchers.IO) {
+            try {
+                holidayList = CalendarApi.retrofitService.getStates("2024,2025,2026",states)
+                Log.e("CONNECT", "Repository: getHolidayListForSomeStates: List loaded")
+            } catch (e: Exception) {
+                Log.e("CONNECT", "Repository: getHolidayListForSomeStates: ${e.message.toString()}")
+            }
+        }
+        return holidayList
+    }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------  API----------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-    suspend fun getHolidayList(): APIResponse {
-        lateinit var holidayList: APIResponse
-        withContext(Dispatchers.IO) {
-            try {
-                holidayList = CalendarApi.retrofitService.getallHolidays()
-                Log.e("APICALL", "List loaded")
-            } catch (e: Exception) {
-                Log.e("APICALL", e.message.toString())
-            }
-        }
-        return holidayList
-    }
-
-    suspend fun getHolidayListForSomeStates(states: String): APIResponse {
-        lateinit var holidayList: APIResponse
-        withContext(Dispatchers.IO) {
-            try {
-                holidayList = CalendarApi.retrofitService.getStates("2024,2025,2026",states)
-                Log.e("APICALL", "List loaded")
-            } catch (e: Exception) {
-                Log.e("APICALL", e.message.toString())
-            }
-        }
-        return holidayList
-    }
-
-
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------FIREBASE-------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //--------------------------------------------------------------------------NEW APP--------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firebaseDB = FirebaseFirestore.getInstance()
-    private val firebaseDataUser = firebaseDB.collection("User")
-
-    val firebasedb2 = Firebase.firestore
-
-    //User der gerade eingeloggt ist
-    private var _currentFirebaseUser = MutableLiveData<FirebaseUser?>(firebaseAuth.currentUser)
-    val currentFirebaseUser: LiveData<FirebaseUser?> = _currentFirebaseUser
-
-    private var _currentUser = MutableLiveData<User?>()
-    val currentUser: LiveData<User?> = _currentUser
-
-    private var _firebaseUserList = MutableLiveData<List<User>>()
-    val firebaseUserList : LiveData<List<User>> = _firebaseUserList
-
-    private var _firebaseChatRoomList = MutableLiveData<List<ChatRoom>>()
-    val firebaseChatRoomList : LiveData<List<ChatRoom>> = _firebaseChatRoomList
-
-    private var _currentChatRoom = MutableLiveData<ChatRoom?>()
-    val currentChatRoom: LiveData<ChatRoom?> = _currentChatRoom
-
-    private var _firebaseMessageList = MutableLiveData<List<Message>>()
-    val firebaseMessageList : LiveData<List<Message>> = _firebaseMessageList
-
-    private var _firebaseLeaveRequestList = MutableLiveData<List<LeaveRequest>>()
-    val firebaseLeaveRequestList : LiveData<List<LeaveRequest>> = _firebaseLeaveRequestList
-
-    private var _firebaseAttachmentList = MutableLiveData<List<Attachment>>()
-    val firebaseAttachmentList : LiveData<List<Attachment>> = _firebaseAttachmentList
-
-    private var _firebaseHolidayList = MutableLiveData<List<Holiday>>()
-    val firebaseHolidayList : LiveData<List<Holiday>> = _firebaseHolidayList
-
-    var holidayList: MutableList<Holiday> = mutableListOf()
-
     suspend fun setCurrentFirebaseUser(firebaseUser: FirebaseUser?)= suspendCancellableCoroutine { continuation->
-
         _currentFirebaseUser.postValue(firebaseUser)
         continuation.resume(Log.i("Firebase", "Repo: CurrentFirebaseUser: ${_currentFirebaseUser.value.toString()}"))
-
     }
 
-    suspend fun logout()= suspendCancellableCoroutine { continuation->
+    fun logout() {
         firebaseAuth.signOut()
         _currentFirebaseUser.value = null
-        continuation.resume(Log.i("Firebase", "Repo: CurrentFirebaseUser: ${_currentFirebaseUser.value.toString()}"))
-        _currentUser.postValue(User())
-        _firebaseUserList.postValue(listOf())
-        _firebaseChatRoomList.postValue(listOf())
+        Log.i("CONNECT", "Repository: logout: _currentFirebaseUser: ${_currentFirebaseUser.value.toString()}")
+        _currentUser.value = null
+        Log.i("CONNECT", "Repository: logout: _currentUser: ${_currentUser.value.toString()}")
+        _firebaseUserList.value = listOf()
+        Log.i("CONNECT", "Repository: logout: _firebaseUserList: ${_firebaseUserList.value.toString()}")
+        _firebaseChatRoomList.value = listOf()
+        Log.i("CONNECT", "Repository: logout: _firebaseChatRoomList: ${_firebaseChatRoomList.value.toString()}")
+        _currentChatRoom.value = null
+        Log.i("CONNECT", "Repository: logout: _currentChatRoom: ${_currentChatRoom.value.toString()}")
+        _firebaseMessageList.value = listOf()
+        Log.i("CONNECT", "Repository: logout: _firebaseMessageList: ${_firebaseMessageList.value.toString()}")
+        _firebaseLeaveRequestList.value = listOf()
+        Log.i("CONNECT", "Repository: logout: _firebaseLeaveRequestList: ${_firebaseLeaveRequestList.value.toString()}")
+        _firebaseAttachmentList.value = listOf()
+        Log.i("CONNECT", "Repository: logout: _firebaseAttachmentList: ${_firebaseAttachmentList.value.toString()}")
+        _firebaseHolidayList.value = listOf()
+        Log.i("CONNECT", "Repository: logout: _firebaseHolidayList: ${_firebaseHolidayList.value.toString()}")
+        holidayList = mutableListOf()
+        Log.i("CONNECT", "Repository: logout: holidayList: ${holidayList}")
     }
 
     suspend fun getFirebaseDataUser() = suspendCancellableCoroutine { continuation ->
         val firebaseUserList: MutableList<User> = mutableListOf()
 
         try {
-            firebasedb2.collection("User")
+            firebaseDB.collection("User")
                 .whereNotEqualTo(FieldPath.documentId(), _currentFirebaseUser.value?.uid)
-                .get()
-                .addOnSuccessListener { userList ->
-                    for (user in userList) {
-                        Log.d("Firebase", "${user.id} => ${user.data}")
-                        val user2 = User(
-                            userId = user.id,
-                            firstName = user.getString("firstName"),
-                            lastName = user.getString("lastName"),
-                            fullName = user.getString("fullName"),
-                            image = user.getString("image"),
-                            email = user.getString("email"),
-                            phoneNumber = user.getString("phoneNumber"),
-                            department = user.getString("department"),
-                        )
-                        firebaseUserList.add(user2)
+                .addSnapshotListener { userList, e ->
+                    if (e != null) {
+                        Log.i("CONNECT", "Repository: getFirebaseDataUser: Listen failed.", e)
+                        if (!continuation.isCompleted) {
+                            continuation.resumeWithException(e)
+                        }
+                        return@addSnapshotListener
                     }
-                    continuation.resume(_firebaseUserList.postValue(firebaseUserList))  // Coroutine wird mit der User-Liste fortgesetzt
+                    if (userList != null) {
+                        for (user in userList) {
+                            Log.d("CONNECT", "Repository: getFirebaseDataUser: user: ${user.id} => ${user.data}")
+                            val user2 = User(
+                                userId = user.id,
+                                firstName = user.getString("firstName"),
+                                lastName = user.getString("lastName"),
+                                fullName = user.getString("fullName"),
+                                image = user.getString("image"),
+                                email = user.getString("email"),
+                                phoneNumber = user.getString("phoneNumber"),
+                                department = user.getString("department"),
+                            )
+                            firebaseUserList.add(user2)
+                        }
+                    }
+                    _firebaseUserList.postValue(firebaseUserList)
+                    if (!continuation.isCompleted) {
+                        continuation.resume(Unit)
+                    }
                 }
-                .addOnFailureListener { exception ->
-                    continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
+            Log.i("CONNECT", "Repository: getFirebaseDataUser: ${_firebaseUserList.value.toString()}")
+            continuation.invokeOnCancellation {
+                if (it != null) {
+                    continuation.resumeWithException(it)
                 }
-
-            Log.i("Firebase", "Repo: getFirebaseDataUser: ${_firebaseUserList.toString()}")
+                Log.i("Firebase", "Repo getRealtimeFirebaseDataCurrentMessageList: Listener wurde entfernt.")
+            }
 
         }catch (e:Exception){
-            Log.i("Firebase", "Repo: getFirebaseDataUser: ${e.toString()}")
+            Log.i("CONNECT", "Repository: getFirebaseDataUser: Exception", e)
         }
-
     }
 
     suspend fun setCurrentUser()= suspendCancellableCoroutine { continuation ->
 
         try {
             val currentUserRef = firebasedb2.collection("User").document(_currentFirebaseUser.value?.uid!!)
-            currentUserRef.get().addOnSuccessListener {
-                val user2 = it.toObject<User>()
+            currentUserRef
+                .addSnapshotListener {currentUser, e ->
+                    if (e != null) {
+                        Log.d("CONNECT", "Repository: setCurrentUser: Listen failed.", e)
+                        if (!continuation.isCompleted) {
+                            continuation.resumeWithException(e)
+                        }
+                        return@addSnapshotListener
+                    }
+                val user2 = currentUser?.toObject<User>()
                 if (user2 != null) {
                     user2.userId = _currentFirebaseUser.value?.uid!!
+                    _currentUser.postValue(user2)
                 }
-                continuation.resume(_currentUser.postValue(user2))  // Coroutine wird mit der User-Liste fortgesetzt
+                    if (!continuation.isCompleted) {
+                        continuation.resume(Unit)
+                    }
             }
-                .addOnFailureListener { exception ->
-                    continuation.resumeWithException(exception)  // Coroutine wird mit der Ausnahme fortgesetzt
-                }
+            Log.i("Firebase", "Repo: setCurrentUser: ${_currentUser.value.toString()}")
 
-            Log.i("Firebase", "Repo: setCurrentUser: ${_currentUser.toString()}")
+            continuation.invokeOnCancellation {
+                if (it != null) {
+                    continuation.resumeWithException(it)
+                }
+                Log.i("Firebase", "Repo getRealtimeFirebaseDataCurrentMessageList: Listener wurde entfernt.")
+            }
 
         }catch (e:Exception){
-            Log.i("Firebase", "Repo: setCurrentUser: ${e.toString()}")
+            Log.i("Firebase", "Repo: setCurrentUser:  Exception", e)
         }
     }
 
