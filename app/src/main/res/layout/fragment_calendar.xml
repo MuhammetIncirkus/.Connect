@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.CalendarFragment"
-    android:background="@color/secondary5">
+    android:background="@color/white">
 
 
 
@@ -23,7 +23,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="15dp"
-                android:background="@color/secondary4"
+                android:background="@color/white"
                 >
 
 
@@ -34,7 +34,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="KW"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/new_primary"/>
 
                 <TextView
                     android:id="@+id/tv_monday"
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/new_primary"
                     android:text="Mo" />
 
                 <TextView
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/new_primary"
                     android:text="Di" />
 
                 <TextView
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/new_primary"
                     android:text="Mi" />
 
                 <TextView
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/new_primary"
                     android:text="Do" />
 
                 <TextView
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/new_primary"
                     android:text="Fr" />
 
                 <TextView
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/new_primary"
                     android:text="Sa" />
 
                 <TextView
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/new_primary"
                     android:text="So" />
 
             </LinearLayout>

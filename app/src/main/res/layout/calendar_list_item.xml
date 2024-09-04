@@ -7,7 +7,7 @@
     app:strokeWidth="0.5dp"
     app:strokeColor="@color/black"
     android:layout_marginVertical="4dp"
-    android:backgroundTint="@color/secondary4"
+    android:backgroundTint="@color/white"
     >
 
     <ScrollView

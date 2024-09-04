@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp"
-        android:backgroundTint="@color/secondary4">
+        android:backgroundTint="@color/white">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +35,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/mcv_textBubble"
                 app:layout_constraintStart_toStartOf="parent"
                 app:cardElevation="5dp"
-                app:strokeColor="@color/tertiary">
+                app:strokeColor="@color/new_tertiary">
 
 
                 <ImageView
@@ -56,8 +56,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/IncomingMessageBubble"
                 app:cardElevation="2dp"
-                app:strokeColor="@color/tertiary"
-                android:backgroundTint="@color/secondary">
+                app:strokeColor="@color/new_tertiary"
+                android:backgroundTint="@color/new_secondary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -72,7 +72,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="4dp"
                         android:text="@string/placeholderText"
-                        android:textColor="@color/primary"
+                        android:textColor="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="10sp"
-                android:textColor="@color/primary"
+                android:textColor="@color/new_primary"
                 app:layout_constraintEnd_toEndOf="@id/mcv_textBubble"
                 app:layout_constraintTop_toBottomOf="@id/mcv_textBubble"
                 tools:ignore="SmallSp" />

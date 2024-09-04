@@ -31,8 +31,8 @@
         android:layout_marginTop="20dp"
         android:hint="Name"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary"
-        app:boxBackgroundColor="@color/secondary5">
+        app:hintTextColor="@color/new_tertiary"
+        app:boxBackgroundColor="@color/white">
 
 
         <com.google.android.material.textfield.TextInputEditText
@@ -56,8 +56,8 @@
         android:layout_marginTop="16dp"
         android:hint="Department"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary"
-        app:boxBackgroundColor="@color/secondary5">
+        app:hintTextColor="@color/new_tertiary"
+        app:boxBackgroundColor="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_department"
@@ -79,8 +79,8 @@
         android:layout_marginTop="16dp"
         android:hint="E-Mail"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary"
-        app:boxBackgroundColor="@color/secondary5">
+        app:hintTextColor="@color/new_tertiary"
+        app:boxBackgroundColor="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_email"
@@ -102,8 +102,8 @@
         android:layout_marginTop="16dp"
         android:hint="Phone Number"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
-        app:hintTextColor="@color/tertiary"
-        app:boxBackgroundColor="@color/secondary5">
+        app:hintTextColor="@color/new_tertiary"
+        app:boxBackgroundColor="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_number"
@@ -119,8 +119,8 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:contentDescription="Call Button"
-        app:tint="@color/secondary"
-        android:backgroundTint="@color/primary"
+        app:tint="@color/new_secondary"
+        android:backgroundTint="@color/new_tertiary"
         app:srcCompat="@drawable/baseline_phone_enabled_24"
         app:layout_constraintTop_toTopOf="@id/til_number"
         app:layout_constraintBottom_toBottomOf="@id/til_number"

@@ -10,7 +10,7 @@
     app:strokeColor="@color/black"
     app:strokeWidth="0.5dp"
     app:cardElevation="5dp"
-    android:backgroundTint="@color/secondary5">
+    android:backgroundTint="@color/new_secondary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:text="@string/placeholderText"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/white"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -40,22 +40,13 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholderText"
             android:textSize="15sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/tv_contactName"
             app:layout_constraintStart_toStartOf="@id/tv_contactName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             android:layout_marginBottom="5dp"/>
-
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginHorizontal="40dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

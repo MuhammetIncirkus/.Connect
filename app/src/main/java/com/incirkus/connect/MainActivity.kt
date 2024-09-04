@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        changeStatusBarColor("#5B0522")
+        changeStatusBarColor("#13648D")
 
         val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)

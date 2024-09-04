@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp"
-        android:backgroundTint="@color/primary">
+        android:backgroundTint="@color/new_primary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

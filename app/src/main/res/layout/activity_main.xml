@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/secondary4">
+    android:background="@color/white">
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -17,11 +17,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation_menu"
-        android:background="@color/primary"
+        android:background="@color/new_primary"
         app:labelVisibilityMode="labeled"
         app:itemTextColor="@color/bottom_nav_item_color"
         app:itemIconTint="@color/bottom_nav_item_color"
-        app:itemTextAppearanceActive="@color/tertiary"
+        app:itemTextAppearanceActive="@color/new_tertiary"
         app:itemActiveIndicatorStyle="@style/Widget.Design.BottomNavigationView"
 
         />
@@ -30,7 +30,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="@color/new_primary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintTop_toTopOf="parent"
@@ -53,7 +53,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:backgroundTint="@color/transparent"
-                app:tint="@color/secondary" />
+                app:tint="@color/white" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/mcv_profileImage"
@@ -64,7 +64,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_Back"
-                app:strokeColor="@color/tertiary"
+                app:strokeColor="@color/new_tertiary"
                 >
 
 
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="30sp"
-                android:textColor="@color/secondary"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxWidth="230dp"
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="30sp"
-                android:textColor="@color/secondary"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:ellipsize="end"
                 android:gravity="center"

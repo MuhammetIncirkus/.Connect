@@ -42,8 +42,8 @@ class MonthAdapter (private var dayList: List<Day>, private val viewModel: ViewM
         val context = binding.mcvDay.context
         if (day.year == currentDate.year && day.month == currentDate.month.value && day.day == currentDate.dayOfMonth){
             binding.tvDayNumber.setTypeface(binding.tvDayNumber.getTypeface(), Typeface.BOLD)
-            binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.primary))
-            binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.primary))
+            binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.new_primary))
+            binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.new_primary))
             binding.mcvDay.strokeWidth = 5
             binding.mcvDay.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green))
 
@@ -57,9 +57,9 @@ class MonthAdapter (private var dayList: List<Day>, private val viewModel: ViewM
             for (holiday in holidayList){
                 if (day.year == holiday.holidayYear && day.month == holiday.holidayMonth && day.day == holiday.holidayDay){
 
-                    binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.tertiary))
-                    binding.mcvDay.setCardBackgroundColor(ContextCompat.getColor(context, R.color.primary))
-                    binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.secondary))
+                    binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.new_tertiary))
+                    binding.mcvDay.setCardBackgroundColor(ContextCompat.getColor(context, R.color.new_secondary))
+                    binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.white))
                     binding.mcvDay.strokeWidth = 5
                 }
             }

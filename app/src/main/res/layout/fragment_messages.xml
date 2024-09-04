@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:cardCornerRadius="0dp"
         app:strokeWidth="0dp"
-        android:backgroundTint="@color/primary">
+        android:backgroundTint="@color/new_primary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,8 +46,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp"
-                app:tint="@color/primary"
-                android:backgroundTint="@color/secondary"
+                app:tint="@color/new_secondary"
+                android:backgroundTint="@color/new_tertiary"
                 />
 
 
@@ -65,7 +65,7 @@
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
                 android:hint="Message"
-                app:hintTextColor="@color/tertiary"
+                app:hintTextColor="@color/new_tertiary"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="16dp"
     app:strokeColor="@android:color/transparent"
     app:strokeWidth="0dp"
-    android:backgroundTint="@color/secondary4">
+    android:backgroundTint="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_marginVertical="5dp"
             android:layout_marginStart="2dp"
             app:cardElevation="5dp"
-            app:strokeColor="@color/tertiary">
+            app:strokeColor="@color/new_tertiary">
 
 
             <ImageView
@@ -46,7 +46,7 @@
             android:text="@string/placeholderText"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/new_primary"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toStartOf="@id/tv_contactLastMessageDate"
             app:layout_constraintHorizontal_bias="0.0"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholderText"
             android:textSize="15sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/new_primary"
             app:layout_constraintTop_toBottomOf="@+id/tv_contactName"
             app:layout_constraintStart_toStartOf="@id/tv_contactName"
             app:layout_constraintEnd_toStartOf="@id/tv_contactLastMessageDate"
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholderText"
             android:textSize="13sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/new_primary"
             app:layout_constraintTop_toTopOf="@id/tv_contactName"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="2dp"

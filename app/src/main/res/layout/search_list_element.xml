@@ -9,7 +9,7 @@
         android:layout_marginHorizontal="16dp"
         app:strokeColor="@android:color/transparent"
         app:strokeWidth="0dp"
-    android:backgroundTint="@color/secondary4">
+    android:backgroundTint="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_marginVertical="5dp"
                 android:layout_marginStart="2dp"
                 app:cardElevation="5dp"
-                app:strokeColor="@color/tertiary">
+                app:strokeColor="@color/new_tertiary">
 
 
                 <ImageView
@@ -57,8 +57,8 @@
                     android:layout_height="match_parent"
                     android:contentDescription="Call Button"
                     android:src="@drawable/baseline_phone_enabled_24"
-                    android:background="@color/secondary4"
-                    app:tint="@color/primary"/>
+                    android:background="@color/white"
+                    app:tint="@color/new_primary"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -71,7 +71,7 @@
                 android:text="@string/placeholderText"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:textColor="@color/primary"
+                android:textColor="@color/new_primary"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toStartOf="@id/mcv_callbtn"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
                 android:textSize="15sp"
-                android:textColor="@color/primary"
+                android:textColor="@color/new_primary"
                 app:layout_constraintTop_toBottomOf="@+id/tv_contactName"
                 app:layout_constraintStart_toStartOf="@id/tv_contactName"
                 app:layout_constraintEnd_toStartOf="@id/mcv_callbtn"

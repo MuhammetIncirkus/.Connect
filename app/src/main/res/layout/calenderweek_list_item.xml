@@ -8,7 +8,7 @@
     android:layout_marginHorizontal="5dp"
     android:layout_marginVertical="10dp"
     app:strokeWidth="0dp"
-    android:backgroundTint="@color/secondary4"
+    android:backgroundTint="@color/white"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             android:text="30"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:textColor="@color/primary"
+            android:textColor="@color/new_primary"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

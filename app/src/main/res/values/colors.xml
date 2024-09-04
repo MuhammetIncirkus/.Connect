@@ -6,13 +6,8 @@
     <color name="green">#58B913</color>
     <color name="red">#F44336</color>
     <color name="strokeGrey">#8F8994</color>
-    <color name="primary">#5B0522</color>
-    <color name="secondary">#76B8E5</color>
-    <color name="tertiary">#D59E3D</color>
-    <color name="secondary2">#ABC5D6</color>
-    <color name="primary2">#6B4C57</color>
-    <color name="secondary3">#4D76B8E5</color>
-    <color name="primary3">#4D5B0522</color>
-    <color name="secondary4">#80C2EF</color>
-    <color name="secondary5">#D9E3EB</color>
+    <color name="new_primary">#13648D</color>
+    <color name="new_secondary">#3C0013</color>
+    <color name="new_tertiary">#D79F3F</color>
+
 </resources>
