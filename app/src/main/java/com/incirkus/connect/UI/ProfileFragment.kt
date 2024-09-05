@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -15,6 +17,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
@@ -92,8 +95,14 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnChangePassword.setOnClickListener {
-            //viewModel.forgotPassword("mammut55@gmail.com")
-            viewModel.changePassword("muhammet@incirkus.com","1234abcd","123456")
+
+//            viewModel.changePassword("muhammet@incirkus.com","12345678","123456",onSuccess = {
+//
+//            },
+//                onFailure = { errorMessage ->
+//                })
+            showChangePasswordDialog()
+
         }
 
 
@@ -186,8 +195,64 @@ class ProfileFragment : Fragment() {
         }
 
 
+
     }
 
+    private fun showChangePasswordDialog() {
+        // Inflate the dialog layout
+        val dialogView = layoutInflater.inflate(R.layout.password_change_popup, null)
+
+        val currentPasswordInput: EditText = dialogView.findViewById(R.id.tiet_oldPassword)
+        val newPasswordInput: EditText = dialogView.findViewById(R.id.tiet_newPassword)
+        val confirmPasswordInput: EditText = dialogView.findViewById(R.id.tiet_confirmNewPassword)
+
+        // Build and show the dialog
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Change Password")
+            .setView(dialogView)
+            .setPositiveButton("Confirm") { dialog, _ ->
+                // Hier wird der Bestätigungs-Button geklickt
+                val currentPassword = currentPasswordInput.text.toString()
+                val newPassword = newPasswordInput.text.toString()
+                val confirmPassword = confirmPasswordInput.text.toString()
+
+                if (newPassword == confirmPassword) {
+                    if (newPassword.length>5){
+//                    viewModel.changePassword(viewModel.currentFirebaseUser.value!!.email!!,currentPassword,newPassword)
+//                        //TODO: Rückmeldung von Firebase abwarten
+//                    Toast.makeText(requireContext(), "Passwort geändert", Toast.LENGTH_SHORT).show()
+
+                        viewModel.changePassword(
+                            email = viewModel.currentFirebaseUser.value!!.email!!,
+                            passwordOld = currentPassword,
+                            passwordNew = newPassword,
+                            onSuccess = {
+                                Toast.makeText(requireContext(), "Password changed", Toast.LENGTH_SHORT).show()
+                            },
+                            onFailure = { errorMessage ->
+                                dialog.dismiss()
+                                Toast.makeText(requireContext(), "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+
+                            }
+                        )
+
+                    }else{
+                        dialog.dismiss()
+                        Toast.makeText(requireContext(), "Password is to short", Toast.LENGTH_SHORT).show()
+
+                    }
+                } else {
+                    dialog.dismiss()
+                    Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show()
+
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
 
 
 }

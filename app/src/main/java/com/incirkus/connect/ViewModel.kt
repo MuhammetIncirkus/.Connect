@@ -859,35 +859,54 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun changePassword(email: String, passwordOld: String, passwordNew: String) {
+//    fun changePassword(email: String, passwordOld: String, passwordNew: String) {
+//
+//        val user = Firebase.auth.currentUser!!
+//        user.let {
+//        val credential = EmailAuthProvider.getCredential(email, passwordOld)
+//        it.reauthenticate(credential)
+//            .addOnCompleteListener {reauthentication->
+//                Log.d("Firebase", "User re-authenticated.")
+//                if (reauthentication.isSuccessful){
+//                    Log.d("Firebase", "User re-authenticated.")
+//                it.updatePassword(passwordNew)
+//                    .addOnCompleteListener { passwordUpdate ->
+//                        Log.d("Firebase", "Test: ${passwordNew}")
+//                        if (passwordUpdate.isSuccessful) {
+//                            Log.d("Firebase", "User password updated.${passwordNew}")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//    }
 
+    fun changePassword(email: String, passwordOld: String,passwordNew: String,onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val user = Firebase.auth.currentUser!!
-
-// Get auth credentials from the user for re-authentication. The example below shows
-// email and password credentials but there are multiple possible providers,
-// such as GoogleAuthProvider or FacebookAuthProvider.
         user.let {
-
-        val credential = EmailAuthProvider.getCredential(email, passwordOld)
-
-// Prompt the user to re-provide their sign-in credentials
-        it.reauthenticate(credential)
-            .addOnCompleteListener {reauthentication->
-                Log.d("Firebase", "User re-authenticated.")
-                if (reauthentication.isSuccessful){
-                    Log.d("Firebase", "User re-authenticated.")
-                it.updatePassword(passwordNew)
-                    .addOnCompleteListener { passwordUpdate ->
-                        Log.d("Firebase", "Test: ${passwordNew}")
-                        if (passwordUpdate.isSuccessful) {
-                            Log.d("Firebase", "User password updated.${passwordNew}")
-                        }
+            val credential = EmailAuthProvider.getCredential(email, passwordOld)
+            it.reauthenticate(credential)
+                .addOnCompleteListener { reauthentication ->
+                    if (reauthentication.isSuccessful) {
+                        Log.d("Firebase", "User re-authenticated.")
+                        it.updatePassword(passwordNew)
+                            .addOnCompleteListener { passwordUpdate ->
+                                if (passwordUpdate.isSuccessful) {
+                                    Log.d("Firebase", "User password updated: $passwordNew")
+                                    onSuccess()
+                                } else {
+                                    val errorMessage = passwordUpdate.exception?.localizedMessage ?: "Error updating the password"
+                                    onFailure(errorMessage)
+                                }
+                            }
+                    } else {
+                        val errorMessage = reauthentication.exception?.localizedMessage ?: "Current password is wrong"
+                        onFailure(errorMessage)
                     }
                 }
-            }
         }
-
-
     }
 
 }
