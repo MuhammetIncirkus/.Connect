@@ -65,6 +65,10 @@ class SearchFragment : Fragment() {
             }
         })
 
+        binding.btnClearText.setOnClickListener {
+            binding.tietSearchText.text?.clear()
+        }
+
     }
 
 

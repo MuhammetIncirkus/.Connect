@@ -78,7 +78,7 @@ class Repository() {
     var holidayList: MutableList<Holiday> = mutableListOf()
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //--------------------------------------------------------------------------  API----------------------------------------------------------------------------
+    //----------------------------------------------------------------------------API----------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -143,7 +143,7 @@ class Repository() {
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //--------------------------------------------------------------------------  API----------------------------------------------------------------------------
+    //---------------------------------------------------------------------------/API----------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -151,6 +151,23 @@ class Repository() {
     //--------------------------------------------------------------------------FIREBASE-------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Sets the current Firebase user asynchronously and logs the user's value.
+     * The function posts the given Firebase user to the `_currentFirebaseUser` LiveData object and resumes the coroutine
+     * while ensuring it can be cancelled if needed. The result is logged using the user's current value.
+     *
+     * ---
+     *
+     * Setzt asynchron den aktuellen Firebase-Benutzer und protokolliert den Wert des Benutzers.
+     * Die Funktion postet den übergebenen Firebase-Benutzer in das LiveData-Objekt `_currentFirebaseUser` und setzt die Coroutine fort,
+     * während sichergestellt wird, dass sie bei Bedarf abgebrochen werden kann. Das Ergebnis wird unter Verwendung des aktuellen Werts des Benutzers protokolliert.
+     *
+     * @param firebaseUser: FirebaseUser? - The Firebase user to be set as the current user, can be null.
+     *                      Der Firebase-Benutzer, der als aktueller Benutzer gesetzt werden soll, kann null sein.
+     *
+     * @return Unit: The function does not return a value. The coroutine is resumed after posting the Firebase user and logging.
+     *               Die Funktion gibt keinen Wert zurück. Die Coroutine wird nach dem Posten des Firebase-Benutzers und dem Protokollieren fortgesetzt.
+     */
     suspend fun setCurrentFirebaseUser(firebaseUser: FirebaseUser?) =
         suspendCancellableCoroutine { continuation ->
             _currentFirebaseUser.postValue(firebaseUser)
@@ -162,6 +179,18 @@ class Repository() {
             )
         }
 
+    /**
+     * Logs the user out by signing out from Firebase authentication and resetting all relevant LiveData properties.
+     * The function clears user-related data, including chat rooms, messages, leave requests, attachments, holidays, and user lists.
+     * Each step of the logout process is logged, indicating the state of various LiveData objects and lists after the reset.
+     *
+     * ---
+     *
+     * Meldet den Benutzer ab, indem er von Firebase Authentication abgemeldet wird und alle relevanten LiveData-Eigenschaften zurückgesetzt werden.
+     * Die Funktion löscht benutzerbezogene Daten, einschließlich Chatrooms, Nachrichten, Urlaubsanfragen, Anhänge, Feiertage und Benutzerlisten.
+     * Jeder Schritt des Abmeldevorgangs wird protokolliert, wobei der Zustand der verschiedenen LiveData-Objekte und Listen nach dem Zurücksetzen angezeigt wird.
+     *
+     */
     fun logout() {
         firebaseAuth.signOut()
         _currentFirebaseUser.value = null
@@ -210,6 +239,24 @@ class Repository() {
         Log.i("CONNECT", "Repository: logout: holidayList: ${holidayList}")
     }
 
+    /**
+     * Retrieves a list of users from a Firebase Firestore collection asynchronously and updates the internal LiveData object.
+     * The function listens to changes in the "User" collection and filters out the current user by their UID. It converts the
+     * Firebase documents into `User` objects and adds them to the list, which is then posted to the LiveData `_firebaseUserList`.
+     * If an error occurs during the listener registration or data fetching process, the error is logged and the coroutine resumes with an exception.
+     * The listener is removed upon cancellation of the coroutine.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Benutzern aus einer Firebase Firestore-Sammlung ab und aktualisiert das interne LiveData-Objekt.
+     * Die Funktion hört auf Änderungen in der "User"-Sammlung und filtert den aktuellen Benutzer anhand seiner UID heraus.
+     * Die Firebase-Dokumente werden in `User`-Objekte umgewandelt und der Liste hinzugefügt, die dann an das LiveData `_firebaseUserList` übergeben wird.
+     * Tritt während der Listener-Registrierung oder des Datenabrufs ein Fehler auf, wird dieser protokolliert, und die Coroutine wird mit einer Ausnahme fortgesetzt.
+     * Der Listener wird bei einer Stornierung der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the data is fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abruf der Daten oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getFirebaseDataUser() = suspendCancellableCoroutine { continuation ->
         val firebaseUserList: MutableList<User> = mutableListOf()
 
@@ -264,6 +311,22 @@ class Repository() {
         }
     }
 
+    /**
+     * Retrieves the current user data from Firebase Firestore asynchronously and updates the internal LiveData object `_currentUser`.
+     * The function listens for changes to the user's document in Firestore and converts the document into a `User` object.
+     * It updates the LiveData `_currentUser` with the fetched user data. If an error occurs during the listener registration or data retrieval,
+     * it is logged and the coroutine resumes with an exception. The listener is removed when the coroutine is cancelled.
+     *
+     * ---
+     *
+     * Ruft asynchron die aktuellen Benutzerdaten aus Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_currentUser`.
+     * Die Funktion hört auf Änderungen am Benutzerdokument in Firestore und wandelt das Dokument in ein `User`-Objekt um.
+     * Sie aktualisiert die LiveData `_currentUser` mit den abgerufenen Benutzerdaten. Tritt während der Listener-Registrierung oder beim Abruf der Daten ein Fehler auf,
+     * wird dieser protokolliert und die Coroutine wird mit einer Ausnahme fortgesetzt. Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the user data is fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Benutzerdaten oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun setCurrentUser() = suspendCancellableCoroutine { continuation ->
 
         try {
@@ -286,7 +349,10 @@ class Repository() {
                             continuation.resume(Unit)
                         }
 
-                        Log.i("CONNECT", "Repository: setCurrentUser: currentUser: ${_currentUser.value.toString()}")
+                        Log.i(
+                            "CONNECT",
+                            "Repository: setCurrentUser: currentUser: ${_currentUser.value.toString()}"
+                        )
                     }
 
             continuation.invokeOnCancellation {
@@ -299,6 +365,24 @@ class Repository() {
         }
     }
 
+    /**
+     * Retrieves a list of chat rooms from Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseChatRoomList`.
+     * The function listens for changes in the "ChatRooms" collection where the current user is a participant and converts the documents
+     * into `ChatRoom` objects. These chat rooms are then added to a list, which is posted to `_firebaseChatRoomList`.
+     * If an error occurs during the listener registration or data fetching process, it is logged and the coroutine resumes with an exception.
+     * The listener is removed upon cancellation of the coroutine.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Chatrooms aus Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_firebaseChatRoomList`.
+     * Die Funktion hört auf Änderungen in der "ChatRooms"-Sammlung, bei denen der aktuelle Benutzer als Teilnehmer aufgelistet ist,
+     * und wandelt die Dokumente in `ChatRoom`-Objekte um. Diese Chatrooms werden dann in einer Liste gespeichert und an `_firebaseChatRoomList` übergeben.
+     * Bei einem Fehler während der Listener-Registrierung oder des Datenabrufs wird dieser protokolliert, und die Coroutine wird mit einer Ausnahme fortgesetzt.
+     * Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the chat rooms are fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Chatrooms oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getFirebaseDataChatRooms() = suspendCancellableCoroutine { continuation ->
         val firebaseChatRoomList: MutableList<ChatRoom> = mutableListOf()
 
@@ -306,9 +390,13 @@ class Repository() {
             _currentFirebaseUser.value?.uid?.let {
                 val listenerRegistration = firebasedb2.collection("ChatRooms")
                     .whereArrayContains("chatParticipants", it)
-                    .addSnapshotListener { ChatRoomList,e ->
+                    .addSnapshotListener { ChatRoomList, e ->
                         if (e != null) {
-                            Log.d("CONNECT", "Repository: getFirebaseDataChatRooms: Listen failed.", e)
+                            Log.d(
+                                "CONNECT",
+                                "Repository: getFirebaseDataChatRooms: Listen failed.",
+                                e
+                            )
                             if (!continuation.isCompleted) {
                                 continuation.resumeWithException(e)
                             }
@@ -317,7 +405,10 @@ class Repository() {
 
                         if (ChatRoomList != null) {
                             for (chatRoom in ChatRoomList) {
-                                Log.d("CONNECT", "Repository: getFirebaseDataChatRooms: chatRoom: ${chatRoom.id} => ${chatRoom.data}")
+                                Log.d(
+                                    "CONNECT",
+                                    "Repository: getFirebaseDataChatRooms: chatRoom: ${chatRoom.id} => ${chatRoom.data}"
+                                )
 
                                 val arrayList: ArrayList<String> =
                                     chatRoom.get("chatParticipants") as ArrayList<String>
@@ -347,11 +438,17 @@ class Repository() {
                     }
                 continuation.invokeOnCancellation {
                     listenerRegistration.remove()
-                    Log.i("CONNECT", "Repository: getFirebaseDataChatRooms: Listener wurde entfernt.")
+                    Log.i(
+                        "CONNECT",
+                        "Repository: getFirebaseDataChatRooms: Listener wurde entfernt."
+                    )
                 }
             }
 
-            Log.i("CONNECT", "Repository: getFirebaseDataChatRooms: ${_firebaseChatRoomList.value.toString()}")
+            Log.i(
+                "CONNECT",
+                "Repository: getFirebaseDataChatRooms: ${_firebaseChatRoomList.value.toString()}"
+            )
 
         } catch (e: Exception) {
             Log.i("CONNECT", "Repository: getFirebaseDataChatRooms: Exception", e)
@@ -359,12 +456,31 @@ class Repository() {
 
     }
 
+    /**
+     * Retrieves the current chat room from Firebase Firestore asynchronously based on the given chat room ID and updates the internal LiveData object `_currentChatRoom`.
+     * The function listens for changes to the specified chat room document in Firestore and converts the document into a `ChatRoom` object.
+     * If the chat room is successfully retrieved, it is posted to the LiveData `_currentChatRoom`. If an error occurs during the listener registration
+     * or data retrieval, it is logged, and the coroutine resumes with the result. The listener is removed when the coroutine is cancelled.
+     *
+     * ---
+     *
+     * Ruft asynchron den aktuellen Chatroom aus Firebase Firestore anhand der angegebenen Chatroom-ID ab und aktualisiert das interne LiveData-Objekt `_currentChatRoom`.
+     * Die Funktion hört auf Änderungen am angegebenen Chatroom-Dokument in Firestore und wandelt das Dokument in ein `ChatRoom`-Objekt um.
+     * Wenn der Chatroom erfolgreich abgerufen wird, wird er an das LiveData `_currentChatRoom` übergeben. Bei einem Fehler während der Listener-Registrierung
+     * oder des Datenabrufs wird dieser protokolliert, und die Coroutine wird mit dem Ergebnis fortgesetzt. Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @param chatRoomId: String - The ID of the chat room to retrieve.
+     *                    Die ID des Chatrooms, der abgerufen werden soll.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the chat room is fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen des Chatrooms oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getCurrentChatRoom(chatRoomId: String) =
         suspendCancellableCoroutine { continuation ->
 
             try {
                 val listenerRegistration = firebasedb2.collection("ChatRooms").document(chatRoomId)
-                    .addSnapshotListener { it,e ->
+                    .addSnapshotListener { it, e ->
                         val chatRoom = it!!.toObject<ChatRoom>()
                         if (chatRoom != null) {
                             chatRoom.chatRoomId = chatRoomId
@@ -373,7 +489,10 @@ class Repository() {
                         if (!continuation.isCompleted) {
                             continuation.resume(Unit)
                         }
-                        Log.i("CONNECT", "Repository: getCurrentChatRoom: currentChatRoom: ${_currentChatRoom.value.toString()}")
+                        Log.i(
+                            "CONNECT",
+                            "Repository: getCurrentChatRoom: currentChatRoom: ${_currentChatRoom.value.toString()}"
+                        )
                     }
                 continuation.invokeOnCancellation {
                     listenerRegistration.remove()
@@ -387,10 +506,42 @@ class Repository() {
             }
         }
 
+    /**
+     * Sets the provided `ChatRoom` object as the current chat room by updating the internal LiveData object `_currentChatRoom`.
+     * This function is used to manually update the current chat room without fetching it from a remote source.
+     *
+     * ---
+     *
+     * Setzt das übergebene `ChatRoom`-Objekt als aktuellen Chatroom, indem das interne LiveData-Objekt `_currentChatRoom` aktualisiert wird.
+     * Diese Funktion wird verwendet, um den aktuellen Chatroom manuell zu aktualisieren, ohne ihn von einer externen Quelle abzurufen.
+     *
+     * @param chatRoom: ChatRoom - The chat room object to set as the current chat room.
+     *                            Das Chatroom-Objekt, das als aktueller Chatroom gesetzt werden soll.
+     *
+     * @return Unit: This function does not return a value.
+     *               Diese Funktion gibt keinen Wert zurück.
+     */
     fun setCurrentChatroom(chatRoom: ChatRoom) {
         _currentChatRoom.value = chatRoom
     }
 
+    /**
+     * Retrieves a list of messages from the "Messages" collection in Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseMessageList`.
+     * The function listens for changes in the "Messages" collection and converts the documents into `Message` objects.
+     * These messages are added to a list, sorted by their timestamp, and posted to `_firebaseMessageList`. If an error occurs during
+     * listener registration or data retrieval, it is logged, and the coroutine resumes with an exception. The listener is removed when the coroutine is cancelled.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Nachrichten aus der "Messages"-Sammlung in Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_firebaseMessageList`.
+     * Die Funktion hört auf Änderungen in der "Messages"-Sammlung und wandelt die Dokumente in `Message`-Objekte um.
+     * Diese Nachrichten werden in einer Liste gespeichert, nach ihrem Zeitstempel sortiert und an `_firebaseMessageList` übergeben.
+     * Bei einem Fehler während der Listener-Registrierung oder des Datenabrufs wird dieser protokolliert, und die Coroutine wird mit einer Ausnahme fortgesetzt.
+     * Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the messages are fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Nachrichten oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getMessageList() = suspendCancellableCoroutine<Unit> { continuation ->
         val firebaseCurrentMessageList: MutableList<Message> = mutableListOf()
 
@@ -430,7 +581,6 @@ class Repository() {
 
                     _firebaseMessageList.postValue(firebaseCurrentMessageList2)
 
-                    // Coroutine das erste Mal fortsetzen, falls es noch nicht abgeschlossen ist
                     if (!continuation.isCompleted) {
                         continuation.resume(Unit)
                     }
@@ -441,7 +591,6 @@ class Repository() {
                     )
                 }
 
-            // Falls die Coroutine storniert wird, Listener entfernen
             continuation.invokeOnCancellation {
                 listenerRegistration.remove()
                 Log.i(
@@ -458,11 +607,39 @@ class Repository() {
         }
     }
 
+    /**
+     * Clears the current list of messages by posting an empty list to the internal LiveData object `_firebaseMessageList`.
+     * This function is used to reset or clear the message list, typically when the user logs out or the chat room is reset.
+     *
+     * ---
+     *
+     * Leert die aktuelle Nachrichtenliste, indem eine leere Liste an das interne LiveData-Objekt `_firebaseMessageList` übergeben wird.
+     * Diese Funktion wird verwendet, um die Nachrichtenliste zurückzusetzen oder zu leeren, typischerweise wenn der Benutzer sich abmeldet oder der Chatroom zurückgesetzt wird.
+     *
+     * @return Unit: This function does not return a value.
+     *               Diese Funktion gibt keinen Wert zurück.
+     */
     fun clearMessagelist() {
         val emptyMessageList: List<Message> = listOf()
         _firebaseMessageList.postValue(emptyMessageList)
     }
 
+    /**
+     * Retrieves a list of chat rooms from Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseChatRoomList`.
+     * The function listens for changes in the "ChatRooms" collection where the current user is a participant and converts the documents
+     * into `ChatRoom` objects. The list of chat rooms is then posted to `_firebaseChatRoomList`. If an error occurs during the listener registration
+     * or data retrieval, it is logged, and the coroutine resumes with an exception. The listener is removed when the coroutine is cancelled.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Chatrooms aus Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_firebaseChatRoomList`.
+     * Die Funktion hört auf Änderungen in der "ChatRooms"-Sammlung, in der der aktuelle Benutzer als Teilnehmer aufgeführt ist, und wandelt die Dokumente
+     * in `ChatRoom`-Objekte um. Die Liste der Chatrooms wird dann an `_firebaseChatRoomList` übergeben. Tritt ein Fehler während der Listener-Registrierung
+     * oder des Datenabrufs auf, wird dieser protokolliert und die Coroutine wird mit einer Ausnahme fortgesetzt. Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the chat rooms are fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Chatrooms oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getChatRoomList() = suspendCancellableCoroutine<Unit> { continuation ->
         var isResumed = false // Flag, um mehrfaches Fortsetzen zu verhindern
 
@@ -472,7 +649,7 @@ class Repository() {
                 if (e != null) {
                     Log.i("Firebase", "Repo: getChatRoomListNew: Listen failed: ${e.toString()}")
                     if (!isResumed) {
-                        continuation.resumeWithException(e) // Fehler an die Coroutine weitergeben
+                        continuation.resumeWithException(e)
                         isResumed = true
                     }
                     return@addSnapshotListener
@@ -494,12 +671,29 @@ class Repository() {
                 }
             }
 
-        // Stelle sicher, dass der Listener abgemeldet wird, wenn die Coroutine abgebrochen wird
         continuation.invokeOnCancellation {
             listenerRegistration.remove()
         }
     }
 
+    /**
+     * Retrieves a list of leave requests from Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseLeaveRequestList`.
+     * The function listens for changes in the "LeaveRequest" collection where the current user is the requester and converts the documents
+     * into `LeaveRequest` objects. These leave requests are added to a list, which is then posted to `_firebaseLeaveRequestList`.
+     * If an error occurs during the listener registration or data retrieval, it is logged and the coroutine resumes with an exception.
+     * The listener is removed when the coroutine is cancelled.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Urlaubsanträgen aus Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_firebaseLeaveRequestList`.
+     * Die Funktion hört auf Änderungen in der "LeaveRequest"-Sammlung, in der der aktuelle Benutzer der Antragsteller ist, und wandelt die Dokumente
+     * in `LeaveRequest`-Objekte um. Diese Urlaubsanträge werden in einer Liste gespeichert und an `_firebaseLeaveRequestList` übergeben.
+     * Bei einem Fehler während der Listener-Registrierung oder des Datenabrufs wird dieser protokolliert, und die Coroutine wird mit einer Ausnahme fortgesetzt.
+     * Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the leave requests are fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Urlaubsanträge oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getFirebaseDataLeaveRequests() = suspendCancellableCoroutine<Unit> { continuation ->
         val currentFirebaseLeaveRequestList: MutableList<LeaveRequest> = mutableListOf()
 
@@ -515,7 +709,7 @@ class Repository() {
                         return@addSnapshotListener
                     }
 
-                    currentFirebaseLeaveRequestList.clear() // Alte Liste leeren
+                    currentFirebaseLeaveRequestList.clear()
                     for (leaveRequest in leaveRequestList!!) {
                         Log.d(
                             "Firebase",
@@ -533,10 +727,8 @@ class Repository() {
                         currentFirebaseLeaveRequestList.add(leaveRequest2)
                     }
 
-
                     _firebaseLeaveRequestList.postValue(currentFirebaseLeaveRequestList)
 
-                    // Coroutine das erste Mal fortsetzen, falls es noch nicht abgeschlossen ist
                     if (!continuation.isCompleted) {
                         continuation.resume(Unit)
                     }
@@ -547,7 +739,6 @@ class Repository() {
                     )
                 }
 
-            // Falls die Coroutine storniert wird, Listener entfernen
             continuation.invokeOnCancellation {
                 listenerRegistration.remove()
                 Log.i("Firebase", "Repo getFirebaseDataLeaveRequests: Listener wurde entfernt.")
@@ -561,6 +752,24 @@ class Repository() {
         }
     }
 
+    /**
+     * Retrieves a list of attachments from Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseAttachmentList`.
+     * The function listens for changes in the "Attachments" collection and converts the documents into `Attachment` objects.
+     * These attachments are added to a list, sorted by their timestamp, and posted to `_firebaseAttachmentList`.
+     * If an error occurs during the listener registration or data retrieval, it is logged, and the coroutine resumes with an exception.
+     * The listener is removed when the coroutine is cancelled.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Anhängen aus Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_firebaseAttachmentList`.
+     * Die Funktion hört auf Änderungen in der "Attachments"-Sammlung und wandelt die Dokumente in `Attachment`-Objekte um.
+     * Diese Anhänge werden in einer Liste gespeichert, nach ihrem Zeitstempel sortiert und an `_firebaseAttachmentList` übergeben.
+     * Bei einem Fehler während der Listener-Registrierung oder des Datenabrufs wird dieser protokolliert, und die Coroutine wird mit einer Ausnahme fortgesetzt.
+     * Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the attachments are fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Anhänge oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getFirebaseAttachments() = suspendCancellableCoroutine<Unit> { continuation ->
         val firebaseCurrentAttachmentList: MutableList<Attachment> = mutableListOf()
 
@@ -600,7 +809,6 @@ class Repository() {
 
                     _firebaseAttachmentList.postValue(firebaseCurrentAttachmentList2)
 
-
                     if (!continuation.isCompleted) {
                         continuation.resume(Unit)
                     }
@@ -610,7 +818,6 @@ class Repository() {
                         "Repo getFirebaseAttachments: ${firebaseCurrentAttachmentList2.toString()}"
                     )
                 }
-
 
             continuation.invokeOnCancellation {
                 listenerRegistration.remove()
@@ -625,6 +832,24 @@ class Repository() {
         }
     }
 
+    /**
+     * Retrieves a list of holidays from a specific subcollection in Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseHolidayList`.
+     * The function listens for changes in the "HolidayList" subcollection of the current user's document and converts the documents into `Holiday` objects.
+     * These holidays are added to a list and posted to `_firebaseHolidayList`.
+     * If an error occurs during the listener registration or data retrieval, it is logged, and the coroutine resumes with an exception.
+     * The listener is removed when the coroutine is cancelled.
+     *
+     * ---
+     *
+     * Ruft asynchron eine Liste von Feiertagen aus einer bestimmten Unterkollektion in Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_firebaseHolidayList`.
+     * Die Funktion hört auf Änderungen in der Unterkollektion "HolidayList" des Dokuments des aktuellen Benutzers und wandelt die Dokumente in `Holiday`-Objekte um.
+     * Diese Feiertage werden in einer Liste gespeichert und an `_firebaseHolidayList` übergeben.
+     * Bei einem Fehler während der Listener-Registrierung oder des Datenabrufs wird dieser protokolliert, und die Coroutine wird mit einer Ausnahme fortgesetzt.
+     * Der Listener wird bei Abbruch der Coroutine entfernt.
+     *
+     * @return Unit: The function does not return a value directly. The coroutine is resumed after the holidays are fetched or if an exception occurs.
+     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Feiertage oder bei einer Ausnahme fortgesetzt.
+     */
     suspend fun getFirebaseHolidaylist() = suspendCancellableCoroutine<Unit> { continuation ->
         val firebaseHolidayList2: MutableList<Holiday> = mutableListOf()
 
@@ -642,7 +867,7 @@ class Repository() {
                         }
 
                         firebaseHolidayList2.clear()
-                        holidayList.clear()// Alte Liste leeren
+                        holidayList.clear()
                         for (holiday in holidayList2!!) {
                             Log.d("Firebase", "Repo: Holiday: ${holiday.id} => ${holiday.data}")
 
@@ -669,7 +894,6 @@ class Repository() {
 
                         }
 
-                        // Coroutine das erste Mal fortsetzen, falls es noch nicht abgeschlossen ist
                         if (!continuation.isCompleted) {
                             continuation.resume(Unit)
                         }
@@ -680,7 +904,6 @@ class Repository() {
                         )
                     }
 
-            // Falls die Coroutine storniert wird, Listener entfernen
             continuation.invokeOnCancellation {
                 listenerRegistration.remove()
                 Log.i("Firebase", "Repo getFirebaseHolidaylist: Listener wurde entfernt.")
@@ -694,5 +917,7 @@ class Repository() {
         }
     }
 
-
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------/FIREBASE-------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 }

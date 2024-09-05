@@ -35,7 +35,7 @@
         android:id="@+id/lav_profilePictureUpload"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        app:lottie_rawRes="@raw/animation"
+        app:lottie_rawRes="@raw/circle"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:layout_constraintBottom_toBottomOf="parent"

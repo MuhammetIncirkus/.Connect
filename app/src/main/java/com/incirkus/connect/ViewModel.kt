@@ -55,18 +55,12 @@ import java.util.UUID
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
-    //private val database = getDataBase(application)
     val repository = Repository()
-    //val repository = Repository(database,this)
+
     private val _isUploading = MutableLiveData<Boolean>()
     val isUploading: LiveData<Boolean> = _isUploading
     private val _isUploadingApi = MutableLiveData<Boolean>()
     val isUploadingApi: LiveData<Boolean> = _isUploadingApi
-
-
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
     val monthList = createMonthList()
@@ -74,6 +68,48 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private var _currentMonth = MutableLiveData<Month>(actualMonth)
     val currentMonth: LiveData<Month> = _currentMonth
+
+    val firebaseHolidayList = repository.firebaseHolidayList
+    val holidayList: MutableList<Holiday> = repository.holidayList
+
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseStorage = FirebaseStorage.getInstance()
+    private val firedatabase = FirebaseFirestore.getInstance()
+
+    val firebaseUserList: LiveData<List<User>> = repository.firebaseUserList
+    val currentFirebaseUser: LiveData<FirebaseUser?> = repository.currentFirebaseUser
+    val currentUser = repository.currentUser
+    val firebaseChatRoomList = repository.firebaseChatRoomList
+    val currentChatRoom = repository.currentChatRoom
+    val firebaseMessageList = repository.firebaseMessageList
+    var currentChatPartner = User()
+    val firebaseLeaveRequestList = repository.firebaseLeaveRequestList
+    val firebaseAttachmentList = repository.firebaseAttachmentList
+
+    var _currentChatPartner = MutableLiveData<User>()
+    val currentChatPartner2: LiveData<User> = _currentChatPartner
+
+    val storage: FirebaseStorage = Firebase.storage
+
+    // Create a storage reference from our app
+    var storageRef = storage.reference
+
+    val fileName : String = currentUser.value?.userId + "_profilePicture.jpg"
+    var imagesRef: StorageReference? = storageRef.child("profilePictures/$fileName")
+    var spaceRef = storageRef.child(fileName)
+
+    lateinit var attachmentRef: DocumentReference
+    lateinit var profileRef: DocumentReference
+
+    var userSearchList: LiveData<List<User>> = repository.firebaseUserList
+    private val _filteredUserList = MutableLiveData<List<User>>()
+    val filteredUserList: LiveData<List<User>> = _filteredUserList
+
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
     private fun createMonthList(): List<Month>{
 
@@ -118,7 +154,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         return monthList
 
     }
-
 
     fun createDayList(year: Int, monthNumber: Int, monthLength:Int): List<Day>{
 
@@ -208,7 +243,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         dayList.add(placeholderDay)
     }
 
-
     fun getactualMonth(): Month{
 
         val currentDate = LocalDate.now()
@@ -239,97 +273,11 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun monthMinus1(month: Month){
-
-        if (month.monthNumber != 1){
-            month.monthNumber = month.monthNumber -1
-            changeMonthString(month)
-        } else{
-            month.monthNumber = 12
-            month.year = month.year -1
-            changeMonthString(month)
-        }
-
-        _currentMonth.postValue(month)
-    }
-
-    fun monthPlus1(month: Month){
-
-        if (month.monthNumber != 12){
-            month.monthNumber = month.monthNumber +1
-            changeMonthString(month)
-        } else{
-            month.monthNumber = 1
-            month.year = month.year +1
-            changeMonthString(month)
-        }
-
-        _currentMonth.postValue(month)
-    }
-
-    fun yearMinus1(month: Month){
-        month.year = month.year-1
-        _currentMonth.postValue(month)
-    }
-
-    fun yearPlus1(month: Month){
-        month.year = month.year+1
-        _currentMonth.postValue(month)
-    }
-
-    private fun changeMonthString(month: Month){
-
-        when(month.monthNumber){
-            1 -> {
-                month.monthString = "January"
-            }
-            2 -> {
-                month.monthString = "February"
-            }
-            3 -> {
-                month.monthString = "March"
-            }
-            4 -> {
-                month.monthString = "April"
-            }
-            5 -> {
-                month.monthString = "May"
-            }
-            6 -> {
-                month.monthString = "June"
-            }
-            7 -> {
-                month.monthString = "July"
-            }
-            8 -> {
-                month.monthString = "August"
-            }
-            9 -> {
-                month.monthString = "September"
-            }
-            10 -> {
-                month.monthString = "October"
-            }
-            11 -> {
-                month.monthString = "November"
-            }
-            12 -> {
-                month.monthString = "December"
-            }
-        }
-    }
-
-    fun changeCurrentMonth(month: Month){
-        _currentMonth.postValue(month)
-    }
-
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------API----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    val firebaseHolidayList = repository.firebaseHolidayList
-    val holidayList: MutableList<Holiday> = repository.holidayList
 
     fun getListForHolidays(){
         if (holidayList.isEmpty()){
@@ -492,50 +440,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //--------------------------------------------------------------------------FIREBASE-------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firebaseStorage = FirebaseStorage.getInstance()
-    private val firedatabase = FirebaseFirestore.getInstance()
-
-    val firebaseUserList: LiveData<List<User>> = repository.firebaseUserList
-    val currentFirebaseUser: LiveData<FirebaseUser?> = repository.currentFirebaseUser
-    val currentUser = repository.currentUser
-    val firebaseChatRoomList = repository.firebaseChatRoomList
-    val currentChatRoom = repository.currentChatRoom
-    val firebaseMessageList = repository.firebaseMessageList
-    var currentChatPartner = User()
-    val firebaseLeaveRequestList = repository.firebaseLeaveRequestList
-    val firebaseAttachmentList = repository.firebaseAttachmentList
-
-    var _currentChatPartner = MutableLiveData<User>()
-    val currentChatPartner2: LiveData<User> = _currentChatPartner
-
-
-
-
-
-
-
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------FIREBASE-STORAGE---------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    val storage: FirebaseStorage = Firebase.storage
-
-    // Create a storage reference from our app
-    var storageRef = storage.reference
-
-    val fileName : String = currentUser.value?.userId + "_profilePicture.jpg"
-    var imagesRef: StorageReference? = storageRef.child("profilePictures/$fileName")
-    var spaceRef = storageRef.child(fileName)
-
-    lateinit var attachmentRef: DocumentReference
-    lateinit var profileRef: DocumentReference
-
 
 
     fun uploadImage(uri: Uri){
@@ -556,7 +463,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     fun updateCurrentUser(){
         val currentUserRef = currentUser.value?.let {
             firedatabase.collection("User").document(
@@ -571,12 +477,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
         _isUploading.value = false
     }
-
-    private fun setImage(uri: Uri){
-        profileRef.update("image",uri.toString())
-    }
-
-
 
     fun uploadAttachment(uri: Uri, attachment: Attachment){
         _isUploading.value = true
@@ -619,18 +519,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
 
 
-
-
-
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------Firebase FireStore--------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //--------------------------------------------------------------------------NEW APP--------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 
     fun login(email: String, password: String) {
@@ -653,7 +544,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             repository.clearMessagelist()
         }
     }
-
 
     fun createChatroom(user:User):Boolean{
 
@@ -720,9 +610,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
-
-
 
     fun sendMessage(message: Message){
 
@@ -809,10 +696,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         return zonedDateTime.format(dateTimeFormatter)
     }
 
-    fun clearMessagelist(){
-        repository.clearMessagelist()
-    }
-
     fun loadData() {
         viewModelScope.launch {
             repository.getFirebaseDataUser()
@@ -824,12 +707,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             repository.getFirebaseHolidaylist()
         }
     }
-
-
-
-    var userSearchList: LiveData<List<User>> = repository.firebaseUserList
-    private val _filteredUserList = MutableLiveData<List<User>>()
-    val filteredUserList: LiveData<List<User>> = _filteredUserList
 
     fun searchFilter(filterText: String){
         if (!userSearchList.value.isNullOrEmpty()) {
@@ -851,11 +728,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun submitLeaveRequest(leaveRequest: LeaveRequest){
-
         firedatabase.collection("LeaveRequest").document(leaveRequest.requestId).set(leaveRequest)
-
     }
-
 
     fun forgotPassword(email: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
         firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
@@ -866,8 +740,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
-
 
     fun changePassword(email: String, passwordOld: String,passwordNew: String,onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val user = Firebase.auth.currentUser!!
