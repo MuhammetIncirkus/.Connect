@@ -39,6 +39,8 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
         if (chatPartner.userId != ""){
             binding.ivProfilePicture.load(chatPartner.image){
                 placeholder(R.drawable.ic_launcher_foreground)
+                crossfade(true)
+                crossfade(300)
             }
             binding.tvContactName.text = chatPartner.fullName
             if (chatRoom.lastMessageSenderId == viewModel.currentFirebaseUser.value?.uid){

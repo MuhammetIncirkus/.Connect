@@ -608,23 +608,6 @@ class Repository() {
     }
 
     /**
-     * Clears the current list of messages by posting an empty list to the internal LiveData object `_firebaseMessageList`.
-     * This function is used to reset or clear the message list, typically when the user logs out or the chat room is reset.
-     *
-     * ---
-     *
-     * Leert die aktuelle Nachrichtenliste, indem eine leere Liste an das interne LiveData-Objekt `_firebaseMessageList` übergeben wird.
-     * Diese Funktion wird verwendet, um die Nachrichtenliste zurückzusetzen oder zu leeren, typischerweise wenn der Benutzer sich abmeldet oder der Chatroom zurückgesetzt wird.
-     *
-     * @return Unit: This function does not return a value.
-     *               Diese Funktion gibt keinen Wert zurück.
-     */
-    fun clearMessagelist() {
-        val emptyMessageList: List<Message> = listOf()
-        _firebaseMessageList.postValue(emptyMessageList)
-    }
-
-    /**
      * Retrieves a list of chat rooms from Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseChatRoomList`.
      * The function listens for changes in the "ChatRooms" collection where the current user is a participant and converts the documents
      * into `ChatRoom` objects. The list of chat rooms is then posted to `_firebaseChatRoomList`. If an error occurs during the listener registration

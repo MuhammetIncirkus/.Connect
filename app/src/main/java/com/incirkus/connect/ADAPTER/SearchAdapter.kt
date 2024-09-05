@@ -48,7 +48,7 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
         //TODO: Swipe to Call
 
         binding.root.setOnClickListener {
-            val chatRoomExists =viewModel.createChatroom(user)
+            val chatRoomExists = viewModel.createChatroom(user)
             if (chatRoomExists){
                 val bundle = Bundle().apply {
                     putInt("start_position", 1) // 1 entspricht dem zweiten Fragment (Index beginnt bei 0)

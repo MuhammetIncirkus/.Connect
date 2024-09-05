@@ -42,6 +42,8 @@ class InfoFragment : Fragment() {
         binding.tietNumber.setText(viewModel.currentChatPartner.phoneNumber)
         binding.ivProfilePicture.load(viewModel.currentChatPartner.image){
             transformations(RoundedCornersTransformation(topLeft = 50f, bottomRight = 50f, topRight = 120f, bottomLeft = 120f))
+            crossfade(true)
+            crossfade(300)
         }
 
         binding.btnCall.setOnClickListener {

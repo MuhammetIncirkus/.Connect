@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -34,6 +35,11 @@ class PasswordForgottenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSendEmail.setOnClickListener {
+
+            if(binding.tvEmail.text.isNullOrEmpty()){
+                var a = AnimationUtils.loadAnimation(context,R.anim.shake)
+                binding.tvEmail.startAnimation(a)
+            }
 
             val email: String = binding.tvEmail.text.toString()
             if (email != "") {

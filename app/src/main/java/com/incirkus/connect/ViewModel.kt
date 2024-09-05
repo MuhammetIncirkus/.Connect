@@ -1,17 +1,14 @@
 package com.incirkus.connect
 
 import android.app.Application
-import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.incirkus.connect.DATA.Model.APIResponse
@@ -22,24 +19,16 @@ import com.incirkus.connect.DATA.Model.Month
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Repository
 //import com.incirkus.connect.DATA.local.getDataBase
-import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import com.incirkus.connect.DATA.Model.Attachment
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.LeaveRequest
 
 import kotlinx.coroutines.launch
-import java.io.File
 import java.time.Instant
 
 import java.time.LocalDate
@@ -57,6 +46,12 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     val repository = Repository()
 
+    //Create Firebase Instances
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseStorage = FirebaseStorage.getInstance()
+    private val firedatabase = FirebaseFirestore.getInstance()
+
+
     private val _isUploading = MutableLiveData<Boolean>()
     val isUploading: LiveData<Boolean> = _isUploading
     private val _isUploadingApi = MutableLiveData<Boolean>()
@@ -66,52 +61,34 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val monthList = createMonthList()
     val actualMonth = getactualMonth()
 
-    private var _currentMonth = MutableLiveData<Month>(actualMonth)
-    val currentMonth: LiveData<Month> = _currentMonth
+    //Data from the repository
 
-    val firebaseHolidayList = repository.firebaseHolidayList
-    val holidayList: MutableList<Holiday> = repository.holidayList
-
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firebaseStorage = FirebaseStorage.getInstance()
-    private val firedatabase = FirebaseFirestore.getInstance()
-
-    val firebaseUserList: LiveData<List<User>> = repository.firebaseUserList
-    val currentFirebaseUser: LiveData<FirebaseUser?> = repository.currentFirebaseUser
-    val currentUser = repository.currentUser
-    val firebaseChatRoomList = repository.firebaseChatRoomList
-    val currentChatRoom = repository.currentChatRoom
-    val firebaseMessageList = repository.firebaseMessageList
-    var currentChatPartner = User()
+    //For Calendar
+    val holidayList = repository.holidayList
     val firebaseLeaveRequestList = repository.firebaseLeaveRequestList
-    val firebaseAttachmentList = repository.firebaseAttachmentList
 
-    var _currentChatPartner = MutableLiveData<User>()
-    val currentChatPartner2: LiveData<User> = _currentChatPartner
+    //For Chat, Messages, Info, Attachments
 
-    val storage: FirebaseStorage = Firebase.storage
-
-    // Create a storage reference from our app
-    var storageRef = storage.reference
-
-    val fileName : String = currentUser.value?.userId + "_profilePicture.jpg"
-    var imagesRef: StorageReference? = storageRef.child("profilePictures/$fileName")
-    var spaceRef = storageRef.child(fileName)
-
-    lateinit var attachmentRef: DocumentReference
-    lateinit var profileRef: DocumentReference
-
+    val firebaseUserList = repository.firebaseUserList
     var userSearchList: LiveData<List<User>> = repository.firebaseUserList
     private val _filteredUserList = MutableLiveData<List<User>>()
     val filteredUserList: LiveData<List<User>> = _filteredUserList
-
+    val currentFirebaseUser = repository.currentFirebaseUser
+    val currentUser = repository.currentUser
+    val firebaseChatRoomList = repository.firebaseChatRoomList
+    val currentChatRoom = repository.currentChatRoom
+    var currentChatPartner = User()
+    var _currentChatPartner = MutableLiveData<User>()
+    val currentChatPartner2: LiveData<User> = _currentChatPartner
+    val firebaseMessageList = repository.firebaseMessageList
+    val firebaseAttachmentList = repository.firebaseAttachmentList
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-    private fun createMonthList(): List<Month>{
+    private fun createMonthList(): List<Month> {
 
         val monthList: MutableList<Month> = mutableListOf()
 
@@ -122,18 +99,19 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
         var yearMonth = YearMonth.from(startDate)
 
-        while (yearMonth <= YearMonth.from(endDate)){
+        while (yearMonth <= YearMonth.from(endDate)) {
 
             val year = yearMonth.year
             val monthNumber = yearMonth.month.value
-            val monthString = yearMonth.month.getDisplayName(TextStyle.FULL,Locale.getDefault())
+            val monthString = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
             val monthLength = yearMonth.lengthOfMonth()
             val firstDayOfMonth = LocalDate.of(year, monthNumber, 1)
-            val firstDayOfMontAsWeekdayString = firstDayOfMonth.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+            val firstDayOfMontAsWeekdayString =
+                firstDayOfMonth.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
             val firstDayOfMontAsWeekdayInt = firstDayOfMonth.dayOfWeek.value
 
 
-            val daylist: List<Day> = createDayList(year,monthNumber,monthLength)
+            val daylist: List<Day> = createDayList(year, monthNumber, monthLength)
 
 
             val month = Month(
@@ -155,47 +133,53 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun createDayList(year: Int, monthNumber: Int, monthLength:Int): List<Day>{
+    fun createDayList(year: Int, monthNumber: Int, monthLength: Int): List<Day> {
 
         val dayList: MutableList<Day> = mutableListOf()
 
-        when (LocalDate.of(year, monthNumber,1).dayOfWeek.value){
-            1 ->{
-                fillDayList (year,monthNumber,monthLength, dayList)
+        when (LocalDate.of(year, monthNumber, 1).dayOfWeek.value) {
+            1 -> {
+                fillDayList(year, monthNumber, monthLength, dayList)
             }
-            2 ->{
+
+            2 -> {
                 addPlaceholderDaysToDayList(dayList)
-                fillDayList (year,monthNumber,monthLength, dayList)
+                fillDayList(year, monthNumber, monthLength, dayList)
             }
-            3 ->{
-                repeat(2){
+
+            3 -> {
+                repeat(2) {
                     addPlaceholderDaysToDayList(dayList)
                 }
-                fillDayList (year,monthNumber,monthLength, dayList)
+                fillDayList(year, monthNumber, monthLength, dayList)
             }
-            4 ->{
-                repeat(3){
+
+            4 -> {
+                repeat(3) {
                     addPlaceholderDaysToDayList(dayList)
                 }
-                fillDayList (year,monthNumber,monthLength, dayList)
+                fillDayList(year, monthNumber, monthLength, dayList)
             }
-            5 ->{
-                repeat(4){
+
+            5 -> {
+                repeat(4) {
                     addPlaceholderDaysToDayList(dayList)
                 }
-                fillDayList (year,monthNumber,monthLength, dayList)
+                fillDayList(year, monthNumber, monthLength, dayList)
             }
-            6 ->{
-                repeat(5){
+
+            6 -> {
+                repeat(5) {
                     addPlaceholderDaysToDayList(dayList)
                 }
-                fillDayList (year,monthNumber,monthLength, dayList)
+                fillDayList(year, monthNumber, monthLength, dayList)
             }
-            7 ->{
-                repeat(6){
+
+            7 -> {
+                repeat(6) {
                     addPlaceholderDaysToDayList(dayList)
                 }
-                fillDayList (year,monthNumber,monthLength, dayList)
+                fillDayList(year, monthNumber, monthLength, dayList)
             }
         }
 
@@ -205,14 +189,18 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    private fun fillDayList(year: Int, monthNumber: Int, monthLength:Int, dayList: MutableList<Day>) {
+    private fun fillDayList(
+        year: Int,
+        monthNumber: Int,
+        monthLength: Int,
+        dayList: MutableList<Day>
+    ) {
 
         for (day in 1..monthLength) {
             val date = LocalDate.of(year, monthNumber, day)
             val weekdayAsString = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
             val weekdayAsInt = date.dayOfWeek.value
             val calendarweek = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
-
 
 
             val day2 = Day(
@@ -229,7 +217,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun addPlaceholderDaysToDayList(dayList: MutableList<Day>){
+    private fun addPlaceholderDaysToDayList(dayList: MutableList<Day>) {
 
         val placeholderDay: Day = Day(
             day = 0,
@@ -243,7 +231,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         dayList.add(placeholderDay)
     }
 
-    fun getactualMonth(): Month{
+    fun getactualMonth(): Month {
 
         val currentDate = LocalDate.now()
 
@@ -251,13 +239,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
         val year = yearMonth.year
         val monthNumber = yearMonth.month.value
-        val monthString = yearMonth.month.getDisplayName(TextStyle.FULL,Locale.getDefault())
+        val monthString = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
         val monthLength = yearMonth.lengthOfMonth()
         val firstDayOfMonth = LocalDate.of(year, monthNumber, 1)
-        val firstDayOfMontAsWeekdayString = firstDayOfMonth.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+        val firstDayOfMontAsWeekdayString =
+            firstDayOfMonth.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
         val firstDayOfMontAsWeekdayInt = firstDayOfMonth.dayOfWeek.value
 
-        val daylist: List<Day> = createDayList(year,monthNumber,monthLength)
+        val daylist: List<Day> = createDayList(year, monthNumber, monthLength)
 
         val month = Month(
             year = year,
@@ -265,7 +254,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             monthString = monthString,
             monthLength = monthLength,
             firstDayOfMontAsWeekdayString = firstDayOfMontAsWeekdayString,
-            firstDayOfMontAsWeekdayInt =firstDayOfMontAsWeekdayInt,
+            firstDayOfMontAsWeekdayInt = firstDayOfMontAsWeekdayInt,
             daylist = daylist
         )
 
@@ -279,42 +268,40 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-    fun getListForHolidays(){
-        if (holidayList.isEmpty()){
-        viewModelScope.launch {
-            var responseList = repository.getHolidayList()
-            convertResponseToHolidayList(responseList)
-        }
-        }
-    }
-
-    fun getListForHolidaysManual(){
-        _isUploadingApi.value = true
+    fun getListForHolidays() {
+        if (holidayList.isEmpty()) {
             viewModelScope.launch {
                 var responseList = repository.getHolidayList()
-                deleteHolidayList(responseList)
-                //convertResponseToHolidayList(responseList)
+                convertResponseToHolidayList(responseList)
             }
+        }
     }
 
-    fun getHolidayListForSomeStates(states: String){
+    fun getListForHolidaysManual() {
         _isUploadingApi.value = true
-            viewModelScope.launch {
-                var responseList = repository.getHolidayListForSomeStates(states)
-                deleteHolidayList(responseList)
-                //convertResponseToHolidayList(responseList)
-            }
-
+        viewModelScope.launch {
+            var responseList = repository.getHolidayList()
+            deleteHolidayList(responseList)
+        }
     }
 
-    fun deleteHolidayList(responseList: APIResponse){
-        val holidayListRef = firedatabase.collection("User").document(currentUser.value!!.userId).collection("HolidayList")
+    fun getHolidayListForSomeStates(states: String) {
+        _isUploadingApi.value = true
+        viewModelScope.launch {
+            var responseList = repository.getHolidayListForSomeStates(states)
+            deleteHolidayList(responseList)
+        }
+    }
 
-// Abrufen aller Dokumente in der HolidayList-Unterkollektion
+    fun deleteHolidayList(responseList: APIResponse) {
+        val holidayListRef = firedatabase.collection("User").document(currentUser.value!!.userId)
+            .collection("HolidayList")
+
+        // Abrufen aller Dokumente in der HolidayList-Unterkollektion
         holidayListRef.get().addOnSuccessListener { querySnapshot ->
             val deleteTasks = mutableListOf<Task<Void>>()
             // Für jedes Dokument in der HolidayList-Unterkollektion
-            if (!querySnapshot.isEmpty){
+            if (!querySnapshot.isEmpty) {
                 for (document in querySnapshot) {
                     // Lösche das Dokument
                     holidayListRef.document(document.id).delete()
@@ -330,13 +317,12 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun convertResponseToHolidayList(responseList: APIResponse){
+    fun convertResponseToHolidayList(responseList: APIResponse) {
 
 
+        if (responseList != null) {
 
-        if (responseList != null){
-
-            for (holiday in responseList.feiertage){
+            for (holiday in responseList.feiertage) {
                 val name: String = holiday.fname
                 val date: String = holiday.date
 
@@ -346,55 +332,55 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
 
                 var region = ""
-                if (holiday.all_states == "1"){
+                if (holiday.all_states == "1") {
                     region = "DE"
-                }else{
-                    if (holiday.bw == "1"){
+                } else {
+                    if (holiday.bw == "1") {
                         region = region + "bw,"
                     }
-                    if (holiday.by == "1"){
+                    if (holiday.by == "1") {
                         region = region + "by,"
                     }
-                    if (holiday.be == "1"){
+                    if (holiday.be == "1") {
                         region = region + "be,"
                     }
-                    if (holiday.bb == "1"){
+                    if (holiday.bb == "1") {
                         region = region + "bb,"
                     }
-                    if (holiday.hb == "1"){
+                    if (holiday.hb == "1") {
                         region = region + "hb,"
                     }
-                    if (holiday.hh == "1"){
+                    if (holiday.hh == "1") {
                         region = region + "hh,"
                     }
-                    if (holiday.he == "1"){
+                    if (holiday.he == "1") {
                         region = region + "he,"
                     }
-                    if (holiday.mv == "1"){
+                    if (holiday.mv == "1") {
                         region = region + "mv,"
                     }
-                    if (holiday.ni == "1"){
+                    if (holiday.ni == "1") {
                         region = region + "ni,"
                     }
-                    if (holiday.nw == "1"){
+                    if (holiday.nw == "1") {
                         region = region + "nw,"
                     }
-                    if (holiday.rp == "1"){
+                    if (holiday.rp == "1") {
                         region = region + "rp,"
                     }
-                    if (holiday.sl == "1"){
+                    if (holiday.sl == "1") {
                         region = region + "sl,"
                     }
-                    if (holiday.sn == "1"){
+                    if (holiday.sn == "1") {
                         region = region + "sn,"
                     }
-                    if (holiday.st == "1"){
+                    if (holiday.st == "1") {
                         region = region + "st,"
                     }
-                    if (holiday.sh == "1"){
+                    if (holiday.sh == "1") {
                         region = region + "sh,"
                     }
-                    if (holiday.th == "1"){
+                    if (holiday.th == "1") {
                         region = region + "th,"
                     }
 
@@ -403,23 +389,23 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 var augsburg: Boolean = false
                 var katholisch: Boolean = false
 
-                if (holiday.augsburg != null){
+                if (holiday.augsburg != null) {
                     augsburg = true
                 }
 
-                if (holiday.katholisch != null){
+                if (holiday.katholisch != null) {
                     katholisch = true
                 }
 
                 val holiday: Holiday = Holiday(
 
-                    holidayId= UUID.randomUUID().toString(),
+                    holidayId = UUID.randomUUID().toString(),
                     holidayName = name,
                     holidayRegion = region,
                     holidayDay = day,
                     holidayMonth = month,
                     holidayYear = year,
-                    comment= comment,
+                    comment = comment,
                     augsburg = augsburg,
                     katholisch = katholisch
                 )
@@ -445,17 +431,16 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-    fun uploadImage(uri: Uri){
+    fun uploadImage(uri: Uri) {
         _isUploading.value = true
-        val fileName : String = currentUser.value?.userId + "_profilePicture.jpg"
-        val imageRef = firebaseStorage.reference.child("images/${currentUser.value?.userId}/$fileName")
+        val fileName: String = currentUser.value?.userId + "_profilePicture.jpg"
+        val imageRef =
+            firebaseStorage.reference.child("images/${currentUser.value?.userId}/$fileName")
         val uploadTask = imageRef.putFile(uri)
 
-
-
-        uploadTask.addOnCompleteListener{
+        uploadTask.addOnCompleteListener {
             imageRef.downloadUrl.addOnCompleteListener {
-                if(it.isSuccessful){
+                if (it.isSuccessful) {
                     currentUser.value?.image = it.result.toString()
                     updateCurrentUser()
                 }
@@ -463,31 +448,42 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun updateCurrentUser(){
+    private fun updateCurrentUser() {
         val currentUserRef = currentUser.value?.let {
             firedatabase.collection("User").document(
-                it.userId)
+                it.userId
+            )
         }
         if (currentUserRef != null) {
             currentUserRef
                 .update("image", currentUser.value?.image)
-                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateCurrentUser: ${currentUser.value?.image}") }
-                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateCurrentUser: ${e.toString()}") }
+                .addOnSuccessListener {
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateCurrentUser: ${currentUser.value?.image}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateCurrentUser: ${e.toString()}"
+                    )
+                }
 
         }
         _isUploading.value = false
     }
 
-    fun uploadAttachment(uri: Uri, attachment: Attachment){
+    fun uploadAttachment(uri: Uri, attachment: Attachment) {
         _isUploading.value = true
         val chatRoomId = attachment.chatRoomId
         val filename = attachment.attachmentName
         val storageRef = firebaseStorage.reference.child("Attachment/$chatRoomId/$filename")
         val uploadTask = storageRef.putFile(uri)
 
-        uploadTask.addOnCompleteListener{
+        uploadTask.addOnCompleteListener {
             storageRef.downloadUrl.addOnCompleteListener {
-                if(it.isSuccessful){
+                if (it.isSuccessful) {
                     attachment.path = it.result.toString()
                     sendAttachment(attachment)
                 }
@@ -495,7 +491,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun sendAttachment(attachment: Attachment){
+    private fun sendAttachment(attachment: Attachment) {
 
         firedatabase.collection("Attachments").document(attachment.attachmentId).set(attachment)
 
@@ -518,7 +514,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------Firebase FireStore--------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -539,19 +534,22 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     fun logout() {
         firebaseAuth.signOut()
-        viewModelScope.launch {
-            repository.logout()
-            repository.clearMessagelist()
-        }
+        repository.logout()
     }
 
-    fun createChatroom(user:User):Boolean{
+    fun createChatroom(user: User): Boolean {
 
         var checkIfChatRoomExists: Boolean = false
-        if (!firebaseChatRoomList.value.isNullOrEmpty()){
+        if (!firebaseChatRoomList.value.isNullOrEmpty()) {
 
-            for (chatRoom in firebaseChatRoomList.value!!){
-                if (chatRoom.chatParticipants.containsAll(listOf(currentUser.value?.userId!!, user.userId))){
+            for (chatRoom in firebaseChatRoomList.value!!) {
+                if (chatRoom.chatParticipants.containsAll(
+                        listOf(
+                            currentUser.value?.userId!!,
+                            user.userId
+                        )
+                    )
+                ) {
                     checkIfChatRoomExists = true
                     getCurrentChatRoom(chatRoom.chatRoomId)
                     setCurrentChatroom(chatRoom)
@@ -559,31 +557,27 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
-        //TODO: Abfrage ob dieser Chatroom bereits existiert
 
-        if (!checkIfChatRoomExists){
+        if (!checkIfChatRoomExists) {
 
-        val chatRoomId = UUID.randomUUID().toString()
-        val chatRoomName :String = currentUser.value?.firstName!! + user.firstName
-        val lastMessage: String = ""
-        var lastActivityTimestamp: Long = 0L
-        var chatParticipants: MutableList<String?> = mutableListOf(currentUser.value?.userId!!, user.userId)
+            val chatRoomId = UUID.randomUUID().toString()
+            val chatRoomName: String = currentUser.value?.firstName!! + user.firstName
+            val lastMessage: String = ""
+            var lastActivityTimestamp: Long = 0L
+            var chatParticipants: MutableList<String?> =
+                mutableListOf(currentUser.value?.userId!!, user.userId)
 
-        val chatroom: ChatRoom = ChatRoom(
-            chatRoomId = chatRoomId,
-            chatRoomName = chatRoomName,
-            lastMessage = lastMessage,
-            lastActivityTimestamp = lastActivityTimestamp,
-            chatParticipants = chatParticipants
-        )
+            val chatroom: ChatRoom = ChatRoom(
+                chatRoomId = chatRoomId,
+                chatRoomName = chatRoomName,
+                lastMessage = lastMessage,
+                lastActivityTimestamp = lastActivityTimestamp,
+                chatParticipants = chatParticipants
+            )
 
-        firedatabase.collection("ChatRooms").document(chatRoomId).set(chatroom)
+            firedatabase.collection("ChatRooms").document(chatRoomId).set(chatroom)
 
-        viewModelScope.launch {
-            repository.getFirebaseDataChatRooms()
-        }
-
-        getCurrentChatRoom(chatRoomId)
+            getCurrentChatRoom(chatRoomId)
 
             setCurrentChatroom(chatroom)
             getChatPartner(user.userId)
@@ -591,75 +585,95 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         return checkIfChatRoomExists
     }
 
-    fun getCurrentChatRoom(chatRoomId: String) {
+    private fun getCurrentChatRoom(chatRoomId: String) {
         if (currentFirebaseUser != null) {
             viewModelScope.launch {
                 repository.getCurrentChatRoom(chatRoomId)
-                //repository.getFirebaseDataCurrentMessageList()
             }
         }
     }
 
-    fun setCurrentChatroom(chatRoom: ChatRoom){
-        viewModelScope.launch {
-            repository.setCurrentChatroom(chatRoom)
-            //repository.getFirebaseDataCurrentMessageList()
-            val chatPartnerID = getChatPartnerID(chatRoom)
-            if (chatPartnerID != null){
-                getChatPartner(chatPartnerID)
-            }
+    fun setCurrentChatroom(chatRoom: ChatRoom) {
+        repository.setCurrentChatroom(chatRoom)
+        val chatPartnerID = getChatPartnerID(chatRoom)
+        if (chatPartnerID != null) {
+            getChatPartner(chatPartnerID)
         }
     }
 
-    fun sendMessage(message: Message){
-
+    fun sendMessage(message: Message) {
         firedatabase.collection("Messages").document(message.messageId).set(message)
-
-        viewModelScope.launch {
-            //TODO MessageList aktualisieren
-//            repository.getFirebaseDataChatRooms()
-//            repository.getFirebaseDataCurrentMessageList()
-        }
     }
 
-    fun updateChatRoom(){
+    fun updateChatRoom() {
         val chatRoomRef = currentChatRoom.value?.let {
             firedatabase.collection("ChatRooms").document(
-                it.chatRoomId)
+                it.chatRoomId
+            )
         }
         if (chatRoomRef != null) {
             chatRoomRef
                 .update("lastMessage", currentChatRoom.value?.lastMessage)
-                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastMessage}") }
-                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateChatRoom: ${e.toString()}") }
+                .addOnSuccessListener {
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastMessage}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateChatRoom: ${e.toString()}"
+                    )
+                }
             chatRoomRef
                 .update("lastActivityTimestamp", currentChatRoom.value?.lastActivityTimestamp)
-                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastActivityTimestamp}") }
-                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateChatRoom: ${e.toString()}") }
+                .addOnSuccessListener {
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastActivityTimestamp}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateChatRoom: ${e.toString()}"
+                    )
+                }
             chatRoomRef
                 .update("lastMessageSenderId", currentChatRoom.value?.lastMessageSenderId)
-                .addOnSuccessListener { Log.i("Firebase", "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastMessageSenderId}") }
-                .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateChatRoom: ${e.toString()}") }
+                .addOnSuccessListener {
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateChatRoom: ${currentChatRoom.value?.lastMessageSenderId}"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.i(
+                        "Firebase",
+                        "ViewModel: updateChatRoom: ${e.toString()}"
+                    )
+                }
         }
 
     }
 
-    fun getChatPartnerID(chatRoom: ChatRoom): String?{
+    fun getChatPartnerID(chatRoom: ChatRoom): String? {
         var chatPartnerID: String? = ""
 
-        for (id in chatRoom.chatParticipants){
-            if (id != currentUser.value?.userId){
+        for (id in chatRoom.chatParticipants) {
+            if (id != currentUser.value?.userId) {
                 chatPartnerID = id
             }
         }
         return chatPartnerID
     }
 
-    fun getChatPartner(id: String): User{
+    fun getChatPartner(id: String): User {
 
         var chatPartner: User = User()
 
-        for (oneUser in firebaseUserList.value!!){
+        for (oneUser in firebaseUserList.value!!) {
             if (oneUser.userId == id)
                 chatPartner = oneUser
         }
@@ -668,7 +682,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         return chatPartner
     }
 
-    fun convertTimestampToDate(timestamp:Long):String{
+    fun convertTimestampToDate(timestamp: Long): String {
         val instant = Instant.ofEpochMilli(timestamp)
         val zoneId = ZoneId.systemDefault()
         val zonedDateTime = ZonedDateTime.ofInstant(instant, zoneId)
@@ -687,7 +701,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun convertTimestampToDates(timestamp:Long):String{
+    fun convertTimestampToDates(timestamp: Long): String {
         val instant = Instant.ofEpochMilli(timestamp)
         val zoneId = ZoneId.systemDefault()
         val zonedDateTime = ZonedDateTime.ofInstant(instant, zoneId)
@@ -708,26 +722,23 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun searchFilter(filterText: String){
+    fun searchFilter(filterText: String) {
         if (!userSearchList.value.isNullOrEmpty()) {
-//            Log.i("Firebase", "ViewModel: searchFilter: ${userSearchList.value}")
-//            var _searchlist = MutableLiveData<List<User>>(userSearchList.value)
-//            val searchlist: LiveData<List<User>> = _searchlist
-//            _searchlist.value = _searchlist.value!!.filter { it.fullName!!.contains(filterText,true)  }
-//            userSearchList = searchlist
-//        }
             val currentList = userSearchList.value ?: return
             if (filterText.isEmpty()) {
                 _filteredUserList.value = currentList
             } else {
                 _filteredUserList.value = currentList.filter {
-                    it.fullName!!.contains(filterText, true) || it.department!!.contains(filterText,true)  // oder andere Kriterien
+                    it.fullName!!.contains(filterText, true) || it.department!!.contains(
+                        filterText,
+                        true
+                    )  // oder andere Kriterien
                 }
             }
         }
     }
 
-    fun submitLeaveRequest(leaveRequest: LeaveRequest){
+    fun submitLeaveRequest(leaveRequest: LeaveRequest) {
         firedatabase.collection("LeaveRequest").document(leaveRequest.requestId).set(leaveRequest)
     }
 
@@ -741,7 +752,13 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun changePassword(email: String, passwordOld: String,passwordNew: String,onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+    fun changePassword(
+        email: String,
+        passwordOld: String,
+        passwordNew: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
         val user = Firebase.auth.currentUser!!
         user.let {
             val credential = EmailAuthProvider.getCredential(email, passwordOld)
@@ -755,12 +772,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                                     Log.d("Firebase", "User password updated: $passwordNew")
                                     onSuccess()
                                 } else {
-                                    val errorMessage = passwordUpdate.exception?.localizedMessage ?: "Error updating the password"
+                                    val errorMessage = passwordUpdate.exception?.localizedMessage
+                                        ?: "Error updating the password"
                                     onFailure(errorMessage)
                                 }
                             }
                     } else {
-                        val errorMessage = reauthentication.exception?.localizedMessage ?: "Current password is wrong"
+                        val errorMessage = reauthentication.exception?.localizedMessage
+                            ?: "Current password is wrong"
                         onFailure(errorMessage)
                     }
                 }

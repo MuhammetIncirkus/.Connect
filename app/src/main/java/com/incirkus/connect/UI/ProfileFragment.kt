@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -78,6 +79,8 @@ class ProfileFragment : Fragment() {
             if (it != null) {
                 binding.ivProfilePicture.load(it.image){
                     transformations(RoundedCornersTransformation(topLeft = 120f, bottomRight = 120f, topRight = 50f, bottomLeft = 50f))
+                    crossfade(true)
+                    crossfade(300)
                 }
                 binding.tietName.setText(it.fullName)
                 binding.tietDepartment.setText(it.department)
@@ -155,8 +158,8 @@ class ProfileFragment : Fragment() {
                     if (binding.cbBY.isChecked){
                         states = states + ",by"
                     }
-                    if (binding.cbBW.isChecked){
-                        states = states + ",bw"
+                    if (binding.cbSH.isChecked){
+                        states = states + ",sh"
                     }
                     if (binding.cbBE.isChecked){
                         states = states + ",be"
@@ -197,9 +200,30 @@ class ProfileFragment : Fragment() {
                     if (binding.cbTH.isChecked){
                         states = states + ",th"
                     }
-
-                    val states2 = states.substring(1)
+                    if (states.isNotEmpty()){
+                    val states2 = states.substring(1)//Das erste Komma (,) wird mit substring entfernt
                     viewModel.getHolidayListForSomeStates(states2)
+                    }else{
+                            var a = AnimationUtils.loadAnimation(context,R.anim.shake)
+                            binding.btnSaveApiChanges.startAnimation(a)
+                        binding.cbGermanywide.startAnimation(a)
+                        binding.cbBW.startAnimation(a)
+                        binding.cbBE.startAnimation(a)
+                        binding.cbBB.startAnimation(a)
+                        binding.cbHB.startAnimation(a)
+                        binding.cbHH.startAnimation(a)
+                        binding.cbHE.startAnimation(a)
+                        binding.cbMV.startAnimation(a)
+                        binding.cbNI.startAnimation(a)
+                        binding.cbNW.startAnimation(a)
+                        binding.cbRP.startAnimation(a)
+                        binding.cbSL.startAnimation(a)
+                        binding.cbSN.startAnimation(a)
+                        binding.cbST.startAnimation(a)
+                        binding.cbBY.startAnimation(a)
+                        binding.cbSH.startAnimation(a)
+                        binding.cbTH.startAnimation(a)
+                    }
                 }
             }
         }
@@ -221,6 +245,8 @@ class ProfileFragment : Fragment() {
             .setTitle("Change Password")
             .setView(dialogView)
             .setPositiveButton("Confirm") { dialog, _ ->
+
+
                 // Hier wird der Bestätigungs-Button geklickt
                 val currentPassword = currentPasswordInput.text.toString()
                 val newPassword = newPasswordInput.text.toString()
@@ -228,9 +254,7 @@ class ProfileFragment : Fragment() {
 
                 if (newPassword == confirmPassword) {
                     if (newPassword.length>5){
-//                    viewModel.changePassword(viewModel.currentFirebaseUser.value!!.email!!,currentPassword,newPassword)
-//                        //TODO: Rückmeldung von Firebase abwarten
-//                    Toast.makeText(requireContext(), "Passwort geändert", Toast.LENGTH_SHORT).show()
+
 
                         viewModel.changePassword(
                             email = viewModel.currentFirebaseUser.value!!.email!!,
