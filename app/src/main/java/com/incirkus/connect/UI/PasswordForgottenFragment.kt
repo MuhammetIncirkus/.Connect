@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.incirkus.connect.R
@@ -36,7 +37,15 @@ class PasswordForgottenFragment : Fragment() {
 
             val email: String = binding.tvEmail.text.toString()
             if (email != "") {
-                viewModel.forgotPassword(email)
+                viewModel.forgotPassword(
+                    email,
+                    onSuccess = {
+                    Toast.makeText(requireContext(), "Email send", Toast.LENGTH_SHORT).show()
+                },
+                    onFailure = {
+                        Toast.makeText(requireContext(), "Error: Email could not be sent", Toast.LENGTH_SHORT).show()
+                    }
+                )
 
                 findNavController().navigate(R.id.loginFragment)
 

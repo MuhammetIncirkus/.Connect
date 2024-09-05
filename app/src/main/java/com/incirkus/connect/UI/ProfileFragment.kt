@@ -51,6 +51,8 @@ class ProfileFragment : Fragment() {
 
         binding.mcvHolidayCheckBoxes.visibility = View.GONE
         binding.btnApiChanges.setImageResource(R.drawable.baseline_arrow_drop_down_24)
+        binding.lavProfilePictureUpload.visibility = View.GONE
+        binding.lavApiUpload.visibility = View.GONE
 
         val germanStatesList = listOf(
             binding.cbBW,
@@ -96,17 +98,25 @@ class ProfileFragment : Fragment() {
 
         binding.btnChangePassword.setOnClickListener {
 
-//            viewModel.changePassword("muhammet@incirkus.com","12345678","123456",onSuccess = {
-//
-//            },
-//                onFailure = { errorMessage ->
-//                })
             showChangePasswordDialog()
 
         }
 
 
-
+        viewModel.isUploading.observe(viewLifecycleOwner){
+            if (it){
+                binding.lavProfilePictureUpload.visibility = View.VISIBLE
+            }else{
+                binding.lavProfilePictureUpload.visibility = View.GONE
+            }
+        }
+        viewModel.isUploadingApi.observe(viewLifecycleOwner){
+            if (it){
+                binding.lavApiUpload.visibility = View.VISIBLE
+            }else{
+                binding.lavApiUpload.visibility = View.GONE
+            }
+        }
 
         binding.btnApiChanges.setOnClickListener {
 
@@ -252,7 +262,10 @@ class ProfileFragment : Fragment() {
                 dialog.dismiss()
             }
             .show()
+
     }
+
+
 
 
 }

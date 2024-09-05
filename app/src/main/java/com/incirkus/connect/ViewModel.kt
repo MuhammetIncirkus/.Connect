@@ -58,7 +58,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     //private val database = getDataBase(application)
     val repository = Repository()
     //val repository = Repository(database,this)
-
+    private val _isUploading = MutableLiveData<Boolean>()
+    val isUploading: LiveData<Boolean> = _isUploading
+    private val _isUploadingApi = MutableLiveData<Boolean>()
+    val isUploadingApi: LiveData<Boolean> = _isUploadingApi
 
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -338,6 +341,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getListForHolidaysManual(){
+        _isUploadingApi.value = true
             viewModelScope.launch {
                 var responseList = repository.getHolidayList()
                 deleteHolidayList(responseList)
@@ -346,7 +350,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getHolidayListForSomeStates(states: String){
-
+        _isUploadingApi.value = true
             viewModelScope.launch {
                 var responseList = repository.getHolidayListForSomeStates(states)
                 deleteHolidayList(responseList)
@@ -484,7 +488,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             }
 
         }
-
+        _isUploadingApi.value = false
     }
 
 
@@ -532,10 +536,15 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var attachmentRef: DocumentReference
     lateinit var profileRef: DocumentReference
 
+
+
     fun uploadImage(uri: Uri){
+        _isUploading.value = true
         val fileName : String = currentUser.value?.userId + "_profilePicture.jpg"
         val imageRef = firebaseStorage.reference.child("images/${currentUser.value?.userId}/$fileName")
         val uploadTask = imageRef.putFile(uri)
+
+
 
         uploadTask.addOnCompleteListener{
             imageRef.downloadUrl.addOnCompleteListener {
@@ -560,7 +569,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 .addOnFailureListener { e -> Log.i("Firebase", "ViewModel: updateCurrentUser: ${e.toString()}") }
 
         }
-
+        _isUploading.value = false
     }
 
     private fun setImage(uri: Uri){
@@ -570,6 +579,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun uploadAttachment(uri: Uri, attachment: Attachment){
+        _isUploading.value = true
         val chatRoomId = attachment.chatRoomId
         val filename = attachment.attachmentName
         val storageRef = firebaseStorage.reference.child("Attachment/$chatRoomId/$filename")
@@ -604,7 +614,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         currentChatRoom.value!!.lastMessage = attachment.attachmentName
         currentChatRoom.value!!.lastActivityTimestamp = attachment.timestamp
         updateChatRoom()
-
+        _isUploading.value = false
     }
 
 
@@ -847,41 +857,17 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun forgotPassword(email: String) {
+    fun forgotPassword(email: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
         firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
             if (it.isSuccessful) {
-
-
-
+                onSuccess()
             } else {
-                //TODO Pop-Up Message das Login fehlgeschlagen
+                onFailure()
             }
         }
     }
 
-//    fun changePassword(email: String, passwordOld: String, passwordNew: String) {
-//
-//        val user = Firebase.auth.currentUser!!
-//        user.let {
-//        val credential = EmailAuthProvider.getCredential(email, passwordOld)
-//        it.reauthenticate(credential)
-//            .addOnCompleteListener {reauthentication->
-//                Log.d("Firebase", "User re-authenticated.")
-//                if (reauthentication.isSuccessful){
-//                    Log.d("Firebase", "User re-authenticated.")
-//                it.updatePassword(passwordNew)
-//                    .addOnCompleteListener { passwordUpdate ->
-//                        Log.d("Firebase", "Test: ${passwordNew}")
-//                        if (passwordUpdate.isSuccessful) {
-//                            Log.d("Firebase", "User password updated.${passwordNew}")
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//
-//    }
+
 
     fun changePassword(email: String, passwordOld: String,passwordNew: String,onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val user = Firebase.auth.currentUser!!

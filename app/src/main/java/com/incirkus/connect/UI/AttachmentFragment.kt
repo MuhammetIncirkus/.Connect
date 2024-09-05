@@ -57,6 +57,8 @@ class AttachmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.lavProfilePictureUpload.visibility = View.GONE
+
         viewModel.firebaseAttachmentList.observe(viewLifecycleOwner){ it ->
             binding.rvAttachments.setHasFixedSize(true)
 
@@ -68,6 +70,14 @@ class AttachmentFragment : Fragment() {
             if (binding.btnSelect.isVisible){
                 getContent.launch("*/*")
 
+            }
+        }
+
+        viewModel.isUploading.observe(viewLifecycleOwner){
+            if (it){
+                binding.lavProfilePictureUpload.visibility = View.VISIBLE
+            }else{
+                binding.lavProfilePictureUpload.visibility = View.GONE
             }
         }
 

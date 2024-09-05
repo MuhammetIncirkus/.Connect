@@ -58,6 +58,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_holidayName"
             app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
             app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
+            android:paddingBottom="4dp"
             />
 
         <TextView

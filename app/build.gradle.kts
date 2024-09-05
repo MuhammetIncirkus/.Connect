@@ -96,5 +96,10 @@ dependencies {
 
     implementation ("com.google.android.material:material:1.12.0")
 
+    //LottieFiles
+
+    implementation ("com.airbnb.android:lottie:6.5.2")
+
+
 
 }
