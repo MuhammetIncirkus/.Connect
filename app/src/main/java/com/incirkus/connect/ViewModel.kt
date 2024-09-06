@@ -1108,7 +1108,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             zonedDateTime.format(timeFormatter)
         } else {
             // Zeige Datum und Uhrzeit an, wenn das Datum nicht heute ist
-            val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+            val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             zonedDateTime.format(dateTimeFormatter)
         }
     }
