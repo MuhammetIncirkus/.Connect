@@ -52,6 +52,12 @@ class AttachmentAdapter (private var attachmentList: List<Attachment>,private va
             }
         }
 
+        binding.root.setOnClickListener {
+            if (attachment.attachmentName!!.contains("image:")){
+                viewModel.changeWebViewVisibility(attachment.path!!)
+            }
+        }
+
 
     }
 }

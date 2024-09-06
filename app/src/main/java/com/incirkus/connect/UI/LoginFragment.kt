@@ -92,7 +92,6 @@ class LoginFragment : Fragment() {
                     }
                 })
 
-                // Animation abspielen (dies sollte durch lottie_autoPlay="true" bereits geschehen)
                 binding.lavUnlock.playAnimation()
             }
         }

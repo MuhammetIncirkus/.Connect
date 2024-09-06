@@ -100,6 +100,7 @@ dependencies {
 
     implementation ("com.airbnb.android:lottie:6.5.2")
 
-
+    //WebView
+    implementation("androidx.webkit:webkit:1.8.0")
 
 }

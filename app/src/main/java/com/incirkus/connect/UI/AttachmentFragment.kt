@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -49,7 +52,7 @@ class AttachmentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentAttachmentBinding.inflate(layoutInflater)
+        binding = FragmentAttachmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -80,6 +83,44 @@ class AttachmentFragment : Fragment() {
                 binding.lavProfilePictureUpload.visibility = View.GONE
             }
         }
+
+        viewModel.isWebViewVisible.observe(viewLifecycleOwner){
+            if (it){
+//                binding.webview.visibility = View.VISIBLE
+
+                val myWebView: WebView = binding.webview
+
+                // WebView Einstellungen anpassen
+                val webSettings: WebSettings = myWebView.settings
+                //webSettings.javaScriptEnabled = true // JavaScript aktivieren, falls erforderlich
+                webSettings.loadWithOverviewMode = true // Gesamtansicht aktivieren
+                webSettings.useWideViewPort = true // Inhalt wird der Breite des Viewports angepasst
+
+                // Bilder automatisch laden
+                webSettings.loadsImagesAutomatically = true
+
+                // Skalierung anpassen
+                webSettings.builtInZoomControls = true // Zoom-Kontrollen aktivieren, falls benötigt
+                webSettings.displayZoomControls = false // Die Zoom-Kontrollen nicht anzeigen
+
+                // WebViewClient setzen, um das Laden innerhalb der App zu ermöglichen
+                myWebView.webViewClient = WebViewClient()
+
+                myWebView.visibility = View.VISIBLE
+                binding.btnCloseWebView.visibility = View.VISIBLE
+                viewModel.attachmentPath.observe(viewLifecycleOwner){
+                    myWebView.loadUrl(it)
+                }
+            }else{
+                binding.webview.visibility = View.GONE
+                binding.btnCloseWebView.visibility = View.GONE
+            }
+        }
+
+        binding.btnCloseWebView.setOnClickListener {
+                viewModel.changeWebViewVisibility("")
+        }
+
 
     }
 

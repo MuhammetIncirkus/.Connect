@@ -57,6 +57,11 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val _isUploadingApi = MutableLiveData<Boolean>()
     val isUploadingApi: LiveData<Boolean> = _isUploadingApi
 
+    private val _isWebViewVisible = MutableLiveData<Boolean>()
+    val isWebViewVisible: LiveData<Boolean> = _isWebViewVisible
+
+    private val _attachmentPath = MutableLiveData<String>()
+    val attachmentPath: LiveData<String> = _attachmentPath
 
     val monthList = createMonthList()
     val actualMonth = getactualMonth()
@@ -783,6 +788,16 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                         onFailure(errorMessage)
                     }
                 }
+        }
+    }
+
+    fun changeWebViewVisibility(url:String){
+        if (_isWebViewVisible.value == true){
+            _isWebViewVisible.value = false
+            _attachmentPath.value = ""
+        }else{
+            _isWebViewVisible.value = true
+            _attachmentPath.value = url
         }
     }
 
