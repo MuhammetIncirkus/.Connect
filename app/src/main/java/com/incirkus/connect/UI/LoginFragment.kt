@@ -67,6 +67,7 @@ class LoginFragment : Fragment() {
                 binding.tvPasswordForgotton.visibility = View.INVISIBLE
                 binding.lavProfilePictureUpload.visibility = View.INVISIBLE
                 binding.btnLogin.visibility = View.INVISIBLE
+                binding.ivLogo.visibility = View.INVISIBLE
                 // Animation sichtbar machen und starten
                 binding.lavUnlock.visibility = View.VISIBLE
 

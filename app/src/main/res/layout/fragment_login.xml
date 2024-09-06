@@ -5,7 +5,8 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.LoginFragment">
+    tools:context=".UI.LoginFragment"
+    android:background="@color/new_primary">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lav_profilePictureUpload"
@@ -73,8 +74,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/new_primary"/>
+        android:textColor="@color/new_secondary"
+        android:backgroundTint="@color/new_tertiary"/>
 
     <TextView
         android:id="@+id/tv_passwordForgotton"
@@ -83,8 +84,8 @@
         app:layout_constraintTop_toBottomOf="@id/til_password"
         app:layout_constraintEnd_toEndOf="@id/til_password"
         android:layout_marginVertical="30dp"
-        android:text="Password forgotton"
-        android:textColor="@color/new_primary"/>
+        android:text="Password forgotton? "
+        android:textColor="@color/new_tertiary"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lav_unlock"
@@ -99,5 +100,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
         />
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="250dp"
+        app:layout_constraintTop_toBottomOf="@id/til_email"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/logo"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
