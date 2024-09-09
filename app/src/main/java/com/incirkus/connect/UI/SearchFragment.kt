@@ -38,8 +38,10 @@ class SearchFragment : Fragment() {
 
         viewModel.filteredUserList.observe(viewLifecycleOwner){
 
+            val filteredUniqueList = it.distinctBy{it.userId}
+
             binding.rvSearchFragment.setHasFixedSize(true)
-            val searchAdapter = SearchAdapter(it.sortedBy { it.department }, viewModel)
+            val searchAdapter = SearchAdapter(filteredUniqueList.sortedBy { it.department }, viewModel)
             binding.rvSearchFragment.adapter = searchAdapter
 
         }

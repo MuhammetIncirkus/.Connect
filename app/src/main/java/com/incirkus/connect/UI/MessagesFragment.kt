@@ -44,12 +44,6 @@ class MessagesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.currentUser
-        viewModel.currentChatRoom
-        viewModel.currentChatPartner
-
-        val chatRoomlist: List<ChatRoom> = listOf(viewModel.currentChatRoom.value!!, viewModel.currentChatRoom.value!!)
-
         viewModel.firebaseMessageList.observe(viewLifecycleOwner){
             Log.d("MessageList", it.toString())
             val adapter = MessageAdapter(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId },viewModel)
@@ -57,10 +51,9 @@ class MessagesFragment : Fragment() {
             binding.rvMessageFragment.scrollToPosition(it.filter { it.chatRoomId == viewModel.currentChatRoom.value!!.chatRoomId }.size-1)
         }
 
-
         binding.btnSend.setOnClickListener {
 
-            if (binding.tietMessageText.text.toString() != "" && binding.btnSend.isVisible) {
+            if (binding.tietMessageText.text.toString() != "") {
 
                 val messageId = UUID.randomUUID().toString()
                 val chatRoomId = viewModel.currentChatRoom.value?.chatRoomId
@@ -76,7 +69,6 @@ class MessagesFragment : Fragment() {
                     messageText = messageText,
                     timestamp = timestamp,
                     messageStatus = messageStatus,
-
                 )
 
                 viewModel.sendMessage(message)
@@ -91,24 +83,18 @@ class MessagesFragment : Fragment() {
 
         }
 
-
-
         binding.tietMessageText.addTextChangedListener(object : TextWatcher {
 
             // Die beforeTextChanged-Funktion wird aufgerufen, bevor sich der Text ändert
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
-
             // Die onTextChanged-Funktion wird während der Änderung aufgerufen
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
 
             // Die afterTextChanged-Funktion wird nach der Änderung aufgerufen
             override fun afterTextChanged(s: Editable?) {
                 val searchText = s.toString()
-
             }
         })
 
