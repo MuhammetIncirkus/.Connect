@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.incirkus.connect.R
@@ -44,7 +45,7 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
 
             if(binding.tvEmail.text.isNullOrEmpty() || binding.tvPassword.text.isNullOrEmpty()){
-                var a = AnimationUtils.loadAnimation(context,R.anim.shake)
+                val a = AnimationUtils.loadAnimation(context,R.anim.shake)
                 binding.tvEmail.startAnimation(a)
                 binding.tvPassword.startAnimation(a)
             }
@@ -54,7 +55,12 @@ class LoginFragment : Fragment() {
 
             if (email != ""){
                 if (password != ""){
-                    viewModel.login(email, password)
+                    viewModel.login(email, password, onFailure = {
+                        Toast.makeText(requireContext(), "Error: Login not possible, e-mail or password incorrect", Toast.LENGTH_SHORT).show()
+                        val a = AnimationUtils.loadAnimation(context,R.anim.shake)
+                        binding.tvEmail.startAnimation(a)
+                        binding.tvPassword.startAnimation(a)
+                    })
                 }
             }
         }

@@ -3,6 +3,8 @@ package com.incirkus.connect
 import android.app.Application
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -762,13 +764,15 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      *
      * @see [loadData]
      */
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, onFailure: () -> Unit) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
                 viewModelScope.launch {
                     repository.setCurrentFirebaseUser(it.result.user)
                     loadData()
                 }
+            } else {
+                onFailure()
             }
         }
     }

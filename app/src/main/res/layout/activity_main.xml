@@ -74,6 +74,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/profile_picture"
                     tools:srcCompat="@tools:sample/avatars"
+                    android:scaleType="centerCrop"
                     />
 
             </com.google.android.material.card.MaterialCardView>
