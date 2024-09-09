@@ -539,7 +539,7 @@ class Repository() {
             .whereArrayContains("chatParticipants", _currentFirebaseUser.value!!.uid)
             .addSnapshotListener { chatRoomList, e ->
                 if (e != null) {
-                    Log.i("Firebase", "Repo: getChatRoomListNew: Listen failed: ${e.toString()}")
+                    Log.i("Firebase", "Repo: getChatRoomList: Listen failed: ${e.toString()}")
                     if (!isResumed) {
                         continuation.resumeWithException(e)
                         isResumed = true
@@ -548,14 +548,17 @@ class Repository() {
                 }
 
                 val chatRoomList2: MutableList<ChatRoom> = mutableListOf()
+                if (chatRoomList != null) {
                 for (chatRoom in chatRoomList!!) {
                     val chatRoom2 = chatRoom.toObject<ChatRoom>()
-                    Log.i("Firebase", "Repo: getChatRoomListNew: Listen passed: ${chatRoom.data}")
+                    Log.i("Firebase", "Repo: getChatRoomList: Listen passed: ${chatRoom.data}")
                     chatRoomList2.add(chatRoom2)
                 }
-                Log.i("Firebase", "Repo: getChatRoomListNew: Listen passed: List: ${chatRoomList2}")
+                Log.i("Firebase", "Repo: getChatRoomList: Listen passed: List: ${chatRoomList2}")
                 _firebaseChatRoomList.value = chatRoomList2
-
+            }else {
+                    Log.i("Firebase", "Repo: getChatRoomList: No chatRooms found.")
+                }
 
                 if (!isResumed) {
                     continuation.resume(Unit)

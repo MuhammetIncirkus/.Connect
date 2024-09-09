@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="KW"
+                    android:text="CW"
                     android:textColor="@color/new_primary"/>
 
                 <TextView
@@ -43,7 +43,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/new_primary"
-                    android:text="Mo" />
+                    android:text="Mon" />
 
                 <TextView
                     android:id="@+id/tv_tuesday"
@@ -52,7 +52,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/new_primary"
-                    android:text="Di" />
+                    android:text="Tue" />
 
                 <TextView
                     android:id="@+id/tv_wednesday"
@@ -61,7 +61,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/new_primary"
-                    android:text="Mi" />
+                    android:text="Wed" />
 
                 <TextView
                     android:id="@+id/tv_thursday"
@@ -70,7 +70,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/new_primary"
-                    android:text="Do" />
+                    android:text="Thu" />
 
                 <TextView
                     android:id="@+id/tv_friday"
@@ -79,7 +79,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/new_primary"
-                    android:text="Fr" />
+                    android:text="Fri" />
 
                 <TextView
                     android:id="@+id/tv_saturday"
@@ -88,7 +88,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/new_primary"
-                    android:text="Sa" />
+                    android:text="Sat" />
 
                 <TextView
                     android:id="@+id/tv_sunday"
@@ -97,7 +97,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/new_primary"
-                    android:text="So" />
+                    android:text="Sun" />
 
             </LinearLayout>
 
