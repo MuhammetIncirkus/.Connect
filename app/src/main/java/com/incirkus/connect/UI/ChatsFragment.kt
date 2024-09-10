@@ -35,7 +35,7 @@ class ChatsFragment : Fragment() {
         viewModel.firebaseChatRoomList.observe(viewLifecycleOwner){
 
             binding.rvChatsFragment.setHasFixedSize(true)
-            val chatAdapter = ChatAdapter(it, viewModel)
+            val chatAdapter = ChatAdapter(it.filter { it.lastMessage?.isNotEmpty() == true }, viewModel)
             binding.rvChatsFragment.adapter = chatAdapter
 
         }

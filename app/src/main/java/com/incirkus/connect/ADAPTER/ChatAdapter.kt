@@ -49,7 +49,12 @@ class ChatAdapter (private var chatRoomList: List<ChatRoom>, private val viewMod
                 binding.tvContactLastMessage.text = "${chatPartner.firstName}: ${chatRoom.lastMessage}"
             }
             val date = chatRoom.lastActivityTimestamp?.let { viewModel.convertTimestampToDate(it) }
-            binding.tvContactLastMessageDate.text = date
+            if (date == "01.01.1970"){
+                binding.tvContactLastMessageDate.text = ""
+                binding.tvContactLastMessage.text = "No messages"
+            }else{
+                binding.tvContactLastMessageDate.text = date
+            }
 
 
         }
