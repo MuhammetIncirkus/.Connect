@@ -548,7 +548,7 @@ class Repository() {
                 }
 
                 val chatRoomList2: MutableList<ChatRoom> = mutableListOf()
-                _firebaseChatRoomList.value = mutableListOf()
+
                 if (chatRoomList != null) {
                     for (chatRoom in chatRoomList) {
                         val chatRoom2 = chatRoom.toObject<ChatRoom>()
