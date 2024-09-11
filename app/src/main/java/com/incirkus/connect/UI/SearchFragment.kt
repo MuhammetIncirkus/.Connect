@@ -3,18 +3,14 @@ package com.incirkus.connect.UI
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.incirkus.connect.ADAPTER.CalendarWeekAdapter
 import com.incirkus.connect.ADAPTER.SearchAdapter
-import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentSearchBinding
-
 
 class SearchFragment : Fragment() {
 
@@ -46,7 +42,6 @@ class SearchFragment : Fragment() {
 
         }
 
-
         binding.tietSearchText.addTextChangedListener(object : TextWatcher {
 
             // Die beforeTextChanged-Funktion wird aufgerufen, bevor sich der Text ändert
@@ -72,8 +67,5 @@ class SearchFragment : Fragment() {
         }
 
     }
-
-
-
 
 }

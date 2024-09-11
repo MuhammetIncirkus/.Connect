@@ -2,7 +2,6 @@ package com.incirkus.connect.DATA.Remote
 
 import com.incirkus.connect.DATA.Model.APIResponse
 
-
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -11,7 +10,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-
 
 const val BASE_URL = "https://get.api-feiertage.de"
 

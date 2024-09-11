@@ -7,24 +7,14 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.view.ViewTreeObserver
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import coil.load
-import coil.transform.CircleCropTransformation
-import com.google.firebase.appcheck.ktx.appCheck
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
-import com.google.firebase.Firebase
-import com.google.firebase.appcheck.appCheck
-import com.google.firebase.initialize
 import com.incirkus.connect.databinding.ActivityMainBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -33,8 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ViewModel
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         binding.bottomNavigationView.setupWithNavController(navHost.navController)
-
-
 
         // Hier wird der Listener für das Erkennen der Tastatur-Änderungen hinzugefügt
         val rootView = findViewById<View>(android.R.id.content)
@@ -61,8 +47,6 @@ class MainActivity : AppCompatActivity() {
                 // Überprüfen, ob wir uns im LoginFragment befinden
                 val currentDestination = navHost.navController.currentDestination?.id
                 val isInLoginFragment = currentDestination == R.id.loginFragment || currentDestination == R.id.passwordForgottenFragment
-
-
 
                 if (!isInLoginFragment) {
                     if (keypadHeight > screenHeight * 0.15) {
@@ -157,7 +141,6 @@ class MainActivity : AppCompatActivity() {
 
             if (binding.btnBack.isVisible && isInMessageFragment){
                 navHost.navController.navigateUp()
-//                viewModel.clearMessagelist()
             }
         }
 
@@ -170,6 +153,5 @@ class MainActivity : AppCompatActivity() {
             window.statusBarColor = android.graphics.Color.parseColor(color)
         }
     }
-
 
 }

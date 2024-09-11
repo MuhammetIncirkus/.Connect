@@ -10,13 +10,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import coil.load
-import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
-import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
-import com.incirkus.connect.databinding.FragmentAttachmentBinding
 import com.incirkus.connect.databinding.FragmentInfoBinding
-
 
 class InfoFragment : Fragment() {
 
@@ -26,12 +22,11 @@ class InfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentInfoBinding.inflate(layoutInflater)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

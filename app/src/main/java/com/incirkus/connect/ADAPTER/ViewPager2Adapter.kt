@@ -3,13 +3,10 @@ package com.incirkus.connect.ADAPTER
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.UI.AttachmentFragment
 import com.incirkus.connect.UI.InfoFragment
 import com.incirkus.connect.UI.MessagesFragment
-import com.incirkus.connect.ViewModel
 
 class ViewPager2Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager,lifecycle) {
     override fun getItemCount(): Int {

@@ -1,9 +1,5 @@
 package com.incirkus.connect.DATA.Model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-
 data class User(
 
     var userId: String = "",

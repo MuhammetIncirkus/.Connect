@@ -1,15 +1,12 @@
 package com.incirkus.connect.ADAPTER
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.incirkus.connect.DATA.Model.Holiday
 import com.incirkus.connect.R
 import com.incirkus.connect.databinding.HolidayListElementBinding
-
 
 class HolidayAdapter(private var holidayList: List<Holiday>) :
     RecyclerView.Adapter<HolidayAdapter.ItemViewHolder>() {

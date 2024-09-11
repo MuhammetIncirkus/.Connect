@@ -12,12 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.incirkus.connect.ADAPTER.AttachmentAdapter
-import com.incirkus.connect.ADAPTER.LeaveRequestAdapter
 import com.incirkus.connect.DATA.Model.Attachment
-import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentAttachmentBinding
-import com.incirkus.connect.databinding.FragmentMessagesBinding
 import java.util.UUID
 
 class AttachmentFragment : Fragment() {

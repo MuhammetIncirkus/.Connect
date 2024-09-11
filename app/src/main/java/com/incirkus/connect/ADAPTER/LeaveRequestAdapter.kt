@@ -2,16 +2,9 @@ package com.incirkus.connect.ADAPTER
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.LeaveRequest
-import com.incirkus.connect.DATA.Model.User
-import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
-import com.incirkus.connect.databinding.ChatListElementBinding
 import com.incirkus.connect.databinding.LeaveRequestListElementBinding
 
 class LeaveRequestAdapter (private var leaveRequestList: List<LeaveRequest>, private val viewModel: ViewModel) : RecyclerView.Adapter<LeaveRequestAdapter.ItemViewHolder>() {

@@ -3,14 +3,11 @@ package com.incirkus.connect
 import android.app.Application
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.incirkus.connect.DATA.Model.APIResponse
@@ -20,7 +17,6 @@ import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.Month
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Repository
-//import com.incirkus.connect.DATA.local.getDataBase
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
@@ -29,10 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.incirkus.connect.DATA.Model.Attachment
 import com.incirkus.connect.DATA.Model.ChatRoom
 import com.incirkus.connect.DATA.Model.LeaveRequest
-
 import kotlinx.coroutines.launch
 import java.time.Instant
-
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
@@ -43,16 +37,14 @@ import java.time.temporal.IsoFields
 import java.util.Locale
 import java.util.UUID
 
-
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
-    val repository = Repository()
+    private val repository = Repository()
 
     //Create Firebase Instances
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseStorage = FirebaseStorage.getInstance()
     private val firedatabase = FirebaseFirestore.getInstance()
-
 
     private val _isUploading = MutableLiveData<Boolean>()
     val isUploading: LiveData<Boolean> = _isUploading
@@ -76,7 +68,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     //For Chat, Messages, Info, Attachments
 
-    val firebaseUserList = repository.firebaseUserList
+    private val firebaseUserList = repository.firebaseUserList
     var userSearchList: LiveData<List<User>> = repository.firebaseUserList
     private val _filteredUserList = MutableLiveData<List<User>>()
     val filteredUserList: LiveData<List<User>> = _filteredUserList
@@ -85,14 +77,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     val firebaseChatRoomList = repository.firebaseChatRoomList
     val currentChatRoom = repository.currentChatRoom
     var currentChatPartner = User()
-    var _currentChatPartner = MutableLiveData<User>()
+    private var _currentChatPartner = MutableLiveData<User>()
     val currentChatPartner2: LiveData<User> = _currentChatPartner
     val firebaseMessageList = repository.firebaseMessageList
     val firebaseAttachmentList = repository.firebaseAttachmentList
 
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    //-------------------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------Calendar Items-------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Generates a list of `Month` objects, each representing a month within a range of time (from 12 months before the current date to 24 months after).
@@ -163,7 +155,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      * @return List<Day>: A list of `Day` objects representing each day in the month, including placeholders for empty slots at the beginning of the list.
      *                    Eine Liste von `Day`-Objekten, die jeden Tag des Monats darstellen, einschließlich Platzhalter für leere Felder zu Beginn der Liste.
      */
-    fun createDayList(year: Int, monthNumber: Int, monthLength: Int): List<Day> {
+    private fun createDayList(year: Int, monthNumber: Int, monthLength: Int): List<Day> {
 
         val dayList: MutableList<Day> = mutableListOf()
 
@@ -271,7 +263,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      */
     private fun addPlaceholderDaysToDayList(dayList: MutableList<Day>) {
 
-        val placeholderDay: Day = Day(
+        val placeholderDay = Day(
             day = 0,
             month = 0,
             year = 0,
@@ -299,11 +291,11 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      * @return Month: The current month represented as a `Month` object with a full list of days.
      *                Der aktuelle Monat, dargestellt als `Month`-Objekt mit einer vollständigen Liste der Tage.
      */
-    fun getactualMonth(): Month {
+    private fun getactualMonth(): Month {
 
         val currentDate = LocalDate.now()
 
-        var yearMonth = YearMonth.from(currentDate)
+        val yearMonth = YearMonth.from(currentDate)
 
         val year = yearMonth.year
         val monthNumber = yearMonth.month.value
@@ -350,7 +342,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun getListForHolidays() {
         if (holidayList.isEmpty()) {
             viewModelScope.launch {
-                var responseList = repository.getHolidayList()
+                val responseList = repository.getHolidayList()
                 convertResponseToHolidayList(responseList)
             }
         }
@@ -370,7 +362,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun getListForHolidaysManual() {
         _isUploadingApi.value = true
         viewModelScope.launch {
-            var responseList = repository.getHolidayList()
+            val responseList = repository.getHolidayList()
             deleteHolidayList(responseList)
         }
     }
@@ -399,7 +391,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun getHolidayListForSomeStates(states: String) {
         _isUploadingApi.value = true
         viewModelScope.launch {
-            var responseList = repository.getHolidayListForSomeStates(states)
+            val responseList = repository.getHolidayListForSomeStates(states)
             deleteHolidayList(responseList)
         }
     }
@@ -425,17 +417,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      *                      Feiertagsliste aktualisiert werden soll.
      * @see [convertResponseToHolidayList]
      */
-    fun deleteHolidayList(responseList: APIResponse) {
+    private fun deleteHolidayList(responseList: APIResponse) {
         val holidayListRef = firedatabase.collection("User").document(currentUser.value!!.userId)
             .collection("HolidayList")
 
-        // Abrufen aller Dokumente in der HolidayList-Unterkollektion
         holidayListRef.get().addOnSuccessListener { querySnapshot ->
             val deleteTasks = mutableListOf<Task<Void>>()
-            // Für jedes Dokument in der HolidayList-Unterkollektion
             if (!querySnapshot.isEmpty) {
                 for (document in querySnapshot) {
-                    // Lösche das Dokument
                     holidayListRef.document(document.id).delete()
                 }
             }
@@ -444,8 +433,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             }
 
         }.addOnFailureListener { exception ->
-            // Fehlerbehandlung
-            Log.e("Firestore", "Error deleting documents: ", exception)
+            Log.e("CONNECT", "ViewModel: deleteHolidayList: Error deleting documents: ", exception)
         }
     }
 
@@ -470,111 +458,108 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      *                      umgewandelt und in der Firestore-Datenbank gespeichert werden sollen.
      *
      */
-    fun convertResponseToHolidayList(responseList: APIResponse) {
+    private fun convertResponseToHolidayList(responseList: APIResponse) {
 
-        if (responseList != null) {
+        for (holiday in responseList.feiertage) {
+            val name: String = holiday.fname
+            val date: String = holiday.date
 
-            for (holiday in responseList.feiertage) {
-                val name: String = holiday.fname
-                val date: String = holiday.date
+            val year: Int = date.split("-")[0].toInt()
+            val month: Int = date.split("-")[1].toInt()
+            val day: Int = date.split("-")[2].toInt()
 
-                var year: Int = date.split("-")[0].toInt()
-                var month: Int = date.split("-")[1].toInt()
-                var day: Int = date.split("-")[2].toInt()
-
-                var region = ""
-                if (holiday.all_states == "1") {
-                    region = "DE"
-                } else {
-                    if (holiday.bw == "1") {
-                        region = region + "bw,"
-                    }
-                    if (holiday.by == "1") {
-                        region = region + "by,"
-                    }
-                    if (holiday.be == "1") {
-                        region = region + "be,"
-                    }
-                    if (holiday.bb == "1") {
-                        region = region + "bb,"
-                    }
-                    if (holiday.hb == "1") {
-                        region = region + "hb,"
-                    }
-                    if (holiday.hh == "1") {
-                        region = region + "hh,"
-                    }
-                    if (holiday.he == "1") {
-                        region = region + "he,"
-                    }
-                    if (holiday.mv == "1") {
-                        region = region + "mv,"
-                    }
-                    if (holiday.ni == "1") {
-                        region = region + "ni,"
-                    }
-                    if (holiday.nw == "1") {
-                        region = region + "nw,"
-                    }
-                    if (holiday.rp == "1") {
-                        region = region + "rp,"
-                    }
-                    if (holiday.sl == "1") {
-                        region = region + "sl,"
-                    }
-                    if (holiday.sn == "1") {
-                        region = region + "sn,"
-                    }
-                    if (holiday.st == "1") {
-                        region = region + "st,"
-                    }
-                    if (holiday.sh == "1") {
-                        region = region + "sh,"
-                    }
-                    if (holiday.th == "1") {
-                        region = region + "th,"
-                    }
-
+            var region = ""
+            if (holiday.all_states == "1") {
+                region = "DE"
+            } else {
+                if (holiday.bw == "1") {
+                    region += "bw,"
                 }
-                val comment: String = holiday.comment
-                var augsburg: Boolean = false
-                var katholisch: Boolean = false
-
-                if (holiday.augsburg != null) {
-                    augsburg = true
+                if (holiday.by == "1") {
+                    region += "by,"
+                }
+                if (holiday.be == "1") {
+                    region += "be,"
+                }
+                if (holiday.bb == "1") {
+                    region += "bb,"
+                }
+                if (holiday.hb == "1") {
+                    region += "hb,"
+                }
+                if (holiday.hh == "1") {
+                    region += "hh,"
+                }
+                if (holiday.he == "1") {
+                    region += "he,"
+                }
+                if (holiday.mv == "1") {
+                    region += "mv,"
+                }
+                if (holiday.ni == "1") {
+                    region += "ni,"
+                }
+                if (holiday.nw == "1") {
+                    region += "nw,"
+                }
+                if (holiday.rp == "1") {
+                    region += "rp,"
+                }
+                if (holiday.sl == "1") {
+                    region += "sl,"
+                }
+                if (holiday.sn == "1") {
+                    region += "sn,"
+                }
+                if (holiday.st == "1") {
+                    region += "st,"
+                }
+                if (holiday.sh == "1") {
+                    region += "sh,"
+                }
+                if (holiday.th == "1") {
+                    region += "th,"
                 }
 
-                if (holiday.katholisch != null) {
-                    katholisch = true
-                }
-
-                val holiday: Holiday = Holiday(
-
-                    holidayId = UUID.randomUUID().toString(),
-                    holidayName = name,
-                    holidayRegion = region,
-                    holidayDay = day,
-                    holidayMonth = month,
-                    holidayYear = year,
-                    comment = comment,
-                    augsburg = augsburg,
-                    katholisch = katholisch
-                )
-
-                firedatabase.collection("User")
-                    .document(currentUser.value!!.userId)
-                    .collection("HolidayList")
-                    .document(holiday.holidayId)
-                    .set(holiday)
-                holidayList.add(holiday)
             }
+            val comment: String = holiday.comment
+            var augsburg = false
+            var katholisch = false
+
+            if (holiday.augsburg != null) {
+                augsburg = true
+            }
+
+            if (holiday.katholisch != null) {
+                katholisch = true
+            }
+
+            val holiday2 = Holiday(
+
+                holidayId = UUID.randomUUID().toString(),
+                holidayName = name,
+                holidayRegion = region,
+                holidayDay = day,
+                holidayMonth = month,
+                holidayYear = year,
+                comment = comment,
+                augsburg = augsburg,
+                katholisch = katholisch
+            )
+
+            firedatabase.collection("User")
+                .document(currentUser.value!!.userId)
+                .collection("HolidayList")
+                .document(holiday2.holidayId)
+                .set(holiday2)
+            holidayList.add(holiday2)
         }
         _isUploadingApi.value = false
     }
 
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------FIREBASE-STORAGE---------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------FIREBASE-STORAGE---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Uploads an image to Firebase Storage and updates the user's profile with the image URL.
@@ -639,21 +624,16 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 it.userId
             )
         }
-        if (currentUserRef != null) {
-            currentUserRef
-                .update("image", currentUser.value?.image)
-                .addOnSuccessListener {
-                    Log.i(
-                        "Firebase",
-                        "ViewModel: updateCurrentUser: ${currentUser.value?.image}"
-                    )
-                }
-                .addOnFailureListener { e ->
-                    Log.i(
-                        "Firebase",
-                        "ViewModel: updateCurrentUser: ${e.toString()}"
-                    )
-                }
+        currentUserRef?.update("image", currentUser.value?.image)?.addOnSuccessListener {
+            Log.i(
+                "Firebase",
+                "ViewModel: updateCurrentUser: ${currentUser.value?.image}"
+            )
+        }?.addOnFailureListener { e ->
+            Log.i(
+                "Firebase",
+                "ViewModel: updateCurrentUser: $e"
+            )
         }
         _isUploading.value = false
     }
@@ -739,10 +719,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _isUploading.value = false
     }
 
-
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //---------------------------------------------------------------------Firebase FireStore--------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------Firebase FireStore--------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Authenticates a user with email and password and logs them in.
@@ -792,8 +771,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      * Nach der Abmeldung wird auch die Methode `logout` im Repository aufgerufen, um alle notwendigen
      * Bereinigungen oder Statusaktualisierungen für den Abmeldeprozess durchzuführen.
      *
-     * @see [repository.logout]
-     *
      */
     fun logout() {
         firebaseAuth.signOut()
@@ -827,7 +804,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun createChatroom(user: User): Boolean {
 
-        var checkIfChatRoomExists: Boolean = false
+        var checkIfChatRoomExists = false
         if (!firebaseChatRoomList.value.isNullOrEmpty()) {
 
             for (chatRoom in firebaseChatRoomList.value!!) {
@@ -850,12 +827,12 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
             val chatRoomId = UUID.randomUUID().toString()
             val chatRoomName: String = currentUser.value?.firstName!! + user.firstName
-            val lastMessage: String = ""
-            var lastActivityTimestamp: Long = 0L
-            var chatParticipants: MutableList<String?> =
+            val lastMessage = ""
+            val lastActivityTimestamp = 0L
+            val chatParticipants: MutableList<String?> =
                 mutableListOf(currentUser.value?.userId!!, user.userId)
 
-            val chatroom: ChatRoom = ChatRoom(
+            val chatroom = ChatRoom(
                 chatRoomId = chatRoomId,
                 chatRoomName = chatRoomName,
                 lastMessage = lastMessage,
@@ -893,10 +870,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      * @see [repository.getCurrentChatRoom]
      */
     private fun getCurrentChatRoom(chatRoomId: String) {
-        if (currentFirebaseUser != null) {
-            viewModelScope.launch {
-                repository.getCurrentChatRoom(chatRoomId)
-            }
+        viewModelScope.launch {
+            repository.getCurrentChatRoom(chatRoomId)
         }
     }
 
@@ -989,7 +964,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 .addOnFailureListener { e ->
                     Log.i(
                         "Firebase",
-                        "ViewModel: updateChatRoom: ${e.toString()}"
+                        "ViewModel: updateChatRoom: $e"
                     )
                 }
             chatRoomRef
@@ -1003,7 +978,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 .addOnFailureListener { e ->
                     Log.i(
                         "Firebase",
-                        "ViewModel: updateChatRoom: ${e.toString()}"
+                        "ViewModel: updateChatRoom: $e"
                     )
                 }
             chatRoomRef
@@ -1017,7 +992,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 .addOnFailureListener { e ->
                     Log.i(
                         "Firebase",
-                        "ViewModel: updateChatRoom: ${e.toString()}"
+                        "ViewModel: updateChatRoom: $e"
                     )
                 }
         }
@@ -1071,7 +1046,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun getChatPartner(id: String): User {
 
-        var chatPartner: User = User()
+        var chatPartner = User()
 
         for (oneUser in firebaseUserList.value!!) {
             if (oneUser.userId == id)

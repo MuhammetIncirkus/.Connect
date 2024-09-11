@@ -6,14 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.FragmentCalendarBinding
 import com.incirkus.customcalendar.adapter.CalendarAdapter
 import java.time.LocalDate
-
-
 
 class CalendarFragment : Fragment() {
 

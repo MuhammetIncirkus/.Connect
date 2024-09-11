@@ -1,15 +1,11 @@
 package com.incirkus.connect.ADAPTER
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.incirkus.connect.DATA.Model.Attachment
-import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.AttachmentListElementBinding
 

@@ -27,7 +27,6 @@ class HolidayFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -56,7 +55,6 @@ class HolidayFragment : Fragment() {
             val startDate = it.first
             val endDate = it.second
 
-
             val requestId = UUID.randomUUID().toString()
             val userId = viewModel.currentUser.value?.userId
             val status: String? = "open"
@@ -70,10 +68,8 @@ class HolidayFragment : Fragment() {
                 )
             viewModel.submitLeaveRequest(leaveRequest)
         }
-
         // Showing the date picker dialog
         datePicker.show(childFragmentManager, "DATE_PICKER")
-
     }
 
 }

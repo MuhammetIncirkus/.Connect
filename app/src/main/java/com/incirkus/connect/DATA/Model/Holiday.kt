@@ -1,10 +1,5 @@
 package com.incirkus.connect.DATA.Model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.util.UUID
-
-
 data class Holiday(
 
     val holidayId: String = "",
@@ -16,4 +11,5 @@ data class Holiday(
     val comment: String? = "",
     val augsburg: Boolean? = false,
     val katholisch: Boolean? = false,
+
     )

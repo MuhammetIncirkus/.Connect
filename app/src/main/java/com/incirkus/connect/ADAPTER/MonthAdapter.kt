@@ -1,7 +1,5 @@
 package com.incirkus.customcalendar.adapter
 
-
-import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,9 +10,7 @@ import com.incirkus.connect.DATA.Model.Day
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.DayListItemBinding
-
 import java.time.LocalDate
-
 
 class MonthAdapter (private var dayList: List<Day>, private val viewModel: ViewModel) : RecyclerView.Adapter<MonthAdapter.ItemViewHolder>() {
     inner class ItemViewHolder(val binding: DayListItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -41,27 +37,24 @@ class MonthAdapter (private var dayList: List<Day>, private val viewModel: ViewM
         val currentDate = LocalDate.now()
         val context = binding.mcvDay.context
         if (day.year == currentDate.year && day.month == currentDate.month.value && day.day == currentDate.dayOfMonth){
+
             binding.tvDayNumber.setTypeface(binding.tvDayNumber.getTypeface(), Typeface.BOLD)
             binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.new_primary))
             binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.new_primary))
             binding.mcvDay.strokeWidth = 5
             binding.mcvDay.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green))
 
-
         }
-
 
         val holidayList = viewModel.holidayList
 
-        if (holidayList != null) {
-            for (holiday in holidayList){
-                if (day.year == holiday.holidayYear && day.month == holiday.holidayMonth && day.day == holiday.holidayDay){
+        for (holiday in holidayList){
+            if (day.year == holiday.holidayYear && day.month == holiday.holidayMonth && day.day == holiday.holidayDay){
 
-                    binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.new_tertiary))
-                    binding.mcvDay.setCardBackgroundColor(ContextCompat.getColor(context, R.color.new_secondary))
-                    binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.white))
-                    binding.mcvDay.strokeWidth = 5
-                }
+                binding.mcvDay.setStrokeColor(ContextCompat.getColor(context, R.color.new_tertiary))
+                binding.mcvDay.setCardBackgroundColor(ContextCompat.getColor(context, R.color.new_secondary))
+                binding.tvDayNumber.setTextColor(ContextCompat.getColor(context, R.color.white))
+                binding.mcvDay.strokeWidth = 5
             }
         }
 

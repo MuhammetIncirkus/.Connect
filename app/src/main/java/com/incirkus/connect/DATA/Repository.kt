@@ -3,7 +3,6 @@ package com.incirkus.connect.DATA
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -19,14 +18,9 @@ import com.incirkus.connect.DATA.Model.LeaveRequest
 import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.DATA.Model.User
 import com.incirkus.connect.DATA.Remote.CalendarApi
-//import com.incirkus.connect.DATA.local.ConnectDatabase
-import com.incirkus.connect.ViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.UUID
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -780,7 +774,7 @@ class Repository() {
                             Log.d("Firebase", "Repo: Holiday: ${holiday.id} => ${holiday.data}")
 
 
-                            val holiday2: Holiday = Holiday(
+                            val holiday2 = Holiday(
                                 holidayId = holiday.id,
                                 holidayName = holiday.getString("holidayName"),
                                 holidayRegion = holiday.getString("holidayRegion"),
@@ -797,10 +791,6 @@ class Repository() {
                         }
 
                         _firebaseHolidayList.postValue(firebaseHolidayList2)
-
-                        if (holidayList.isEmpty()) {
-
-                        }
 
                         if (!continuation.isCompleted) {
                             continuation.resume(Unit)
@@ -823,97 +813,6 @@ class Repository() {
                 continuation.resumeWithException(e)
             }
         }
-    }
-
-    /**
-     * Retrieves a list of chat rooms from Firebase Firestore asynchronously and updates the internal LiveData object `_firebaseChatRoomList`.
-     * The function listens for changes in the "ChatRooms" collection where the current user is a participant and converts the documents
-     * into `ChatRoom` objects. These chat rooms are then added to a list, which is posted to `_firebaseChatRoomList`.
-     * If an error occurs during the listener registration or data fetching process, it is logged and the coroutine resumes with an exception.
-     * The listener is removed upon cancellation of the coroutine.
-     *
-     * ---
-     *
-     * Ruft asynchron eine Liste von Chatrooms aus Firebase Firestore ab und aktualisiert das interne LiveData-Objekt `_firebaseChatRoomList`.
-     * Die Funktion hört auf Änderungen in der "ChatRooms"-Sammlung, bei denen der aktuelle Benutzer als Teilnehmer aufgelistet ist,
-     * und wandelt die Dokumente in `ChatRoom`-Objekte um. Diese Chatrooms werden dann in einer Liste gespeichert und an `_firebaseChatRoomList` übergeben.
-     * Bei einem Fehler während der Listener-Registrierung oder des Datenabrufs wird dieser protokolliert, und die Coroutine wird mit einer Ausnahme fortgesetzt.
-     * Der Listener wird bei Abbruch der Coroutine entfernt.
-     *
-     * @return Unit: The function does not return a value directly. The coroutine is resumed after the chat rooms are fetched or if an exception occurs.
-     *               Die Funktion gibt keinen Wert direkt zurück. Die Coroutine wird nach dem Abrufen der Chatrooms oder bei einer Ausnahme fortgesetzt.
-     */
-    suspend fun getFirebaseDataChatRooms() = suspendCancellableCoroutine { continuation ->
-        val firebaseChatRoomList: MutableList<ChatRoom> = mutableListOf()
-
-        try {
-            _currentFirebaseUser.value?.uid?.let {
-                val listenerRegistration = firebasedb2.collection("ChatRooms")
-                    .whereArrayContains("chatParticipants", it)
-                    .addSnapshotListener { ChatRoomList, e ->
-                        if (e != null) {
-                            Log.d(
-                                "CONNECT",
-                                "Repository: getFirebaseDataChatRooms: Listen failed.",
-                                e
-                            )
-                            if (!continuation.isCompleted) {
-                                continuation.resumeWithException(e)
-                            }
-                            return@addSnapshotListener
-                        }
-
-                        if (ChatRoomList != null) {
-                            for (chatRoom in ChatRoomList) {
-                                Log.d(
-                                    "CONNECT",
-                                    "Repository: getFirebaseDataChatRooms: chatRoom: ${chatRoom.id} => ${chatRoom.data}"
-                                )
-
-                                val arrayList: ArrayList<String> =
-                                    chatRoom.get("chatParticipants") as ArrayList<String>
-                                val mutableList: MutableList<String?> = arrayList.toMutableList()
-
-                                val chatRoom2 = ChatRoom(
-                                    chatRoomId = chatRoom.id,
-                                    chatRoomName = chatRoom.getString("chatRoomName"),
-                                    lastMessage = chatRoom.getString("lastMessage"),
-                                    lastActivityTimestamp = chatRoom.getLong("lastActivityTimestamp"),
-                                    chatParticipants = mutableList
-                                )
-
-
-                                firebaseChatRoomList.add(chatRoom2)
-                            }
-                        }
-                        _firebaseChatRoomList.postValue(firebaseChatRoomList)
-                        if (!continuation.isCompleted) {
-                            continuation.resume(Unit)
-                        }
-
-                        Log.i(
-                            "CONNECT",
-                            "Repository: getFirebaseDataChatRooms: ${_firebaseChatRoomList.value.toString()}"
-                        )
-                    }
-                continuation.invokeOnCancellation {
-                    listenerRegistration.remove()
-                    Log.i(
-                        "CONNECT",
-                        "Repository: getFirebaseDataChatRooms: Listener wurde entfernt."
-                    )
-                }
-            }
-
-            Log.i(
-                "CONNECT",
-                "Repository: getFirebaseDataChatRooms: ${_firebaseChatRoomList.value.toString()}"
-            )
-
-        } catch (e: Exception) {
-            Log.i("CONNECT", "Repository: getFirebaseDataChatRooms: Exception", e)
-        }
-
     }
 
 

@@ -2,6 +2,7 @@ package com.incirkus.connect.DATA.Model
 
 
 data class Response(
+
     val date : String,
     val fname : String,
     val all_states: String,
@@ -24,4 +25,5 @@ data class Response(
     val comment: String,
     val augsburg: String?,
     val katholisch: String?,
+
 )

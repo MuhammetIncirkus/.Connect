@@ -5,22 +5,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.isVisible
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.incirkus.connect.DATA.Model.User
-import com.incirkus.connect.DATA.Model.Message
 import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
-import com.incirkus.connect.databinding.ChatListElementBinding
 import com.incirkus.connect.databinding.SearchListElementBinding
-import kotlinx.coroutines.launch
 
 class SearchAdapter (private var userList: List<User>, private val viewModel: ViewModel) : RecyclerView.Adapter<SearchAdapter.ItemViewHolder>() {
     inner class ItemViewHolder(val binding: SearchListElementBinding) : RecyclerView.ViewHolder(binding.root)
@@ -68,8 +60,5 @@ class SearchAdapter (private var userList: List<User>, private val viewModel: Vi
         }
 
     }
-
-
-
 
 }

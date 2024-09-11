@@ -1,6 +1,5 @@
 package com.incirkus.customcalendar.adapter
 
-
 import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +14,6 @@ import com.incirkus.connect.R
 import com.incirkus.connect.ViewModel
 import com.incirkus.connect.databinding.CalendarListItemBinding
 import java.time.LocalDate
-
 
 class CalendarAdapter (private var monthList: List<Month>, private val viewModel: ViewModel,) : RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>() {
     inner class ItemViewHolder(val binding: CalendarListItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -66,30 +64,27 @@ class CalendarAdapter (private var monthList: List<Month>, private val viewModel
         val monthAdapter = MonthAdapter(month.daylist, viewModel)
         binding.rvDays.adapter = monthAdapter
 
-        var weeklist: MutableList<Int> = mutableListOf()
+        val weeklist: MutableList<Int> = mutableListOf()
         for (day in month.daylist){
             weeklist.add(day.calendarweek)
         }
 
         weeklist.removeAll { it == 0 }
-        var weeklist2= weeklist.distinct()
+        val weekList2= weeklist.distinct()
 
         binding.rvWeekDays.setHasFixedSize(true)
-        val calendarWeekAdapter = CalendarWeekAdapter(weeklist2, viewModel)
+        val calendarWeekAdapter = CalendarWeekAdapter(weekList2)
         binding.rvWeekDays.adapter = calendarWeekAdapter
 
         val holidayList = viewModel.holidayList
 
         var newHolidayList: MutableList<Holiday> = mutableListOf()
 
-        if (holidayList != null) {
-            for (holiday in holidayList){
-                if (month.year == holiday.holidayYear && month.monthNumber == holiday.holidayMonth){
-                    newHolidayList.add(holiday)
-                }
+        for (holiday in holidayList){
+            if (month.year == holiday.holidayYear && month.monthNumber == holiday.holidayMonth){
+                newHolidayList.add(holiday)
             }
         }
-
 
         newHolidayList = newHolidayList.distinct().toMutableList()
 

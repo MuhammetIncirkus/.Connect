@@ -51,12 +51,9 @@ class MessageAdapter (private var messageList: List<Message>, viewModel: ViewMod
             holder.outgoingBinding.tvIncomingMessageDate.text = date
         }
 
-
-
     }
 
     override fun getItemViewType(position: Int): Int {
-
 
         val message = messageList[position]
         if (message.senderId != myUserID){
