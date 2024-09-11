@@ -1,95 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:strokeColor="@color/new_tertiary"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="2dp"
-    app:cardElevation="5dp"
     android:backgroundTint="@color/new_secondary"
-    >
+    app:cardElevation="5dp"
+    app:strokeColor="@color/new_tertiary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <TextView
             android:id="@+id/tv_holidayDate"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:text="Date"
-            android:textSize="20sp"
-            android:lines="1"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="@+id/tv_holidayName"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_Region"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="20dp"
-            />
+            android:lines="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_Region"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_holidayName" />
 
         <TextView
             android:id="@+id/tv_holidayName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Name"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
-            app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            />
-
-
-
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
+            app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_Region"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Region"
-            android:textColor="@color/white"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="4dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_holidayName"
-            app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
-            app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
             android:paddingBottom="4dp"
-            />
+            android:text=""
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
+            app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
+            app:layout_constraintTop_toBottomOf="@id/tv_holidayName" />
 
         <TextView
             android:id="@+id/tv_holidayDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Description"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/tv_Region"
-            app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
-            app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp"
-            />
+            android:text=""
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/btn_holidayDescription"
+            app:layout_constraintStart_toEndOf="@id/tv_holidayDate"
+            app:layout_constraintTop_toBottomOf="@id/tv_Region" />
 
         <ImageButton
             android:id="@+id/btn_holidayDescription"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/transparent"
+            android:contentDescription="@string/open_close_description"
             android:src="@drawable/baseline_arrow_drop_down_24"
-            app:tint="@color/new_tertiary"
-            android:backgroundTint="@color/transparent"/>
-
-
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/new_tertiary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

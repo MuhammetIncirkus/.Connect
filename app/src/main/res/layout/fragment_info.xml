@@ -11,29 +11,28 @@
         android:id="@+id/iv_profilePicture"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:elevation="20dp"
         android:foregroundGravity="fill"
+        android:src="@drawable/jennifer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        android:src="@drawable/jennifer"
-        android:elevation="20dp"/>
+        app:layout_constraintVertical_bias="0.1" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iv_profilePicture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        android:hint="Name"
+        android:hint="@string/name"
+        app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
-        app:boxBackgroundColor="@color/white">
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_profilePicture">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_name"
@@ -41,23 +40,22 @@
             android:layout_height="match_parent"
             android:clickable="false"
             android:editable="false"
-            tools:ignore="Deprecated"
-            />
+            tools:ignore="Deprecated" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_department"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="Department"
+        android:hint="@string/department"
+        app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
-        app:boxBackgroundColor="@color/white">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_department"
@@ -72,15 +70,15 @@
         android:id="@+id/til_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_department"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="E-Mail"
+        android:hint="@string/e_mail"
+        app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
-        app:boxBackgroundColor="@color/white">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_department">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_email"
@@ -95,15 +93,15 @@
         android:id="@+id/til_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/til_email"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_call"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="Phone Number"
+        android:hint="@string/phone_number"
+        app:boxBackgroundColor="@color/white"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
-        app:boxBackgroundColor="@color/white">
+        app:layout_constraintEnd_toStartOf="@id/btn_call"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_number"
@@ -118,14 +116,13 @@
         android:id="@+id/btn_call"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:contentDescription="Call Button"
-        app:tint="@color/new_secondary"
         android:backgroundTint="@color/new_tertiary"
-        app:srcCompat="@drawable/baseline_phone_enabled_24"
-        app:layout_constraintTop_toTopOf="@id/til_number"
+        android:contentDescription="@string/call_button"
         app:layout_constraintBottom_toBottomOf="@id/til_number"
-        app:layout_constraintStart_toEndOf="@id/til_number"
         app:layout_constraintEnd_toEndOf="@id/til_email"
-        />
+        app:layout_constraintStart_toEndOf="@id/til_number"
+        app:layout_constraintTop_toTopOf="@id/til_number"
+        app:srcCompat="@drawable/baseline_phone_enabled_24"
+        app:tint="@color/new_secondary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

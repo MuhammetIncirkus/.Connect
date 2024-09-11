@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        android:hint="Name"
+        android:hint="@string/name"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
         app:boxBackgroundColor="@color/white">
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="Department"
+        android:hint="@string/department"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
         app:boxBackgroundColor="@color/white">
@@ -92,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="E-Mail"
+        android:hint="@string/department"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
         app:boxBackgroundColor="@color/white">
@@ -115,7 +115,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:hint="Phone Number"
+        android:hint="@string/phone_number"
         app:boxStrokeColor="@color/text_input_box_stroke_color"
         app:hintTextColor="@color/new_tertiary"
         app:boxBackgroundColor="@color/white">
@@ -136,7 +136,8 @@
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:contentDescription="@string/logout_button"
+        android:text="@string/logout"
         android:src="@drawable/baseline_logout_24"
         app:layout_constraintTop_toTopOf="@+id/tv_logout"
         app:layout_constraintBottom_toBottomOf="@id/tv_logout"
@@ -148,7 +149,7 @@
             android:id="@+id/btn_changePassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logout"
+            android:contentDescription="@string/change_password_button"
             android:src="@drawable/baseline_password_24"
             app:layout_constraintTop_toTopOf="@+id/tv_changePassword"
             app:layout_constraintBottom_toBottomOf="@id/tv_changePassword"
@@ -160,7 +161,7 @@
             android:id="@+id/btn_changeProfilePicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logout"
+            android:contentDescription="@string/change_password_button"
             android:src="@drawable/baseline_edit_24"
             app:layout_constraintTop_toTopOf="@+id/iv_profilePicture"
             app:layout_constraintEnd_toEndOf="@+id/iv_profilePicture"
@@ -177,7 +178,7 @@
             android:layout_marginStart="30dp"
             android:lines="1"
             android:maxWidth="300dp"
-            android:text="Change Password: ........................................................................................."
+            android:text="@string/change_password"
             app:layout_constraintEnd_toStartOf="@id/btn_changePassword"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -188,7 +189,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="300dp"
-            android:text="Logout: .................................................................................................."
+            android:text="@string/logout_text"
             android:layout_marginVertical="40dp"
             android:layout_marginStart="30dp"
             android:lines="1"
@@ -223,7 +224,7 @@
                     android:id="@+id/tv_holiday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Feiertage"
+                    android:text="@string/feiertage"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
@@ -237,6 +238,7 @@
                     android:id="@+id/btn_apiChanges"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:contentDescription="@string/open_close_api_checkboxes"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_holiday"
                     android:layout_marginEnd="16dp"
@@ -285,7 +287,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_germanywide"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_germanywide"
                             app:layout_constraintStart_toEndOf="@+id/cb_germanywide"
-                            android:text="Bundesweit" />
+                            android:text="@string/bundesweit" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_BW"
@@ -304,7 +306,7 @@
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BW"
                             app:layout_constraintStart_toEndOf="@+id/cb_BW"
 
-                            android:text="Baden-\nWürttemberg" />
+                            android:text="@string/baden_nw_rttemberg" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_BY"
@@ -325,9 +327,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_BY"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BY"
                             app:layout_constraintStart_toEndOf="@+id/cb_BY"
-                            android:text="Bayern" />
-
-
+                            android:text="@string/bayern" />
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_BE"
                             android:layout_width="wrap_content"
@@ -344,7 +344,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_BE"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BE"
                             app:layout_constraintStart_toEndOf="@+id/cb_BE"
-                            android:text="Berlin" />
+                            android:text="@string/berlin" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_BB"
@@ -364,9 +364,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_BB"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_BB"
                             app:layout_constraintStart_toEndOf="@+id/cb_BB"
-                            android:text="Brandenburg" />
-
-
+                            android:text="@string/brandenburg" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_HB"
@@ -384,7 +382,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_HB"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_HB"
                             app:layout_constraintStart_toEndOf="@+id/cb_HB"
-                            android:text="Bremen" />
+                            android:text="@string/bremen" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_HH"
@@ -404,9 +402,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_HH"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_HH"
                             app:layout_constraintStart_toEndOf="@+id/cb_HH"
-                            android:text="Hamburg" />
-
-
+                            android:text="@string/hamburg" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_HE"
@@ -424,7 +420,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_HE"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_HE"
                             app:layout_constraintStart_toEndOf="@+id/cb_HE"
-                            android:text="Hessen" />
+                            android:text="@string/hessen" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_MV"
@@ -444,10 +440,8 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_MV"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_MV"
                             app:layout_constraintStart_toEndOf="@+id/cb_MV"
-                            android:text="Mecklenburg-\nVorpommern"
+                            android:text="@string/mecklenburg_nvorpommern"
                             />
-
-
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_NI"
@@ -465,7 +459,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_NI"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_NI"
                             app:layout_constraintStart_toEndOf="@+id/cb_NI"
-                            android:text="Niedersachsen" />
+                            android:text="@string/niedersachsen" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_NW"
@@ -485,9 +479,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_NW"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_NW"
                             app:layout_constraintStart_toEndOf="@+id/cb_NW"
-                            android:text="Nordrhein-\nWestfalen" />
-
-
+                            android:text="@string/nordrhein_nwestfalen" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_RP"
@@ -505,7 +497,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_RP"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_RP"
                             app:layout_constraintStart_toEndOf="@+id/cb_RP"
-                            android:text="Rheinland-\nPfalz" />
+                            android:text="@string/rheinland_npfalz" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_SL"
@@ -525,9 +517,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_SL"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_SL"
                             app:layout_constraintStart_toEndOf="@+id/cb_SL"
-                            android:text="Saarland" />
-
-
+                            android:text="@string/saarland" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_SN"
@@ -545,7 +535,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_SN"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_SN"
                             app:layout_constraintStart_toEndOf="@+id/cb_SN"
-                            android:text="Sachsen" />
+                            android:text="@string/sachsen" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_ST"
@@ -565,9 +555,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_ST"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_ST"
                             app:layout_constraintStart_toEndOf="@+id/cb_ST"
-                            android:text="Sachsen-\nAnhalt" />
-
-
+                            android:text="@string/sachsen_nanhalt" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_SH"
@@ -585,7 +573,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_SH"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_SH"
                             app:layout_constraintStart_toEndOf="@+id/cb_SH"
-                            android:text="Schleswig-\nHolstein" />
+                            android:text="@string/schleswig_nholstein" />
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_TH"
@@ -605,8 +593,7 @@
                             app:layout_constraintTop_toTopOf="@+id/cb_TH"
                             app:layout_constraintBottom_toBottomOf="@+id/cb_TH"
                             app:layout_constraintStart_toEndOf="@+id/cb_TH"
-                            android:text="Thüringen" />
-
+                            android:text="@string/th_ringen" />
 
                         <Button
                             android:id="@+id/btn_saveApiChanges"
@@ -616,7 +603,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/cb_TH"
                             android:layout_marginVertical="16dp"
-                            android:text="Save"
+                            android:text="@string/save"
                             android:textColor="@color/white"
                             android:backgroundTint="@color/new_primary"/>
 
@@ -633,15 +620,9 @@
                             app:layout_constraintTop_toTopOf="@+id/btn_saveApiChanges"
                             android:visibility="gone"/>
 
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </com.google.android.material.card.MaterialCardView>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </com.google.android.material.card.MaterialCardView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

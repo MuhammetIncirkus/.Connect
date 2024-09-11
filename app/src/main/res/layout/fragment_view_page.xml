@@ -11,16 +11,14 @@
         android:id="@+id/tabBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/new_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/new_primary"
-        app:tabSelectedTextColor="@color/new_tertiary"
-        app:tabIndicatorColor="@color/new_tertiary"
-        app:tabTextColor="@color/white"
         app:tabIconTint="@color/white"
-
-    >
+        app:tabIndicatorColor="@color/new_tertiary"
+        app:tabSelectedTextColor="@color/new_tertiary"
+        app:tabTextColor="@color/white">
 
     </com.google.android.material.tabs.TabLayout>
 
@@ -31,7 +29,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabBar"
-        />
+        app:layout_constraintTop_toBottomOf="@id/tabBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

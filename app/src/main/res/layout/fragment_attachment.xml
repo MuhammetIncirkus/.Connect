@@ -22,51 +22,51 @@
         android:id="@+id/btn_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_attachment_24"
-        app:tint="@color/new_secondary"
-        android:backgroundTint="@color/new_tertiary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        />
+        android:backgroundTint="@color/new_tertiary"
+        android:contentDescription="@string/upload_attachment"
+        android:src="@drawable/baseline_attachment_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/new_secondary" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lav_profilePictureUpload"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        app:lottie_rawRes="@raw/circle"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/circle" />
 
     <WebView
         android:id="@+id/webview"
         android:layout_width="300dp"
         android:layout_height="500dp"
+        android:clickable="true"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:clickable="true"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_closeWebView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/new_tertiary"
-        android:src="@drawable/baseline_cancel_24"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/webview"
-        app:layout_constraintEnd_toEndOf="@id/webview"
         android:layout_marginTop="-6dp"
         android:layout_marginEnd="-4dp"
+        android:backgroundTint="@color/new_tertiary"
+        android:contentDescription="@string/close_webview"
+        android:src="@drawable/baseline_cancel_24"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/webview"
+        app:layout_constraintTop_toTopOf="@id/webview"
         app:tint="@color/new_secondary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

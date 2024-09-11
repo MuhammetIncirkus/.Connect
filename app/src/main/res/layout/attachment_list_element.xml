@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="4dp"
     android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="4dp"
+    android:backgroundTint="@color/new_secondary"
     app:cardElevation="5dp"
-    app:strokeColor="@color/new_tertiary"
-    android:backgroundTint="@color/new_secondary">
+    app:strokeColor="@color/new_tertiary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,14 +18,14 @@
             android:id="@+id/mcv_attachmentImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:cardCornerRadius="2dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginVertical="8dp"
             android:layout_marginStart="8dp"
-            app:strokeColor="@color/new_tertiary"
-            app:cardElevation="5dp">
+            app:cardCornerRadius="2dp"
+            app:cardElevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/new_tertiary">
 
 
             <ImageView
@@ -34,8 +33,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/attachment_type"
-                tools:srcCompat="@tools:sample/avatars"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
+
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -45,9 +45,9 @@
             android:layout_marginStart="24dp"
             android:maxLines="1"
             android:text="@string/placeholderText"
-            android:textStyle="bold"
-            android:textSize="20sp"
             android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/tv_attachmentDate"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/mcv_attachmentImage"
@@ -57,39 +57,34 @@
             android:id="@+id/tv_attachmentType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:text="@string/placeholderText"
-            android:textSize="12sp"
             android:textColor="@color/white"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/mcv_attachmentImage"
-            app:layout_constraintStart_toStartOf="@id/tv_attachmentName"
             app:layout_constraintEnd_toStartOf="@id/tv_attachmentDate"
             app:layout_constraintHorizontal_bias="0.0"
-            android:maxLines="1"/>
+            app:layout_constraintStart_toStartOf="@id/tv_attachmentName" />
 
         <TextView
             android:id="@+id/tv_attachmentDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:text="@string/placeholderText"
-            android:textSize="10sp"
             android:textColor="@color/white"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@id/mcv_attachmentImage"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
             tools:ignore="SmallSp" />
-
-
 
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginHorizontal="40dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginHorizontal="40dp"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 </com.google.android.material.card.MaterialCardView>

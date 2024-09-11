@@ -5,124 +5,114 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.CalendarFragment"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".UI.CalendarFragment">
 
+    <LinearLayout
+        android:id="@+id/weekDays"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/tv_weekNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/CalendarWeek_acronym"
+            android:textColor="@color/new_primary" />
 
+        <TextView
+            android:id="@+id/tv_monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Monday_acronym"
+            android:textColor="@color/new_primary" />
 
+        <TextView
+            android:id="@+id/tv_tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Tuesday_acronym"
+            android:textColor="@color/new_primary" />
 
+        <TextView
+            android:id="@+id/tv_wednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Wednesday_acronym"
+            android:textColor="@color/new_primary" />
 
-            <LinearLayout
-                android:id="@+id/weekDays"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="15dp"
-                android:background="@color/white"
-                >
+        <TextView
+            android:id="@+id/tv_thursday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Thursday_acronym"
+            android:textColor="@color/new_primary" />
 
+        <TextView
+            android:id="@+id/tv_friday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Friday_acronym"
+            android:textColor="@color/new_primary" />
 
-                <TextView
-                    android:id="@+id/tv_weekNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="CW"
-                    android:textColor="@color/new_primary"/>
+        <TextView
+            android:id="@+id/tv_saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Saturday_acronym"
+            android:textColor="@color/new_primary" />
 
-                <TextView
-                    android:id="@+id/tv_monday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/new_primary"
-                    android:text="Mon" />
+        <TextView
+            android:id="@+id/tv_sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Sundday_acronym"
+            android:textColor="@color/new_primary" />
 
-                <TextView
-                    android:id="@+id/tv_tuesday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/new_primary"
-                    android:text="Tue" />
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_wednesday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/new_primary"
-                    android:text="Wed" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weekDays">
 
-                <TextView
-                    android:id="@+id/tv_thursday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/new_primary"
-                    android:text="Thu" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:overScrollMode="ifContentScrolls"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/calendar_list_item" />
 
-                <TextView
-                    android:id="@+id/tv_friday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/new_primary"
-                    android:text="Fri" />
-
-                <TextView
-                    android:id="@+id/tv_saturday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/new_primary"
-                    android:text="Sat" />
-
-                <TextView
-                    android:id="@+id/tv_sunday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/new_primary"
-                    android:text="Sun" />
-
-            </LinearLayout>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/weekDays"
-                android:scrollbars="none"
-                >
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_calendar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:overScrollMode="ifContentScrolls"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/calendar_list_item"/>
-
-            </ScrollView>
-
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginStart="16dp"
     android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
     android:layout_marginEnd="16dp"
-    >
+    android:layout_marginBottom="4dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mcv_root"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="0dp"
-        app:strokeWidth="0dp"
-        android:backgroundTint="@color/white">
-
+        app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,19 +30,18 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
                 app:layout_constraintBottom_toBottomOf="@id/mcv_textBubble"
                 app:layout_constraintStart_toStartOf="parent"
-                app:cardElevation="5dp"
                 app:strokeColor="@color/new_tertiary">
-
 
                 <ImageView
                     android:id="@+id/iv_profilePicture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/profile_picture"
-                    tools:srcCompat="@tools:sample/avatars"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@tools:sample/avatars" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -52,13 +49,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:backgroundTint="@color/new_secondary"
                 android:maxWidth="250dp"
+                app:cardElevation="2dp"
                 app:layout_constraintStart_toEndOf="@id/mcv_profileImage"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/IncomingMessageBubble"
-                app:cardElevation="2dp"
-                app:strokeColor="@color/new_tertiary"
-                android:backgroundTint="@color/new_secondary">
+                app:strokeColor="@color/new_tertiary">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -88,18 +85,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/placeholderText"
-                android:textSize="10sp"
                 android:textColor="@color/new_primary"
+                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="@id/mcv_textBubble"
                 app:layout_constraintTop_toBottomOf="@id/mcv_textBubble"
                 tools:ignore="SmallSp" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.card.MaterialCardView>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
