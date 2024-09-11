@@ -90,8 +90,8 @@ class Repository() {
      *                      Die Liste der von der API abgerufenen Feiertage. Im Falle eines Fehlers kann eine leere oder nicht initialisierte Antwort zurückgegeben werden.
      *
      */
-    suspend fun getHolidayList(): APIResponse {
-        lateinit var holidayList: APIResponse
+    suspend fun getHolidayList(): APIResponse? {
+        var holidayList: APIResponse? = APIResponse()
         withContext(Dispatchers.IO) {
             try {
                 holidayList = CalendarApi.retrofitService.getallHolidays()
@@ -123,8 +123,8 @@ class Repository() {
      * @return APIResponse: The list of holidays retrieved from the API. In case of a failure, an empty or uninitialized response may be returned.
      *                      Die Liste der von der API abgerufenen Feiertage. Im Falle eines Fehlers kann eine leere oder nicht initialisierte Antwort zurückgegeben werden.
      */
-    suspend fun getHolidayListForSomeStates(states: String): APIResponse {
-        lateinit var holidayList: APIResponse
+    suspend fun getHolidayListForSomeStates(states: String): APIResponse? {
+        var holidayList: APIResponse? = APIResponse()
         withContext(Dispatchers.IO) {
             try {
                 holidayList = CalendarApi.retrofitService.getStates("2024,2025,2026", states)

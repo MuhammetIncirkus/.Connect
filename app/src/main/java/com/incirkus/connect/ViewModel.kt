@@ -343,7 +343,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         if (holidayList.isEmpty()) {
             viewModelScope.launch {
                 val responseList = repository.getHolidayList()
-                convertResponseToHolidayList(responseList)
+                if (responseList != null) {
+                    convertResponseToHolidayList(responseList)
+                }
             }
         }
     }
@@ -363,7 +365,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _isUploadingApi.value = true
         viewModelScope.launch {
             val responseList = repository.getHolidayList()
-            deleteHolidayList(responseList)
+            if (responseList != null) {
+                deleteHolidayList(responseList)
+            }
         }
     }
 
@@ -392,7 +396,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _isUploadingApi.value = true
         viewModelScope.launch {
             val responseList = repository.getHolidayListForSomeStates(states)
-            deleteHolidayList(responseList)
+            if (responseList != null) {
+                deleteHolidayList(responseList)
+            }
         }
     }
 
