@@ -466,6 +466,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
      */
     private fun convertResponseToHolidayList(responseList: APIResponse) {
 
+        holidayList.clear()
         for (holiday in responseList.feiertage) {
             val name: String = holiday.fname
             val date: String = holiday.date
