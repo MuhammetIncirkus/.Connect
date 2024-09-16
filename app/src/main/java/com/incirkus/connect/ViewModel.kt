@@ -1180,6 +1180,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         firedatabase.collection("LeaveRequest").document(leaveRequest.requestId).set(leaveRequest)
     }
 
+
     /**
      * Sends a password reset email to the specified email address.
      *
